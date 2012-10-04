@@ -26,11 +26,13 @@ exports.watch = {
   },
   tearDown: cleanUp,
   remove: function(test) {
-    test.expect(1);
+    test.expect(2);
     gaze('**/*', function() {
       this.remove(path.resolve(__dirname, 'fixtures', 'sub', 'two.js'));
       this.remove(path.resolve(__dirname, 'fixtures'));
-      test.deepEqual(this.relative(), {'sub': ['one.js']});
+      var result = this.relative();
+      test.deepEqual(result['sub'], ['one.js']);
+      test.notDeepEqual(result['.'], ['one.js']);
       this.close();
       test.done();
     });
@@ -44,6 +46,8 @@ exports.watch = {
         watcher.close();
         test.done();
       });
+      this.on('added', function() { test.ok(false, 'added event should not have emitted.'); });
+      this.on('deleted', function() { test.ok(false, 'deleted event should not have emitted.'); });
       fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'one.js'), 'var one = true;');
     });
   },
@@ -56,6 +60,8 @@ exports.watch = {
         watcher.close();
         test.done();
       });
+      this.on('changed', function() { test.ok(false, 'changed event should not have emitted.'); });
+      this.on('deleted', function() { test.ok(false, 'deleted event should not have emitted.'); });
       fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'tmp.js'), 'var tmp = true;');
     });
   },
@@ -84,6 +90,8 @@ exports.watch = {
         watcher.close();
         test.done();
       });
+      this.on('changed', function() { test.ok(false, 'changed event should not have emitted.'); });
+      this.on('added', function() { test.ok(false, 'added event should not have emitted.'); });
       fs.unlinkSync(tmpfile);
     });
   },

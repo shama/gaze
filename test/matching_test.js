@@ -9,9 +9,11 @@ exports.matching = {
     done();
   },
   globAll: function(test) {
-    test.expect(1);
+    test.expect(2);
     gaze('**/*', function() {
-      test.deepEqual(this.relative(), {'.': ['one.js'], 'sub': ['one.js', 'two.js']});
+      var result = this.relative();
+      test.deepEqual(result['.'], ['one.js']);
+      test.deepEqual(result['sub'], ['one.js', 'two.js']);
       this.close();
       test.done();
     });
@@ -25,9 +27,11 @@ exports.matching = {
     });
   },
   globArray: function(test) {
-    test.expect(1);
+    test.expect(2);
     gaze(['*.js', 'sub/*.js'], function() {
-      test.deepEqual(this.relative(), {'.': ['one.js'], 'sub': ['one.js', 'two.js']});
+      var result = this.relative();
+      test.deepEqual(result['.'], ['one.js']);
+      test.deepEqual(result['sub'], ['one.js', 'two.js']);
       this.close();
       test.done();
     });

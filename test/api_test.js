@@ -9,9 +9,11 @@ exports.api = {
     done();
   },
   newGaze: function(test) {
-    test.expect(1);
+    test.expect(2);
     new gaze.Gaze('**/*', {}, function() {
-      test.deepEqual(this.relative(), {'.': ['one.js'], 'sub': ['one.js', 'two.js']});
+      var result = this.relative();
+      test.deepEqual(result['.'], ['one.js']);
+      test.deepEqual(result['sub'], ['one.js', 'two.js']);
       this.close();
       test.done();
     });
