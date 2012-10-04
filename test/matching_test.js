@@ -35,5 +35,14 @@ exports.matching = {
       this.close();
       test.done();
     });
+  },
+  oddName: function(test) {
+    test.expect(1);
+    gaze(['Project (LO)/*.js'], function() {
+      var result = this.relative();
+      test.deepEqual(result['Project (LO)'], ['one.js']);
+      this.close();
+      test.done();
+    });
   }
 };
