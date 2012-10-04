@@ -34,7 +34,7 @@
     "minimatch": "~0.2.6"
   },
   "devDependencies": {
-    "grunt": "~0.4.0a",
+    "grunt": "git://github.com/gruntjs/grunt.git#8b5b7c6af1fe7d4a2c62cee940d798664b53c7af",
     "grunt-benchmark": "~0.1.1"
   },
   "keywords": [
