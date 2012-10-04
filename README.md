@@ -41,6 +41,12 @@ gaze('**/*.js', function(err, watcher) {
   // Get watched files with relative paths
   console.log(this.relative());
 });
+
+// Also accepts an array of patterns
+gaze(['stylesheets/*.css', 'images/**/*.png'], function() {
+  // Add more patterns later to be watched
+  this.add(['js/*.js']);
+});
 ```
 
 ### Alternate Interface
@@ -66,6 +72,11 @@ gaze('**/*', function() {
   });
 });
 ```
+
+### Minimatch / Glob
+
+See [isaacs's minimatch](https://github.com/isaacs/minimatch) for more
+information on glob patterns.
 
 ## Documentation
 
