@@ -1,6 +1,6 @@
 # gaze [![Build Status](https://secure.travis-ci.org/shama/gaze.png?branch=master)](http://travis-ci.org/shama/gaze)
 
-A globbing fs.watch wrapper built from the best parts of other fine watch libs.
+A globbing fs.watch wrapper built from the best parts of other fine watch libs. 
 Compatible with NodeJS v0.8/0.6, Windows, OSX and Linux.
 
 ## Usage
@@ -11,7 +11,7 @@ and run `npm install`.
 var gaze = require('gaze');
 
 // Watch all .js files/dirs in process.cwd()
-gaze('**/*.js', function(watcher) {
+gaze('**/*.js', function(err, watcher) {
   // Files have all started watching
   // watcher === this
 
