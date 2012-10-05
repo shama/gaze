@@ -90,7 +90,7 @@ exports.watch = {
         watcher.close();
         test.done();
       });
-      //this.on('changed', function() { test.ok(false, 'changed event should not have emitted.'); });
+      this.on('changed', function() { test.ok(false, 'changed event should not have emitted.'); });
       this.on('added', function() { test.ok(false, 'added event should not have emitted.'); });
       fs.unlinkSync(tmpfile);
     });
