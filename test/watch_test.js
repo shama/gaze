@@ -48,9 +48,7 @@ exports.watch = {
       });
       this.on('added', function() { test.ok(false, 'added event should not have emitted.'); });
       this.on('deleted', function() { test.ok(false, 'deleted event should not have emitted.'); });
-      setTimeout(function() {
-        fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'one.js'), 'var one = true;');
-      }, 100);
+      fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'one.js'), 'var one = true;');
     });
   },
   added: function(test) {
@@ -64,9 +62,7 @@ exports.watch = {
       });
       this.on('changed', function() { test.ok(false, 'changed event should not have emitted.'); });
       this.on('deleted', function() { test.ok(false, 'deleted event should not have emitted.'); });
-      setTimeout(function() {
-        fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'tmp.js'), 'var tmp = true;');
-      }, 100);
+      fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'tmp.js'), 'var tmp = true;');
     });
   },
   dontAddUnmatchedFiles: function(test) {
@@ -80,10 +76,8 @@ exports.watch = {
       this.on('added', function(filepath) {
         test.equal(path.relative(process.cwd(), filepath), 'sub/tmp.js');
       });
-      setTimeout(function() {
-        fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'tmp'), 'Dont add me!');
-        fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'tmp.js'), 'add me!');
-      }, 100);
+      fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'tmp'), 'Dont add me!');
+      fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'tmp.js'), 'add me!');
     });
   },
   deleted: function(test) {
@@ -96,7 +90,7 @@ exports.watch = {
         watcher.close();
         test.done();
       });
-      this.on('changed', function() { test.ok(false, 'changed event should not have emitted.'); });
+      //this.on('changed', function() { test.ok(false, 'changed event should not have emitted.'); });
       this.on('added', function() { test.ok(false, 'added event should not have emitted.'); });
       fs.unlinkSync(tmpfile);
     });
@@ -110,9 +104,7 @@ exports.watch = {
         watcher.close();
         test.done();
       });
-      setTimeout(function() {
-        fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'one.js'), 'var one = true;');
-      }, 100);
+      fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'one.js'), 'var one = true;');
     });
   }
 };
