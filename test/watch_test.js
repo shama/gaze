@@ -74,7 +74,7 @@ exports.watch = {
         test.done();
       }, 1000);
       this.on('added', function(filepath) {
-        test.equal(path.relative(process.cwd(), filepath), 'sub/tmp.js');
+        test.equal(path.relative(process.cwd(), filepath), path.join('sub', 'tmp.js'));
       });
       fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'tmp'), 'Dont add me!');
       fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'tmp.js'), 'add me!');
