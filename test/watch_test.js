@@ -122,5 +122,24 @@ exports.watch = {
       });
       fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'one.js'), 'var one = true;');
     });
+  },
+  emitTwice: function(test) {
+    test.expect(2);
+    var times = 0;
+    gaze('**/*', function(err, watcher) {
+      watcher.on('all', function(status, filepath) {
+        test.equal(status, 'changed');
+        times++;
+        setTimeout(function() {
+          if (times < 2) {
+            fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'one.js'), 'var one = true;');
+          } else {
+            watcher.close();
+            test.done();
+          }
+        }, 1000);
+      });
+      fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'one.js'), 'var one = true;');
+    });
   }
 };
