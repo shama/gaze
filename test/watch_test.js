@@ -106,5 +106,21 @@ exports.watch = {
       });
       fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'one.js'), 'var one = true;');
     });
+  },
+  dontEmitTwice: function(test) {
+    test.expect(2);
+    gaze('**/*', function(err, watcher) {
+      watcher.on('all', function(status, filepath) {
+        var expected = path.relative(process.cwd(), filepath);
+        test.equal(path.join('sub', 'one.js'), expected);
+        test.equal(status, 'changed');
+        fs.readFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'one.js'));
+        setTimeout(function() {
+          watcher.close();
+          test.done();
+        }, 5000);
+      });
+      fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'one.js'), 'var one = true;');
+    });
   }
 };
