@@ -138,6 +138,7 @@ Add unit tests for any new or changed functionality. Lint and test your code
 using [grunt](http://gruntjs.com/).
 
 ## Release History
+* 0.1.3 - Fix race condition with 2 watches
 * 0.1.2 - Read triggering changed event fix
 * 0.1.1 - Minor fixes
 * 0.1.0 - Initial release
