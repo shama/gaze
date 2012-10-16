@@ -138,6 +138,7 @@ Add unit tests for any new or changed functionality. Lint and test your code
 using [grunt](http://gruntjs.com/).
 
 ## Release History
+* 0.1.6 - Recognize the `cwd` option properly
 * 0.1.5 - Catch too many open file errors
 * 0.1.4 - Really fix the race condition with 2 watches
 * 0.1.3 - Fix race condition with 2 watches
