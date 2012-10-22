@@ -184,5 +184,27 @@ exports.watch = {
         fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'nested', 'added.js'), 'var added = true;');
       }, 1000);
     });
+  },
+  forceWatchMethodOld: function(test) {
+    test.expect(1);
+    gaze('**/*', {forceWatchMethod:'old'}, function(err, watcher) {
+      watcher.on('all', function(e, filepath) {
+        test.ok(true);
+        watcher.close();
+        test.done();
+      });
+      fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'two.js'), 'var two = true;');
+    });
+  },
+  forceWatchMethodNew: function(test) {
+    test.expect(1);
+    gaze('**/*', {forceWatchMethod:'new'}, function(err, watcher) {
+      watcher.on('all', function(e, filepath) {
+        test.ok(true);
+        watcher.close();
+        test.done();
+      });
+      fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'two.js'), 'var two = true;');
+    });
   }
 };

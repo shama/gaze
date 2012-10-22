@@ -100,6 +100,13 @@ var gaze = new Gaze(pattern, options, callback);
 #### Properties
 
 * `options` The options object passed in.
+  * `interval` {integer} Interval to pass to fs.watchFile
+  * `debounceDelay` {integer} Delay for events called in succession for the same
+    file/event
+  * `forceWatchMethod` {'new'|'old'|false} Defaults to `false` to pick the first
+    triggered watch method. Set to `'new'` to only use `fs.watch` or `'old'` to
+    only use `fs.watchFile`. `'old'` is recommended if watch isn't firing or
+    you're watching files over a network.
 
 #### Events
 
@@ -138,6 +145,7 @@ Add unit tests for any new or changed functionality. Lint and test your code
 using [grunt](http://gruntjs.com/).
 
 ## Release History
+* 0.2.0 - Support and mark folders with `path.sep`.
 * 0.1.6 - Recognize the `cwd` option properly
 * 0.1.5 - Catch too many open file errors
 * 0.1.4 - Really fix the race condition with 2 watches
