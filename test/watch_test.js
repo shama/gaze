@@ -31,7 +31,7 @@ exports.watch = {
       this.remove(path.resolve(__dirname, 'fixtures', 'sub', 'two.js'));
       this.remove(path.resolve(__dirname, 'fixtures'));
       var result = this.relative();
-      test.deepEqual(result['sub'], ['one.js']);
+      test.deepEqual(result['sub/'], ['one.js']);
       test.notDeepEqual(result['.'], ['one.js']);
       this.close();
       test.done();
@@ -161,6 +161,28 @@ exports.watch = {
         test.done();
       });
       fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'two.js'), 'var two = true;');
+    });
+  },
+  addedEmitInSubFolders: function(test) {
+    test.expect(3);
+    var times = 0;
+    gaze('**/*', function(err, watcher) {
+      watcher.on('added', function(filepath) {
+        test.equal('added.js', path.basename(filepath));
+        fs.unlinkSync(filepath);
+        times++;
+        if (times > 2) {
+          watcher.close();
+          test.done();
+        }
+      });
+      fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'nested', 'sub', 'added.js'), 'var added = true;');
+      setTimeout(function() {
+        fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'added.js'), 'var added = true;');
+      }, 500);
+      setTimeout(function() {
+        fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'nested', 'added.js'), 'var added = true;');
+      }, 1000);
     });
   }
 };

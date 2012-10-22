@@ -12,8 +12,8 @@ exports.api = {
     test.expect(2);
     new gaze.Gaze('**/*', {}, function() {
       var result = this.relative();
-      test.deepEqual(result['.'], ['one.js']);
-      test.deepEqual(result['sub'], ['one.js', 'two.js']);
+      test.deepEqual(result['.'], ['Project (LO)/', 'nested/', 'one.js', 'sub/']);
+      test.deepEqual(result['sub/'], ['one.js', 'two.js']);
       this.close();
       test.done();
     });

@@ -12,8 +12,8 @@ exports.matching = {
     test.expect(2);
     gaze('**/*', function() {
       var result = this.relative();
-      test.deepEqual(result['.'], ['one.js']);
-      test.deepEqual(result['sub'], ['one.js', 'two.js']);
+      test.deepEqual(result['.'], ['Project (LO)/', 'nested/', 'one.js', 'sub/']);
+      test.deepEqual(result['sub/'], ['one.js', 'two.js']);
       this.close();
       test.done();
     });
@@ -31,7 +31,7 @@ exports.matching = {
     gaze(['*.js', 'sub/*.js'], function() {
       var result = this.relative();
       test.deepEqual(result['.'], ['one.js']);
-      test.deepEqual(result['sub'], ['one.js', 'two.js']);
+      test.deepEqual(result['sub/'], ['one.js', 'two.js']);
       this.close();
       test.done();
     });
@@ -40,7 +40,7 @@ exports.matching = {
     test.expect(1);
     gaze(['Project (LO)/*.js'], function() {
       var result = this.relative();
-      test.deepEqual(result['Project (LO)'], ['one.js']);
+      test.deepEqual(result['Project (LO)/'], ['one.js']);
       this.close();
       test.done();
     });
