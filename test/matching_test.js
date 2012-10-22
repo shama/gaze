@@ -11,7 +11,7 @@ exports.matching = {
   globAll: function(test) {
     test.expect(2);
     gaze('**/*', function() {
-      var result = this.relative();
+      var result = this.relative(null, true);
       test.deepEqual(result['.'], ['Project (LO)/', 'nested/', 'one.js', 'sub/']);
       test.deepEqual(result['sub/'], ['one.js', 'two.js']);
       this.close();
@@ -21,7 +21,7 @@ exports.matching = {
   relativeDir: function(test) {
     test.expect(1);
     gaze('**/*', function() {
-      test.deepEqual(this.relative('sub'), ['one.js', 'two.js']);
+      test.deepEqual(this.relative('sub', true), ['one.js', 'two.js']);
       this.close();
       test.done();
     });
@@ -29,7 +29,7 @@ exports.matching = {
   globArray: function(test) {
     test.expect(2);
     gaze(['*.js', 'sub/*.js'], function() {
-      var result = this.relative();
+      var result = this.relative(null, true);
       test.deepEqual(result['.'], ['one.js']);
       test.deepEqual(result['sub/'], ['one.js', 'two.js']);
       this.close();
@@ -39,7 +39,7 @@ exports.matching = {
   oddName: function(test) {
     test.expect(1);
     gaze(['Project (LO)/*.js'], function() {
-      var result = this.relative();
+      var result = this.relative(null, true);
       test.deepEqual(result['Project (LO)/'], ['one.js']);
       this.close();
       test.done();

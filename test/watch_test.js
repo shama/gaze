@@ -30,7 +30,7 @@ exports.watch = {
     gaze('**/*', function() {
       this.remove(path.resolve(__dirname, 'fixtures', 'sub', 'two.js'));
       this.remove(path.resolve(__dirname, 'fixtures'));
-      var result = this.relative();
+      var result = this.relative(null, true);
       test.deepEqual(result['sub/'], ['one.js']);
       test.notDeepEqual(result['.'], ['one.js']);
       this.close();

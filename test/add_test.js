@@ -28,7 +28,7 @@ exports.add = {
     };
     var gaze = new Gaze('addnothingtowatch');
     gaze._addToWatched(files);
-    test.deepEqual(gaze.relative(), expected);
+    test.deepEqual(gaze.relative(null, true), expected);
     test.done();
   }
 };

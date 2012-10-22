@@ -127,7 +127,9 @@ var gaze = new Gaze(pattern, options, callback);
 * `remove(filepath)` removes a file or directory from being watched. Does not
   recurse directories.
 * `watched()` Returns the currently watched files.
-* `relative()` Returns the currently watched files with relative paths.
+* `relative([dir, unixify])` Returns the currently watched files with relative paths.
+  * `dir` {string} Only return relative files for this directory.
+  * `unixify` {boolean} Return paths with `/` instead of `\\` if on Windows.
 
 ## FAQs
 
