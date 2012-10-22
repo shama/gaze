@@ -1,6 +1,7 @@
 # gaze [![Build Status](https://secure.travis-ci.org/shama/gaze.png?branch=master)](http://travis-ci.org/shama/gaze)
 
-A globbing fs.watch wrapper built from the best parts of other fine watch libs. 
+A globbing fs.watch wrapper built from the best parts of other fine watch libs.
+
 Compatible with NodeJS v0.8/0.6, Windows, OSX and Linux.
 
 ## Usage
@@ -113,8 +114,9 @@ var gaze = new Gaze(pattern, options, callback);
 * `ready(watcher)` When files have been globbed and watching has begun.
 * `all(event, filepath)` When an `added`, `changed` or `deleted` event occurs.
 * `added(filepath)` When a file has been added to a watch directory.
-* `changed(filepath)` When a file or directory has been changed.
-* `deleted(filepath)` When a file or directory has been deleted.
+* `changed(filepath)` When a file has been changed.
+* `deleted(filepath)` When a file has been deleted.
+* `renamed(newPath, oldPath)` When a file has been renamed.
 * `end()` When the watcher is closed and watches have been removed.
 * `error(err)` When an error occurs.
 
@@ -155,7 +157,7 @@ Add unit tests for any new or changed functionality. Lint and test your code
 using [grunt](http://gruntjs.com/).
 
 ## Release History
-* 0.2.0 - Support and mark folders with `path.sep`. Add `forceWatchMethod` option.
+* 0.2.0 - Support and mark folders with `path.sep`. Add `forceWatchMethod` option. Support `renamed` events.
 * 0.1.6 - Recognize the `cwd` option properly
 * 0.1.5 - Catch too many open file errors
 * 0.1.4 - Really fix the race condition with 2 watches

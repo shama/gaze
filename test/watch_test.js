@@ -11,7 +11,11 @@ fs.existsSync = fs.existsSync || path.existsSync;
 function cleanUp(done) {
   [
     'sub/tmp.js',
-    'sub/tmp'
+    'sub/tmp',
+    'sub/renamed.js',
+    'added.js',
+    'nested/added.js',
+    'nested/sub/added.js'
   ].forEach(function(d) {
     var p = path.resolve(__dirname, 'fixtures', d);
     if (fs.existsSync(p)) { fs.unlinkSync(p); }
@@ -166,7 +170,7 @@ exports.watch = {
   addedEmitInSubFolders: function(test) {
     test.expect(3);
     var times = 0;
-    gaze('**/*', function(err, watcher) {
+    gaze('**/*', {debounceDelay:100}, function(err, watcher) {
       watcher.on('added', function(filepath) {
         test.equal('added.js', path.basename(filepath));
         fs.unlinkSync(filepath);
