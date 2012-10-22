@@ -153,7 +153,7 @@ Add unit tests for any new or changed functionality. Lint and test your code
 using [grunt](http://gruntjs.com/).
 
 ## Release History
-* 0.2.0 - Support and mark folders with `path.sep`.
+* 0.2.0 - Support and mark folders with `path.sep`. Add `forceWatchMethod` option.
 * 0.1.6 - Recognize the `cwd` option properly
 * 0.1.5 - Catch too many open file errors
 * 0.1.4 - Really fix the race condition with 2 watches
