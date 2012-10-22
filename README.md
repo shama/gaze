@@ -129,8 +129,9 @@ var gaze = new Gaze(pattern, options, callback);
 * `watched()` Returns the currently watched files.
 * `relative()` Returns the currently watched files with relative paths.
 
+## FAQs
 
-## Why Another `fs.watch` Wrapper?
+### Why Another `fs.watch` Wrapper?
 I liked parts of other `fs.watch` wrappers but none had all the features I
 needed. This lib combines the features I needed from other fine watch libs:
 Speedy data behavior from
@@ -138,6 +139,13 @@ Speedy data behavior from
 from [mikeal's watch](https://github.com/mikeal/watch) and file globbing using
 [isaacs's glob](https://github.com/isaacs/node-glob) which is also used by
 [cowboy's Grunt](https://github.com/gruntjs/grunt).
+
+### How do I fix the error `EMFILE: Too many opened files.`?
+This is because of your system's max opened file limit. For OSX the default is
+very low (256). Increase your limit with `ulimit -n 10480`, the number being the
+new max limit. If you're still running into issues then consider setting the
+option `forceWatchMethod: 'old'` to use the old and slower stat polling watch
+method.
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style.
