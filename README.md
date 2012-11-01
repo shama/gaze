@@ -157,6 +157,7 @@ Add unit tests for any new or changed functionality. Lint and test your code
 using [grunt](http://gruntjs.com/).
 
 ## Release History
+* 0.2.1 - Fix issue with invalid `added` events in current working dir.
 * 0.2.0 - Support and mark folders with `path.sep`. Add `forceWatchMethod` option. Support `renamed` events.
 * 0.1.6 - Recognize the `cwd` option properly
 * 0.1.5 - Catch too many open file errors
