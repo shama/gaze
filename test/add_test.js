@@ -2,6 +2,7 @@
 
 var Gaze = require('../lib/gaze.js').Gaze;
 var path = require('path');
+var fs = require('fs');
 
 exports.add = {
   setUp: function(done) {
@@ -30,5 +31,18 @@ exports.add = {
     gaze._addToWatched(files);
     test.deepEqual(gaze.relative(null, true), expected);
     test.done();
+  },
+  addLater: function(test) {
+    test.expect(1);
+    new Gaze('sub/one.js', function(err, watcher) {
+      watcher.add('sub/*.js', function() {
+        watcher.on('changed', function(filepath) {
+          test.equal('two.js', path.basename(filepath));
+          watcher.close();
+          test.done();
+        });
+        fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'two.js'), 'var two = true;');
+      });
+    });
   }
 };
