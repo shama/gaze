@@ -210,5 +210,18 @@ exports.watch = {
       });
       fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'two.js'), 'var two = true;');
     });
+  },
+  manuallyAddedPattern: function(test) {
+    test.expect(1);
+    gaze([], function(err, watcher) {
+      watcher.on('all', function(e, filepath) {
+        test.equal('one.js', path.basename(filepath));
+        watcher.close();
+        test.done();
+      });
+      watcher.add('**/one.js', function() {
+        fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'one.js'), 'var one = true;');
+      });
+    });
   }
 };
