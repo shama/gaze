@@ -34,10 +34,13 @@
     "minimatch": "~0.2.6"
   },
   "devDependencies": {
-    "grunt": "git://github.com/gruntjs/grunt.git#8b5b7c6af1fe7d4a2c62cee940d798664b53c7af",
-    "grunt-benchmark": "~0.1.1"
+    "grunt-benchmark": "~0.1.1",
+    "grunt": "~0.4.0a",
+    "grunt-contrib-nodeunit": "~0.1.0",
+    "grunt-contrib-jshint": "~0.1.0"
   },
   "keywords": [
-    "watch", "glob"
+    "watch",
+    "glob"
   ]
 }
