@@ -25,7 +25,7 @@
     "node": ">= 0.6.0"
   },
   "scripts": {
-    "test": "grunt nodeunit"
+    "test": "./node_modules/.bin/grunt nodeunit -v"
   },
   "dependencies": {
     "async": "~0.1.22",
@@ -36,8 +36,9 @@
   "devDependencies": {
     "grunt-benchmark": "~0.1.1",
     "grunt": "~0.4.0a",
-    "grunt-contrib-nodeunit": "~0.1.0",
-    "grunt-contrib-jshint": "~0.1.0"
+    "grunt-contrib-nodeunit": "~0.1.1",
+    "grunt-contrib-jshint": "~0.1.0",
+    "grunt-cli": "~0.1.1"
   },
   "keywords": [
     "watch",
