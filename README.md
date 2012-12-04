@@ -157,6 +157,7 @@ Add unit tests for any new or changed functionality. Lint and test your code
 using [grunt](http://gruntjs.com/).
 
 ## Release History
+* 0.2.2 - Fix issue where subsequent add calls dont get watched (@samcday). removeAllListeners on close.
 * 0.2.1 - Fix issue with invalid `added` events in current working dir.
 * 0.2.0 - Support and mark folders with `path.sep`. Add `forceWatchMethod` option. Support `renamed` events.
 * 0.1.6 - Recognize the `cwd` option properly
@@ -168,5 +169,5 @@ using [grunt](http://gruntjs.com/).
 * 0.1.0 - Initial release
 
 ## License
-Copyright (c) 2012 Kyle Robinson Young  
+Copyright (c) 2012 Kyle Robinson Young
 Licensed under the MIT license.
