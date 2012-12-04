@@ -164,29 +164,34 @@ exports.watch = {
         watcher.close();
         test.done();
       });
-      fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'two.js'), 'var two = true;');
+      fs.writeFileSync(path.resolve(cwd, 'two.js'), 'var two = true;');
     });
   },
   addedEmitInSubFolders: function(test) {
     test.expect(3);
-    var times = 0;
+    var create = [
+      path.resolve(__dirname, 'fixtures', 'nested', 'sub', 'added.js'),
+      path.resolve(__dirname, 'fixtures', 'added.js'),
+      path.resolve(__dirname, 'fixtures', 'nested', 'added.js')
+    ];
+    var clean = [];
+    function createFile() {
+      var file = create.shift();
+      fs.writeFileSync(file, 'var added = true;');
+      clean.push(file);
+    }
     gaze('**/*', {debounceDelay:100}, function(err, watcher) {
       watcher.on('added', function(filepath) {
         test.equal('added.js', path.basename(filepath));
-        fs.unlinkSync(filepath);
-        times++;
-        if (times > 2) {
+        if (create.length < 1) {
+          clean.forEach(fs.unlinkSync);
           watcher.close();
           test.done();
+        } else {
+          createFile();
         }
       });
-      fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'nested', 'sub', 'added.js'), 'var added = true;');
-      setTimeout(function() {
-        fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'added.js'), 'var added = true;');
-      }, 500);
-      setTimeout(function() {
-        fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'nested', 'added.js'), 'var added = true;');
-      }, 1000);
+      createFile();
     });
   },
   forceWatchMethodOld: function(test) {
