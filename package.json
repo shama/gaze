@@ -25,20 +25,19 @@
     "node": ">= 0.6.0"
   },
   "scripts": {
-    "test": "./node_modules/.bin/grunt nodeunit -v"
+    "test": "grunt nodeunit -v"
   },
   "dependencies": {
     "async": "~0.1.22",
-    "glob": "~3.1.13",
-    "lodash": "~0.8.0",
-    "minimatch": "~0.2.6"
+    "glob": "~3.1.14",
+    "lodash": "~0.10.0",
+    "minimatch": "~0.2.9"
   },
   "devDependencies": {
     "grunt-benchmark": "~0.1.1",
     "grunt": "~0.4.0a",
     "grunt-contrib-nodeunit": "~0.1.1",
-    "grunt-contrib-jshint": "~0.1.0",
-    "grunt-cli": "~0.1.1"
+    "grunt-contrib-jshint": "~0.1.0"
   },
   "keywords": [
     "watch",
