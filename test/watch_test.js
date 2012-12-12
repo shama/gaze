@@ -202,7 +202,13 @@ exports.watch = {
         watcher.close();
         test.done();
       });
-      fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'two.js'), 'var two = true;');
+      //fs.watchFile is a little flaky.  Sometimes a change event will not fire if not delayed for a short time.  I am guessing
+      //this is because the file is being modified before it's initial stats are gathered (a nodejs watchFile impl question).  The file watches are
+      //definitely in place before the file is modified.
+      setTimeout(function() {
+        fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'two.js'), 'var two = true;');
+      },100);
+
     });
   },
   forceWatchMethodNew: function(test) {
