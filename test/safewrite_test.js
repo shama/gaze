@@ -45,7 +45,7 @@ exports.safewrite = {
         test.equal(path.basename(filepath), 'safewrite.js');
 
         if (times < 2) {
-          setTimeout(simSafewrite, 500);
+          setTimeout(simSafewrite, 1000);
         } else {
           this.close();
           test.done();
