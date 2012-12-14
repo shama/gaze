@@ -197,35 +197,5 @@ exports.watch = {
       });
       createFile();
     });
-  },
-  forceWatchMethodOld: function(test) {
-    test.expect(1);
-    gaze('**/*', {forceWatchMethod:'old'}, function(err, watcher) {
-      watcher.on('all', function(e, filepath) {
-        test.ok(true);
-        watcher.close();
-        test.done();
-      });
-
-      setTimeout(function() {
-        fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'two.js'), 'var two = true;');
-      }, 1000);
-
-    });
-  },
-  forceWatchMethodNew: function(test) {
-    test.expect(1);
-    gaze('**/*', {forceWatchMethod:'new'}, function(err, watcher) {
-      watcher.on('all', function(e, filepath) {
-        test.ok(true);
-        watcher.close();
-        test.done();
-      });
-
-      setTimeout(function() {
-        fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'two.js'), 'var two = true;');
-      }, 1000);
-
-    });
   }
 };
