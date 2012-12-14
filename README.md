@@ -104,10 +104,6 @@ var gaze = new Gaze(pattern, options, callback);
   * `interval` {integer} Interval to pass to fs.watchFile
   * `debounceDelay` {integer} Delay for events called in succession for the same
     file/event
-  * `forceWatchMethod` {'new'|'old'|false} Defaults to `false` to pick the first
-    triggered watch method. Set to `'new'` to only use `fs.watch` or `'old'` to
-    only use `fs.watchFile`. `'old'` is recommended if watch isn't firing or
-    you're watching files over a network.
 
 #### Events
 
@@ -146,10 +142,8 @@ from [mikeal's watch](https://github.com/mikeal/watch) and file globbing using
 
 ### How do I fix the error `EMFILE: Too many opened files.`?
 This is because of your system's max opened file limit. For OSX the default is
-very low (256). Increase your limit with `ulimit -n 10480`, the number being the
-new max limit. If you're still running into issues then consider setting the
-option `forceWatchMethod: 'old'` to use the old and slower stat polling watch
-method.
+very low (256). Increase your limit temporarily with `ulimit -n 10480`, the
+number being the new max limit.
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style.
@@ -157,6 +151,7 @@ Add unit tests for any new or changed functionality. Lint and test your code
 using [grunt](http://gruntjs.com/).
 
 ## Release History
+* 0.3.0 - Handle safewrite events, `forceWatchMethod` option removed, bug fixes and watch optimizations (@rgaskill).
 * 0.2.2 - Fix issue where subsequent add calls dont get watched (@samcday). removeAllListeners on close.
 * 0.2.1 - Fix issue with invalid `added` events in current working dir.
 * 0.2.0 - Support and mark folders with `path.sep`. Add `forceWatchMethod` option. Support `renamed` events.
