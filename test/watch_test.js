@@ -124,7 +124,11 @@ exports.watch = {
           test.done();
         }, 5000);
       });
-      fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'one.js'), 'var one = true;');
+
+      setTimeout(function() {
+        fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'one.js'), 'var one = true;');
+      }, 1000);
+
     });
   },
   emitTwice: function(test) {
@@ -192,28 +196,6 @@ exports.watch = {
         }
       });
       createFile();
-    });
-  },
-  forceWatchMethodOld: function(test) {
-    test.expect(1);
-    gaze('**/*', {forceWatchMethod:'old'}, function(err, watcher) {
-      watcher.on('all', function(e, filepath) {
-        test.ok(true);
-        watcher.close();
-        test.done();
-      });
-      fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'two.js'), 'var two = true;');
-    });
-  },
-  forceWatchMethodNew: function(test) {
-    test.expect(1);
-    gaze('**/*', {forceWatchMethod:'new'}, function(err, watcher) {
-      watcher.on('all', function(e, filepath) {
-        test.ok(true);
-        watcher.close();
-        test.done();
-      });
-      fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'two.js'), 'var two = true;');
     });
   }
 };
