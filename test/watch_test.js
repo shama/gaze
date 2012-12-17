@@ -1,6 +1,7 @@
 'use strict';
 
 var gaze = require('../lib/gaze.js');
+var grunt = require('grunt');
 var path = require('path');
 var fs = require('fs');
 
@@ -172,30 +173,27 @@ exports.watch = {
     });
   },
   addedEmitInSubFolders: function(test) {
-    test.expect(3);
-    var create = [
-      path.resolve(__dirname, 'fixtures', 'nested', 'sub', 'added.js'),
-      path.resolve(__dirname, 'fixtures', 'added.js'),
-      path.resolve(__dirname, 'fixtures', 'nested', 'added.js')
+    test.expect(4);
+    var adds = [
+      { pattern: '**/*', file: path.resolve(__dirname, 'fixtures', 'nested', 'sub', 'added.js') },
+      { pattern: '**/*', file: path.resolve(__dirname, 'fixtures', 'added.js') },
+      { pattern: 'nested/**/*', file: path.resolve(__dirname, 'fixtures', 'nested', 'added.js') },
+      { pattern: 'nested/sub/*.js', file: path.resolve(__dirname, 'fixtures', 'nested', 'sub', 'added.js') },
     ];
-    var clean = [];
-    function createFile() {
-      var file = create.shift();
-      fs.writeFileSync(file, 'var added = true;');
-      clean.push(file);
-    }
-    gaze('**/*', {debounceDelay:100}, function(err, watcher) {
-      watcher.on('added', function(filepath) {
-        test.equal('added.js', path.basename(filepath));
-        if (create.length < 1) {
-          clean.forEach(fs.unlinkSync);
+    grunt.util.async.forEachSeries(adds, function(add, next) {
+      new gaze.Gaze(add.pattern, function(err, watcher) {
+        watcher.on('added', function(filepath) {
+          test.equal('added.js', path.basename(filepath));
+          fs.unlinkSync(filepath);
           watcher.close();
-          test.done();
-        } else {
-          createFile();
-        }
+          next();
+        });
+        watcher.on('changed', function() { test.ok(false, 'changed event should not have emitted.'); });
+        watcher.on('deleted', function() { test.ok(false, 'deleted event should not have emitted.'); });
+        fs.writeFileSync(add.file, 'var added = true;');
       });
-      createFile();
+    }, function() {
+      test.done();
     });
-  }
+  },
 };

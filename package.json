@@ -1,7 +1,7 @@
 {
   "name": "gaze",
   "description": "A globbing fs.watch wrapper built from the best parts of other fine watch libs.",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "homepage": "https://github.com/shama/gaze",
   "author": {
     "name": "Kyle Robinson Young",
@@ -35,7 +35,7 @@
   },
   "devDependencies": {
     "grunt-benchmark": "~0.1.1",
-    "grunt": "~0.4.0a",
+    "grunt": "~0.4.0rc3",
     "grunt-contrib-nodeunit": "~0.1.1",
     "grunt-contrib-jshint": "~0.1.0"
   },
