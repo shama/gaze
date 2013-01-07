@@ -49,11 +49,11 @@ exports.watch = {
         var expected = path.relative(process.cwd(), filepath);
         test.equal(path.join('sub', 'one.js'), expected);
         watcher.close();
-        test.done();
       });
       this.on('added', function() { test.ok(false, 'added event should not have emitted.'); });
       this.on('deleted', function() { test.ok(false, 'deleted event should not have emitted.'); });
       fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'one.js'), 'var one = true;');
+      watcher.on('end', test.done);
     });
   },
   added: function(test) {
@@ -63,11 +63,11 @@ exports.watch = {
         var expected = path.relative(process.cwd(), filepath);
         test.equal(path.join('sub', 'tmp.js'), expected);
         watcher.close();
-        test.done();
       });
       this.on('changed', function() { test.ok(false, 'changed event should not have emitted.'); });
       this.on('deleted', function() { test.ok(false, 'deleted event should not have emitted.'); });
       fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'tmp.js'), 'var tmp = true;');
+      watcher.on('end', test.done);
     });
   },
   dontAddUnmatchedFiles: function(test) {
@@ -76,13 +76,13 @@ exports.watch = {
       setTimeout(function() {
         test.ok(true, 'Ended without adding a file.');
         watcher.close();
-        test.done();
       }, 1000);
       this.on('added', function(filepath) {
         test.equal(path.relative(process.cwd(), filepath), path.join('sub', 'tmp.js'));
       });
       fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'tmp'), 'Dont add me!');
       fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'tmp.js'), 'add me!');
+      watcher.on('end', test.done);
     });
   },
   deleted: function(test) {
@@ -93,11 +93,11 @@ exports.watch = {
       watcher.on('deleted', function(filepath) {
         test.equal(path.join('sub', 'deleted.js'), path.relative(process.cwd(), filepath));
         watcher.close();
-        test.done();
       });
       this.on('changed', function() { test.ok(false, 'changed event should not have emitted.'); });
       this.on('added', function() { test.ok(false, 'added event should not have emitted.'); });
       fs.unlinkSync(tmpfile);
+      watcher.on('end', test.done);
     });
   },
   nomark: function(test) {
@@ -107,9 +107,9 @@ exports.watch = {
         var expected = path.relative(process.cwd(), filepath);
         test.equal(path.join('sub', 'one.js'), expected);
         watcher.close();
-        test.done();
       });
       fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'one.js'), 'var one = true;');
+      watcher.on('end', test.done);
     });
   },
   dontEmitTwice: function(test) {
@@ -121,15 +121,15 @@ exports.watch = {
         test.equal(status, 'changed');
         fs.readFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'one.js'));
         setTimeout(function() {
-          watcher.close();
-          test.done();
-        }, 5000);
+          fs.readFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'one.js'));
+        }, 1000);
+        // Give some time to accidentally emit before we close
+        setTimeout(function() { watcher.close(); }, 5000);
       });
-
       setTimeout(function() {
         fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'one.js'), 'var one = true;');
       }, 1000);
-
+      watcher.on('end', test.done);
     });
   },
   emitTwice: function(test) {
@@ -144,11 +144,13 @@ exports.watch = {
             fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'one.js'), 'var one = true;');
           } else {
             watcher.close();
-            test.done();
           }
         }, 1000);
       });
-      fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'one.js'), 'var one = true;');
+      setTimeout(function() {
+        fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'one.js'), 'var one = true;');
+      }, 1000);
+      watcher.on('end', test.done);
     });
   },
   nonExistent: function(test) {
@@ -167,9 +169,9 @@ exports.watch = {
       watcher.on('changed', function(filepath) {
         test.deepEqual(this.relative(), {'.':['two.js']});
         watcher.close();
-        test.done();
       });
       fs.writeFileSync(path.resolve(cwd, 'two.js'), 'var two = true;');
+      watcher.on('end', test.done);
     });
   },
   addedEmitInSubFolders: function(test) {

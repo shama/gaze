@@ -151,6 +151,7 @@ Add unit tests for any new or changed functionality. Lint and test your code
 using [grunt](http://gruntjs.com/).
 
 ## Release History
+* 0.3.2 - Emit `end` before removeAllListeners.
 * 0.3.1 - Fix added events within subfolder patterns.
 * 0.3.0 - Handle safewrite events, `forceWatchMethod` option removed, bug fixes and watch optimizations (@rgaskill).
 * 0.2.2 - Fix issue where subsequent add calls dont get watched (@samcday). removeAllListeners on close.
