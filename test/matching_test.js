@@ -36,6 +36,15 @@ exports.matching = {
       test.done();
     });
   },
+  globArrayDot: function(test) {
+        test.expect(1);
+        gaze(['./sub/*.js'], function() {
+            var result = this.relative(null, true);
+            test.deepEqual(result['sub/'], ['one.js', 'two.js']);
+            this.close();
+            test.done();
+        });
+    },
   oddName: function(test) {
     test.expect(1);
     gaze(['Project (LO)/*.js'], function() {
