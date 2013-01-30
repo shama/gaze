@@ -29,7 +29,8 @@
   },
   "dependencies": {
     "glob": "~3.1.14",
-    "minimatch": "~0.2.9"
+    "minimatch": "~0.2.9",
+    "lodash": "~1.0.0-rc.3"
   },
   "devDependencies": {
     "grunt": "~0.4.0rc6",
