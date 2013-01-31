@@ -1,56 +1,57 @@
 'use strict';
 
-var gaze = require('../lib/gaze.js');
+var Gaze = require('../lib/gaze.js');
 var path = require('path');
+var gaze;
 
 exports.matching = {
   setUp: function(done) {
     process.chdir(path.resolve(__dirname, 'fixtures'));
     done();
   },
+  tearDown: function(done) {
+    gaze.close();
+    gaze = null;
+    done();
+  },
   globAll: function(test) {
     test.expect(2);
-    gaze('**/*', function() {
-      var result = this.relative(null, true);
+    gaze = Gaze('**/*', function(err, watcher) {
+      var result = watcher.relative(null, true);
       test.deepEqual(result['.'], ['Project (LO)/', 'nested/', 'one.js', 'sub/']);
       test.deepEqual(result['sub/'], ['one.js', 'two.js']);
-      this.close();
       test.done();
     });
   },
   relativeDir: function(test) {
     test.expect(1);
-    gaze('**/*', function() {
-      test.deepEqual(this.relative('sub', true), ['one.js', 'two.js']);
-      this.close();
+    gaze = Gaze('**/*', function(err, watcher) {
+      test.deepEqual(watcher.relative('sub', true), ['one.js', 'two.js']);
       test.done();
     });
   },
   globArray: function(test) {
     test.expect(2);
-    gaze(['*.js', 'sub/*.js'], function() {
-      var result = this.relative(null, true);
+    gaze = Gaze(['*.js', 'sub/*.js'], function(err, watcher) {
+      var result = watcher.relative(null, true);
       test.deepEqual(result['.'], ['one.js']);
       test.deepEqual(result['sub/'], ['one.js', 'two.js']);
-      this.close();
       test.done();
     });
   },
   globArrayDot: function(test) {
-        test.expect(1);
-        gaze(['./sub/*.js'], function() {
-            var result = this.relative(null, true);
-            test.deepEqual(result['sub/'], ['one.js', 'two.js']);
-            this.close();
-            test.done();
-        });
-    },
+    test.expect(1);
+    gaze = Gaze(['sub/*.js'], function(err, watcher) {
+      var result = watcher.relative(null, true);
+      test.deepEqual(result['sub/'], ['one.js', 'two.js']);
+      test.done();
+    });
+  },
   oddName: function(test) {
     test.expect(1);
-    gaze(['Project (LO)/*.js'], function() {
-      var result = this.relative(null, true);
+    gaze = Gaze(['Project (LO)/*.js'], function(err, watcher) {
+      var result = watcher.relative(null, true);
       test.deepEqual(result['Project (LO)/'], ['one.js']);
-      this.close();
       test.done();
     });
   }

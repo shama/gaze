@@ -1,14 +1,15 @@
 'use strict';
 
-var gaze = require('../lib/gaze.js');
+var Gaze = require('../lib/gaze.js');
 var path = require('path');
 var fs = require('fs');
+var gaze;
 
 // Node v0.6 compat
 fs.existsSync = fs.existsSync || path.existsSync;
 
 // Clean up helper to call in setUp and tearDown
-function cleanUp(done) {
+function deleteFiles(done) {
   [
     'safewrite.js'
   ].forEach(function(d) {
@@ -21,9 +22,13 @@ function cleanUp(done) {
 exports.safewrite = {
   setUp: function(done) {
     process.chdir(path.resolve(__dirname, 'fixtures'));
-    cleanUp(done);
+    deleteFiles(done);
   },
-  tearDown: cleanUp,
+  tearDown: function(done) {
+    gaze.close();
+    gaze = null;
+    deleteFiles(done);
+  },
   safewrite: function(test) {
     test.expect(4);
 
@@ -39,15 +44,14 @@ exports.safewrite = {
       times++;
     }
 
-    gaze('**/*', function() {
-      this.on('all', function(action, filepath) {
+    gaze = Gaze('**/*', function(err, watcher) {
+      watcher.on('all', function(action, filepath) {
         test.equal(action, 'changed');
         test.equal(path.basename(filepath), 'safewrite.js');
 
         if (times < 2) {
           setTimeout(simSafewrite, 1000);
         } else {
-          this.close();
           test.done();
         }
       });
@@ -55,7 +59,6 @@ exports.safewrite = {
       setTimeout(function() {
         simSafewrite();
       }, 1000);
-
     });
   }
 };
