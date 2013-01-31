@@ -9,6 +9,9 @@ module.exports = function(grunt) {
     },
     nodeunit: {
       files: ['test/**/*_test.js'],
+      exclusion: {
+        src: ['test/**/exclusion_test.js']
+      }
     },
     jshint: {
       options: {
