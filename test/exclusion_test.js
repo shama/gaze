@@ -21,10 +21,15 @@ exports.exclusion = {
         watcher.close();
         test.done();
       });
+      //Write a file that shouldn't ever match a pattern, but is in the same directory as one that does.
+      fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'two.txt'), 'Will I be watched?');
+
+      //Write a file that is part of the exclusion.
       fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'nested', 'sub', 'two.js'), 'var two = true;');
-      //Give time for watcher to respond and see if it does to the excluded file.
+
+      //Give time for watcher to respond and see if it responds to either file that shouldn't be watched.
       setTimeout(function() {
-        fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'one.js'), 'var one = true;');
+        //fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'one.js'), 'var one = true;');
       }, 2000);
     })
   }

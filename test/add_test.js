@@ -9,7 +9,7 @@ exports.add = {
     process.chdir(path.resolve(__dirname, 'fixtures'));
     done();
   },
-  /*addToWatched: function(test) {
+  addToWatched: function(test) {
     test.expect(1);
     var files = [
       'Project (LO)/',
@@ -31,8 +31,8 @@ exports.add = {
     gaze._addToWatched(files);
     test.deepEqual(gaze.relative(null, true), expected);
     test.done();
-  },*/
-  /*addLater: function(test) {
+  },
+  addLater: function(test) {
     test.expect(3);
     new Gaze('sub/one.js', function(err, watcher) {
       test.deepEqual(watcher.relative('sub'), ['one.js']);
@@ -46,29 +46,5 @@ exports.add = {
         fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'two.js'), 'var two = true;');
       });
     });
-  },*/
-  exclusionTest: function(test) {
-    test.expect(2);
-    var gaze = new Gaze(['**/*.js', '!nested/**/*.js'], function(err, watcher) {
-      test.deepEqual(this.relative(null, true), {
-        'Project (LO)/': ['one.js'],
-        '.': ['one.js'],
-        'sub/': ['one.js', 'two.js']
-      });
-      this.on('all', function(status, filepath) {
-        console.log(filepath);
-        test.equal('one.js', path.basename(filepath));
-        watcher.close();
-        test.done();
-      })
-      console.log(this.watched());
-      console.log('two.js written to..');
-      fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'nested', 'sub', 'two.js'), 'var two = 50;');
-      //Give time for watcher to respond and see if it does to the excluded file.
-      //setTimeout(function() {
-      console.log('one.js written to..');
-      fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'one.js'), 'var one = 25;');
-      //}, 5000);
-    })
   }
 };
