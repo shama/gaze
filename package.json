@@ -28,11 +28,11 @@
     "test": "grunt nodeunit -v"
   },
   "dependencies": {
-    "glob": "~3.1.14",
-    "minimatch": "~0.2.9"
+    "minimatch": "~0.2.9",
+    "fileset": "~0.1.5"
   },
   "devDependencies": {
-    "grunt": "~0.4.0rc6",
+    "grunt": "~0.4.0rc7",
     "grunt-contrib-nodeunit": "~0.1.2rc6",
     "grunt-contrib-jshint": "~0.1.1rc6",
     "grunt-benchmark": "~0.1.1"
