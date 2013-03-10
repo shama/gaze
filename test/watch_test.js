@@ -100,18 +100,6 @@ exports.watch = {
       watcher.on('end', test.done);
     });
   },
-  nomark: function(test) {
-    test.expect(1);
-    gaze('**/*', {mark:false}, function(err, watcher) {
-      watcher.on('changed', function(filepath) {
-        var expected = path.relative(process.cwd(), filepath);
-        test.equal(path.join('sub', 'one.js'), expected);
-        watcher.close();
-      });
-      fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'one.js'), 'var one = true;');
-      watcher.on('end', test.done);
-    });
-  },
   dontEmitTwice: function(test) {
     test.expect(2);
     gaze('**/*', function(err, watcher) {
