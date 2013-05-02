@@ -186,4 +186,33 @@ exports.watch = {
       test.done();
     });
   },
+  multipleWatchersSimultaneously: function(test) {
+    test.expect(2);
+    var did = 0;
+    var ready = 0;
+    var cwd = path.resolve(__dirname, 'fixtures', 'sub');
+    var watchers = [];
+    function isReady() {
+      ready++;
+      if (ready > 1) {
+        fs.writeFileSync(path.resolve(cwd, 'one.js'), 'var one = true;');
+      }
+    }
+    function isDone() {
+      did++;
+      if (did > 1) {
+        watchers.forEach(function(watcher) {
+          watcher.close();
+        });
+        test.done();
+      }
+    }
+    for (var i = 0; i < 2; i++) {
+      watchers[i] = new gaze.Gaze('sub/one.js', isReady);
+      watchers[i].on('changed', function(filepath) {
+        test.equal(path.join('sub', 'one.js'), path.relative(process.cwd(), filepath));
+      });
+      watchers[i].on('end', isDone);
+    }
+  },
 };
