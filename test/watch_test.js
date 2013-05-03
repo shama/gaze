@@ -16,6 +16,7 @@ function cleanUp(done) {
     'sub/renamed.js',
     'added.js',
     'nested/added.js',
+    'nested/.tmp',
     'nested/sub/added.js'
   ].forEach(function(d) {
     var p = path.resolve(__dirname, 'fixtures', d);
