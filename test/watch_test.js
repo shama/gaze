@@ -85,6 +85,23 @@ exports.watch = {
       watcher.on('end', test.done);
     });
   },
+  dontAddMatchedDirectoriesThatArentReallyAdded: function(test) {
+    // This is a regression test for a bug I ran into where a matching directory would be reported
+    // added when a non-matching file was created along side it.  This only happens if the
+    // directory name doesn't occur in $PWD.
+    test.expect(1);
+    gaze('**/*', function(err, watcher) {
+      setTimeout(function() {
+        test.ok(true, 'Ended without adding a file.');
+        watcher.close();
+      }, 1000);
+      this.on('added', function(filepath) {
+        test.notEqual(path.relative(process.cwd(), filepath), path.join('nested', 'sub2'));
+      });
+      fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'nested', '.tmp'), 'Wake up!');
+      watcher.on('end', test.done);
+    });
+  },
   deleted: function(test) {
     test.expect(1);
     var tmpfile = path.resolve(__dirname, 'fixtures', 'sub', 'deleted.js');
