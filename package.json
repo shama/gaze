@@ -1,7 +1,7 @@
 {
   "name": "gaze",
   "description": "A globbing fs.watch wrapper built from the best parts of other fine watch libs.",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "homepage": "https://github.com/shama/gaze",
   "author": {
     "name": "Kyle Robinson Young",
