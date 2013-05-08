@@ -210,6 +210,14 @@ exports.watch = {
     var ready = 0;
     var cwd = path.resolve(__dirname, 'fixtures', 'sub');
     var watchers = [];
+    var timeout = setTimeout(function() {
+      test.ok(false, "Only " + did + " of " + ready + " watchers fired.");
+      test.done();
+      watchers.forEach(function(watcher) {
+        watcher.close();
+      });
+    }, 1000);
+
     function isReady() {
       ready++;
       if (ready > 1) {
@@ -219,6 +227,7 @@ exports.watch = {
     function isDone() {
       did++;
       if (did > 1) {
+        clearTimeout(timeout);
         watchers.forEach(function(watcher) {
           watcher.close();
         });
@@ -226,11 +235,12 @@ exports.watch = {
       }
     }
     for (var i = 0; i < 2; i++) {
-      watchers[i] = new gaze.Gaze('sub/one.js', isReady);
+      watchers[i] = new gaze.Gaze('sub/one.js');
       watchers[i].on('changed', function(filepath) {
         test.equal(path.join('sub', 'one.js'), path.relative(process.cwd(), filepath));
+        isDone();
       });
-      watchers[i].on('end', isDone);
+      watchers[i].on('ready', isReady);
     }
   },
 };
