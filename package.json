@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "minimatch": "~0.2.9",
-    "fileset": "~0.1.5"
+    "globule": "~0.1.0"
   },
   "devDependencies": {
     "grunt": "~0.4.0rc7",
