@@ -234,12 +234,13 @@ exports.watch = {
         test.done();
       }
     }
+    function changed(filepath) {
+      test.equal(path.join('sub', 'one.js'), path.relative(process.cwd(), filepath));
+      isDone();
+    }
     for (var i = 0; i < 2; i++) {
       watchers[i] = new gaze.Gaze('sub/one.js');
-      watchers[i].on('changed', function(filepath) {
-        test.equal(path.join('sub', 'one.js'), path.relative(process.cwd(), filepath));
-        isDone();
-      });
+      watchers[i].on('changed', changed);
       watchers[i].on('ready', isReady);
     }
   },
