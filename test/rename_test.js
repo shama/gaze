@@ -4,9 +4,6 @@ var gaze = require('../lib/gaze.js');
 var path = require('path');
 var fs = require('fs');
 
-// Node v0.6 compat
-fs.existsSync = fs.existsSync || path.existsSync;
-
 // Clean up helper to call in setUp and tearDown
 function cleanUp(done) {
   [
