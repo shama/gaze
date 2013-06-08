@@ -28,7 +28,6 @@
     "test": "grunt nodeunit -v"
   },
   "dependencies": {
-    "minimatch": "~0.2.9",
     "globule": "~0.1.0"
   },
   "devDependencies": {
