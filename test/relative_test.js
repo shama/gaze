@@ -22,7 +22,7 @@ exports.relative = {
     ];
     var gaze = new Gaze('addnothingtowatch');
     gaze._addToWatched(files);
-    test.deepEqual(gaze.relative('.', true), ['Project (LO)/', 'nested/', 'one.js']);
+    test.deepEqual(gaze.relative('.', true), ['Project (LO)/', 'nested/', 'one.js', 'sub/']);
     test.done();
   }
 };
