@@ -1,13 +1,29 @@
 'use strict';
 
 var gaze = require('../lib/gaze.js');
+var grunt = require('grunt');
 var path = require('path');
+
+var fixtures = path.resolve(__dirname, 'fixtures');
+
+function cleanUp(done) {
+  [
+    'newfolder',
+  ].forEach(function(d) {
+    var p = path.join(fixtures, d);
+    if (grunt.file.exists(p)) {
+      grunt.file.delete(p);
+    }
+  });
+  done();
+}
 
 exports.matching = {
   setUp: function(done) {
-    process.chdir(path.resolve(__dirname, 'fixtures'));
-    done();
+    process.chdir(fixtures);
+    cleanUp(done);
   },
+  tearDown: cleanUp,
   globAll: function(test) {
     test.expect(2);
     gaze('**/*', function() {
@@ -30,7 +46,7 @@ exports.matching = {
     test.expect(2);
     gaze(['*.js', 'sub/*.js'], function() {
       var result = this.relative(null, true);
-      test.deepEqual(result['.'], ['one.js']);
+      test.deepEqual(result['.'], ['one.js', 'Project (LO)/', 'nested/', 'sub/']);
       test.deepEqual(result['sub/'], ['one.js', 'two.js']);
       this.close();
       test.done();
@@ -53,5 +69,22 @@ exports.matching = {
       this.close();
       test.done();
     });
-  }
+  },
+  addedLater: function(test) {
+    test.expect(2);
+    var times = 0;
+    gaze('**/*.js', function(err, watcher) {
+      watcher.on('all', function(status, filepath) {
+        times++;
+        var result = watcher.relative(null, true);
+        test.deepEqual(result['newfolder/'], ['added.js']);
+        if (times > 1) { watcher.close(); }
+      });
+      grunt.file.write(path.join(fixtures, 'newfolder', 'added.js'), 'var added = true;');
+      setTimeout(function() {
+        grunt.file.write(path.join(fixtures, 'newfolder', 'added.js'), 'var added = true;');
+      }, 1000);
+      watcher.on('end', test.done);
+    });
+  },
 };

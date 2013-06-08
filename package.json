@@ -22,7 +22,7 @@
   ],
   "main": "lib/gaze",
   "engines": {
-    "node": ">= 0.6.0"
+    "node": ">= 0.8.0"
   },
   "scripts": {
     "test": "grunt nodeunit -v"
@@ -32,10 +32,10 @@
     "globule": "~0.1.0"
   },
   "devDependencies": {
-    "grunt": "~0.4.0rc7",
-    "grunt-contrib-nodeunit": "~0.1.2rc6",
-    "grunt-contrib-jshint": "~0.1.1rc6",
-    "grunt-benchmark": "~0.1.1"
+    "grunt": "~0.4.1",
+    "grunt-contrib-nodeunit": "~0.2.0",
+    "grunt-contrib-jshint": "~0.6.0",
+    "grunt-benchmark": "~0.2.0"
   },
   "keywords": [
     "watch",

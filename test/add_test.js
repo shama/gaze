@@ -4,9 +4,11 @@ var Gaze = require('../lib/gaze.js').Gaze;
 var path = require('path');
 var fs = require('fs');
 
+var fixtures = path.resolve(__dirname, 'fixtures');
+
 exports.add = {
   setUp: function(done) {
-    process.chdir(path.resolve(__dirname, 'fixtures'));
+    process.chdir(fixtures);
     done();
   },
   addToWatched: function(test) {
@@ -19,13 +21,13 @@ exports.add = {
       'nested/three.js',
       'nested/sub/',
       'nested/sub/two.js',
-      'one.js'
+      'one.js',
     ];
     var expected = {
       'Project (LO)/': ['one.js'],
-      '.': ['Project (LO)/', 'nested/', 'one.js'],
-      'nested/': ['one.js', 'three.js', 'sub/'],
-      'nested/sub/': ['two.js']
+      '.': ['Project (LO)/', 'nested/', 'one.js', 'sub/'],
+      'nested/': ['sub/', 'sub2/', 'one.js', 'three.js'],
+      'nested/sub/': ['two.js'],
     };
     var gaze = new Gaze('addnothingtowatch');
     gaze._addToWatched(files);
