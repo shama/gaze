@@ -151,6 +151,7 @@ Add unit tests for any new or changed functionality. Lint and test your code
 using [grunt](http://gruntjs.com/).
 
 ## Release History
+* 0.4.0 - Drop support for node v0.6. Use globule for file matching. Avoid node v0.10 path.resolve/join errors. Register new files when added to non-existent folder. Multiple instances can now poll the same files (@jpommerening).
 * 0.3.4 - Code clean up. Fix path must be strings errors (@groner). Fix incorrect added events (@groner).
 * 0.3.3 - Fix for multiple patterns with negate.
 * 0.3.2 - Emit `end` before removeAllListeners.
