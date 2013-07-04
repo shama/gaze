@@ -3,8 +3,10 @@
 var Gaze = require('../lib/gaze.js').Gaze;
 var path = require('path');
 var fs = require('fs');
+var helper = require('./helper');
 
 var fixtures = path.resolve(__dirname, 'fixtures');
+var sortobj = helper.sortobj;
 
 exports.add = {
   setUp: function(done) {
@@ -31,7 +33,8 @@ exports.add = {
     };
     var gaze = new Gaze('addnothingtowatch');
     gaze._addToWatched(files);
-    test.deepEqual(gaze.relative(null, true), expected);
+    var result = gaze.relative(null, true);
+    test.deepEqual(sortobj(result), sortobj(expected));
     test.done();
   },
   addLater: function(test) {

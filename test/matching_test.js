@@ -3,8 +3,10 @@
 var gaze = require('../lib/gaze.js');
 var grunt = require('grunt');
 var path = require('path');
+var helper = require('./helper');
 
 var fixtures = path.resolve(__dirname, 'fixtures');
+var sortobj = helper.sortobj;
 
 function cleanUp(done) {
   [
@@ -46,8 +48,8 @@ exports.matching = {
     test.expect(2);
     gaze(['*.js', 'sub/*.js'], function() {
       var result = this.relative(null, true);
-      test.deepEqual(result['.'], ['one.js', 'Project (LO)/', 'nested/', 'sub/']);
-      test.deepEqual(result['sub/'], ['one.js', 'two.js']);
+      test.deepEqual(sortobj(result['.']), sortobj(['one.js', 'Project (LO)/', 'nested/', 'sub/']));
+      test.deepEqual(sortobj(result['sub/']), sortobj(['one.js', 'two.js']));
       this.close();
       test.done();
     });
