@@ -51,5 +51,18 @@ exports.add = {
         fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'two.js'), 'var two = true;');
       });
     });
-  }
+  },
+  addNoCallback: function(test) {
+    test.expect(1);
+    new Gaze('sub/one.js', function() {
+      this.add('sub/two.js');
+      this.on('changed', function(filepath) {
+        test.equal('two.js', path.basename(filepath));
+        test.done();
+      });
+      setTimeout(function() {
+        fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'two.js'), 'var two = true;');
+      }, 500);
+    });
+  },
 };
