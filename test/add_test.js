@@ -54,10 +54,11 @@ exports.add = {
   },
   addNoCallback: function(test) {
     test.expect(1);
-    new Gaze('sub/one.js', function() {
+    new Gaze('sub/one.js', function(err, watcher) {
       this.add('sub/two.js');
       this.on('changed', function(filepath) {
         test.equal('two.js', path.basename(filepath));
+        watcher.close();
         test.done();
       });
       setTimeout(function() {
