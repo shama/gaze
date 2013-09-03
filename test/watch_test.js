@@ -14,11 +14,20 @@ function cleanUp(done) {
     'added.js',
     'nested/added.js',
     'nested/.tmp',
-    'nested/sub/added.js'
+    'nested/sub/added.js',
+    'new_dir/tmp.js'
   ].forEach(function(d) {
     var p = path.resolve(__dirname, 'fixtures', d);
     if (fs.existsSync(p)) { fs.unlinkSync(p); }
   });
+
+  [
+    'new_dir'
+  ].forEach(function(d) {
+    var p = path.resolve(__dirname, 'fixtures', d);
+    if (fs.existsSync(p)) { fs.rmdirSync(p); }
+  });
+
   done();
 }
 
@@ -240,5 +249,26 @@ exports.watch = {
       watchers[i].on('changed', changed);
       watchers[i].on('ready', isReady);
     }
+  },
+  mkdirThenAddFile: function(test) {
+    test.expect(1);
+
+    gaze('**/*', function(err, watcher) {
+      var times = 0;
+      watcher.on('all', function(status, filepath) {
+        if (path.relative(process.cwd(), filepath) !== 'new_dir') {
+          test.equal('new_dir/tmp.js', path.relative(process.cwd(), filepath));
+        }        
+        times++;
+        if (times > 1) { watcher.close(); }
+      });
+      fs.mkdirSync('new_dir');
+      
+      //will fail without the setTimeout
+      setTimeout(function () {
+        fs.writeFileSync('new_dir/tmp.js', '');
+      },1000);
+      watcher.on('end', test.done);
+    });
   },
 };
