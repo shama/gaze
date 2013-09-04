@@ -4,6 +4,8 @@ A globbing fs.watch wrapper built from the best parts of other fine watch libs.
 
 Compatible with Node.js 0.10/0.8, Windows, OSX and Linux.
 
+![gaze](http://dontkry.com/images/repos/gaze.png)
+
 ## Usage
 Install the module with: `npm install gaze` or place into your `package.json`
 and run `npm install`.
