@@ -71,6 +71,20 @@ exports.watch = {
       watcher.on('end', test.done);
     });
   },
+  addedAbsolutePath: function(test) {
+    test.expect(1);
+    gaze(path.resolve(__dirname, 'fixtures', 'sub','**/*'), function(err, watcher) {
+      watcher.on('added', function(filepath) {
+        var expected = path.relative(process.cwd(), filepath);
+        test.equal(path.join('sub', 'tmp.js'), expected);
+        watcher.close();
+      });
+      this.on('changed', function() { test.ok(false, 'changed event should not have emitted.'); });
+      this.on('deleted', function() { test.ok(false, 'deleted event should not have emitted.'); });
+      fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'tmp.js'), 'var tmp = true;');
+      watcher.on('end', test.done);
+    });
+  },
   dontAddUnmatchedFiles: function(test) {
     test.expect(2);
     gaze('**/*.js', function(err, watcher) {
