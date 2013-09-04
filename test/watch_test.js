@@ -15,18 +15,12 @@ function cleanUp(done) {
     'nested/added.js',
     'nested/.tmp',
     'nested/sub/added.js',
-    'new_dir/tmp.js'
   ].forEach(function(d) {
     var p = path.resolve(__dirname, 'fixtures', d);
     if (fs.existsSync(p)) { fs.unlinkSync(p); }
   });
 
-  [
-    'new_dir'
-  ].forEach(function(d) {
-    var p = path.resolve(__dirname, 'fixtures', d);
-    if (fs.existsSync(p)) { fs.rmdirSync(p); }
-  });
+  grunt.file.delete(path.resolve(__dirname, 'fixtures', 'new_dir'));
 
   done();
 }
@@ -251,23 +245,34 @@ exports.watch = {
     }
   },
   mkdirThenAddFile: function(test) {
-    test.expect(1);
+    test.expect(3);
 
-    gaze('**/*', function(err, watcher) {
-      var times = 0;
+    var expected = [
+      'new_dir',
+      'new_dir/tmp.js',
+      'new_dir/other.js',
+    ];
+
+    gaze('**/*.js', function(err, watcher) {
       watcher.on('all', function(status, filepath) {
-        if (path.relative(process.cwd(), filepath) !== 'new_dir') {
-          test.equal('new_dir/tmp.js', path.relative(process.cwd(), filepath));
-        }
-        times++;
-        if (times > 1) { watcher.close(); }
-      });
-      fs.mkdirSync('new_dir');
+        var expect = expected.shift();
+        test.equal(path.relative(process.cwd(), filepath), expect);
 
-      //will fail without the setTimeout
-      setTimeout(function () {
-        fs.writeFileSync('new_dir/tmp.js', '');
-      },1000);
+        if (expected.length === 1) {
+          // Ensure the new folder is being watched correctly after initial add
+          setTimeout(function() {
+            fs.writeFileSync('new_dir/dontmatch.txt', '');
+            setTimeout(function() {
+              fs.writeFileSync('new_dir/other.js', '');
+            }, 1000);
+          }, 1000);
+        }
+
+        if (expected.length < 1) { watcher.close(); }
+      });
+
+      grunt.file.write('new_dir/tmp.js', '');
+
       watcher.on('end', test.done);
     });
   },
