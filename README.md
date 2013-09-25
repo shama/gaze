@@ -152,6 +152,7 @@ Add unit tests for any new or changed functionality. Lint and test your code
 using [grunt](http://gruntjs.com/).
 
 ## Release History
+* 0.4.2 - Fix .remove() method to remove a single file in a directory (@kaelzhang). Fixing Cannot call method 'call' of undefined (@krasimir). Track new file additions within folders (@brett-shwom).
 * 0.4.1 - Fix watchDir not respecting close in race condition (@chrisirhc).
 * 0.4.0 - Drop support for node v0.6. Use globule for file matching. Avoid node v0.10 path.resolve/join errors. Register new files when added to non-existent folder. Multiple instances can now poll the same files (@jpommerening).
 * 0.3.4 - Code clean up. Fix path must be strings errors (@groner). Fix incorrect added events (@groner).
