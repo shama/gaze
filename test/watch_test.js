@@ -271,7 +271,7 @@ exports.watch = {
         if (expected.length < 1) { watcher.close(); }
       });
 
-      grunt.file.write('new_dir/tmp.js', '');
+      fs.mkdirSync('new_dir'); //mkdirSync seems to behave differently than grunt.file.write('[folder]/[file]')
 
       watcher.on('end', test.done);
     });
