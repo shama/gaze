@@ -278,4 +278,37 @@ exports.watch = {
       watcher.on('end', test.done);
     });
   },
+  mkdirThenAddFileWithGruntFileWrite: function(test) {
+    test.expect(3);
+
+    var expected = [
+      'new_dir',
+      'new_dir/tmp.js',
+      'new_dir/other.js',
+    ];
+
+    gaze('**/*.js', function(err, watcher) {
+      watcher.on('all', function(status, filepath) {
+
+        var expect = expected.shift();
+        test.equal(path.relative(process.cwd(), filepath), expect);
+
+        if (expected.length === 1) {
+          // Ensure the new folder is being watched correctly after initial add
+          setTimeout(function() {
+            fs.writeFileSync('new_dir/dontmatch.txt', '');
+            setTimeout(function() {
+              fs.writeFileSync('new_dir/other.js', '');
+            }, 1000);
+          }, 1000);
+        }
+
+        if (expected.length < 1) { watcher.close(); }
+      });
+
+      grunt.file.write('new_dir/tmp.js', '');
+
+      watcher.on('end', test.done);
+    });
+  },
 };
