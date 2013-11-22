@@ -1,4 +1,4 @@
-# gaze [![Build Status](https://secure.travis-ci.org/shama/gaze.png?branch=master)](http://travis-ci.org/shama/gaze)
+# gaze [![Build Status](https://secure.travis-ci.org/shama/gaze.png?branch=master)](http://travis-ci.org/shama/gaze) [![Built with Grunt](http://cdn.gruntjs.com/cdn/bwg.png)](http://gruntjs.com/)
 
 A globbing fs.watch wrapper built from the best parts of other fine watch libs.  
 Compatible with Node.js 0.10/0.8, Windows, OSX and Linux.
