@@ -116,6 +116,7 @@ var gaze = new Gaze(pattern, options, callback);
 * `renamed(newPath, oldPath)` When a file has been renamed.
 * `end()` When the watcher is closed and watches have been removed.
 * `error(err)` When an error occurs.
+* `nomatch` When no files have been matched.
 
 #### Methods
 

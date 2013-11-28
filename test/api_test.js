@@ -34,5 +34,15 @@ exports.api = {
       this.close();
       test.done();
     });
-  }
+  },
+  nomatch: function(test) {
+    test.expect(1);
+    gaze('nomatch.js', function(err, watcher) {
+      watcher.on('nomatch', function() {
+        test.ok(true, 'nomatch was emitted.');
+        watcher.close();
+      });
+      watcher.on('end', test.done);
+    });
+  },
 };
