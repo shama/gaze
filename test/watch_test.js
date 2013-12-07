@@ -31,6 +31,15 @@ exports.watch = {
     cleanUp(done);
   },
   tearDown: cleanUp,
+  testnotexists: function(test) {
+    test.expect(0);
+    fs.mkdirSync(path.resolve(__dirname, 'fixtures', 'new_dir'));
+    fs.symlinkSync(path.resolve(__dirname, 'fixtures', 'not-exists.js'), path.resolve(__dirname, 'fixtures', 'new_dir', 'not-exists-symlink.js'));
+    gaze('**/*', function() {
+      this.close();
+      test.done();
+    });
+  },
   remove: function(test) {
     test.expect(2);
     gaze('**/*', function() {
