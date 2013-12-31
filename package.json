@@ -28,7 +28,8 @@
     "test": "grunt nodeunit -v"
   },
   "dependencies": {
-    "globule": "~0.1.0"
+    "globule": "~0.1.0",
+    "pathwatcher": "~0.13.0"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
