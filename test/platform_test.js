@@ -1,9 +1,11 @@
 'use strict';
 
 var platform = require('../lib/platform.js');
+var helper = require('../lib/helper.js');
 var path = require('path');
 var grunt = require('grunt');
 var async = require('async');
+var globule = require('globule');
 
 var fixturesbase = path.resolve(__dirname, 'fixtures');
 
@@ -44,8 +46,8 @@ exports.platform = {
       platform.mode = mode;
 
       platform(filename, function(error, event, filepath) {
-        test.equal(event, 'change', 'should have been a change event.');
-        test.equal(filepath, expectfilepath, 'should have triggered on the correct file.');
+        test.equal(event, 'change', 'should have been a change event in ' + mode + ' mode.');
+        test.equal(filepath, expectfilepath, 'should have triggered on the correct file in ' + mode + ' mode.');
         platform.close(filepath, done);
       });
 
@@ -69,8 +71,10 @@ exports.platform = {
       platform.mode = mode;
 
       platform(filename, function(error, event, filepath) {
-        test.equal(event, 'delete', 'should have been a delete event.');
-        test.equal(filepath, expectfilepath, 'should have triggered on the correct file.');
+        // Ignore change events on folders here as they're expected but should be ignored
+        if (event === 'change' && grunt.file.isDir(filepath)) return;
+        test.equal(event, 'delete', 'should have been a delete event in ' + mode + ' mode.');
+        test.equal(filepath, expectfilepath, 'should have triggered on the correct file in ' + mode + ' mode.');
         platform.close(filepath, done);
       });
 
@@ -90,5 +94,20 @@ exports.platform = {
         runtest('add.js', 'poll', next);
       },
     ], test.done);
+  },
+  getWatchedPaths: function(test) {
+    test.expect(1);
+    var expected = globule.find(['**/*.js'], { cwd: fixturesbase, prefixBase: fixturesbase });
+    var len = expected.length;
+    for (var i = 0; i < len; i++) {
+      platform(expected[i], function() {});
+      var parent = path.dirname(expected[i]);
+      expected.push(parent + '/');
+    }
+    expected = helper.unique(expected);
+
+    var actual = platform.getWatchedPaths();
+    test.deepEqual(actual.sort(), expected.sort());
+    test.done();
   },
 };
