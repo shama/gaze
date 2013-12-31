@@ -15,14 +15,13 @@ function cleanUp(done) {
     'nested/added.js',
     'nested/.tmp',
     'nested/sub/added.js',
+    'new_dir',
   ].forEach(function(d) {
-    var p = path.resolve(__dirname, 'fixtures', d);
-    if (fs.existsSync(p)) { fs.unlinkSync(p); }
+    grunt.file.delete(path.resolve(__dirname, 'fixtures', d));
   });
 
-  grunt.file.delete(path.resolve(__dirname, 'fixtures', 'new_dir'));
-
-  done();
+  // Delay between tests to prevent bleed
+  setTimeout(done, 500);
 }
 
 exports.watch = {
@@ -60,7 +59,7 @@ exports.watch = {
   added: function(test) {
     test.expect(1);
     gaze('**/*', function(err, watcher) {
-      watcher.on('added', function(filepath) {
+      this.on('added', function(filepath) {
         var expected = path.relative(process.cwd(), filepath);
         test.equal(path.join('sub', 'tmp.js'), expected);
         watcher.close();
@@ -72,6 +71,7 @@ exports.watch = {
     });
   },
   dontAddUnmatchedFiles: function(test) {
+    // TODO: Code smell
     test.expect(2);
     gaze('**/*.js', function(err, watcher) {
       setTimeout(function() {
@@ -212,11 +212,11 @@ exports.watch = {
     var cwd = path.resolve(__dirname, 'fixtures', 'sub');
     var watchers = [];
     var timeout = setTimeout(function() {
-      test.ok(false, "Only " + did + " of " + ready + " watchers fired.");
+      for (var i = 0; i < watchers.length; i++) {
+        watchers[i].close();
+        delete watchers[i];
+      }
       test.done();
-      watchers.forEach(function(watcher) {
-        watcher.close();
-      });
     }, 1000);
 
     function isReady() {
@@ -225,19 +225,8 @@ exports.watch = {
         fs.writeFileSync(path.resolve(cwd, 'one.js'), 'var one = true;');
       }
     }
-    function isDone() {
-      did++;
-      if (did > 1) {
-        clearTimeout(timeout);
-        watchers.forEach(function(watcher) {
-          watcher.close();
-        });
-        test.done();
-      }
-    }
     function changed(filepath) {
       test.equal(path.join('sub', 'one.js'), path.relative(process.cwd(), filepath));
-      isDone();
     }
     for (var i = 0; i < 2; i++) {
       watchers[i] = new gaze.Gaze('sub/one.js');
@@ -272,9 +261,7 @@ exports.watch = {
         if (expected.length < 1) { watcher.close(); }
       });
 
-
       fs.mkdirSync('new_dir'); //fs.mkdirSync([folder]) seems to behave differently than grunt.file.write('[folder]/[file]')
-      
 
       watcher.on('end', test.done);
     });
