@@ -73,23 +73,26 @@ exports.matching = {
     });
   },
   addedLater: function(test) {
-    test.expect(2);
-    var times = 0;
+    var expected = [
+      ['.', 'Project (LO)/', 'nested/', 'one.js', 'sub/', 'newfolder/'],
+      ['newfolder/', 'added.js'],
+      ['newfolder/', 'added.js', 'addedAnother.js'],
+    ];
+    test.expect(expected.length);
     gaze('**/*.js', function(err, watcher) {
       watcher.on('all', function(status, filepath) {
-        times++;
-        var result = watcher.relative(null, true);
-        test.deepEqual(result['newfolder/'], ['added.js']);
-        if (times > 1) { watcher.close(); }
+        var expect = expected.shift();
+        var result = watcher.relative(expect[0], true);
+        test.deepEqual(result, expect.slice(1));
+        if (expected.length < 1) {
+          watcher.close();
+        }
       });
       grunt.file.write(path.join(fixtures, 'newfolder', 'added.js'), 'var added = true;');
       setTimeout(function() {
-        grunt.file.write(path.join(fixtures, 'newfolder', 'added.js'), 'var added = true;');
+        grunt.file.write(path.join(fixtures, 'newfolder', 'addedAnother.js'), 'var added = true;');
       }, 1000);
-      watcher.on('end', function() {
-        // TODO: Figure out why this test is finicky leaking it's newfolder into the other tests
-        setTimeout(test.done, 2000);
-      });
+      watcher.on('end', test.done);
     });
   },
 };
