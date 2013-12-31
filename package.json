@@ -28,13 +28,15 @@
     "test": "grunt nodeunit -v"
   },
   "dependencies": {
-    "globule": "~0.1.0"
+    "globule": "~0.1.0",
+    "pathwatcher": "~0.13.0"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-contrib-nodeunit": "~0.2.0",
     "grunt-contrib-jshint": "~0.6.0",
-    "grunt-benchmark": "~0.2.0"
+    "grunt-benchmark": "~0.2.0",
+    "async": "~0.2.9"
   },
   "keywords": [
     "watch",
