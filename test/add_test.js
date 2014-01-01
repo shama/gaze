@@ -13,30 +13,6 @@ exports.add = {
     process.chdir(fixtures);
     done();
   },
-  addToWatched: function(test) {
-    test.expect(1);
-    var files = [
-      'Project (LO)/',
-      'Project (LO)/one.js',
-      'nested/',
-      'nested/one.js',
-      'nested/three.js',
-      'nested/sub/',
-      'nested/sub/two.js',
-      'one.js',
-    ];
-    var expected = {
-      'Project (LO)/': ['one.js'],
-      '.': ['Project (LO)/', 'nested/', 'one.js', 'sub/'],
-      'nested/': ['sub/', 'sub2/', 'one.js', 'three.js'],
-      'nested/sub/': ['two.js'],
-    };
-    var gaze = new Gaze('addnothingtowatch');
-    gaze._addToWatched(files);
-    var result = gaze.relative(null, true);
-    test.deepEqual(sortobj(result), sortobj(expected));
-    test.done();
-  },
   addLater: function(test) {
     test.expect(3);
     new Gaze('sub/one.js', function(err, watcher) {
