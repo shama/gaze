@@ -23,7 +23,8 @@ function runWithPoll(mode, cb) {
     // Polling unfortunately needs time to pick up stat
     setTimeout(cb, 1000);
   } else {
-    cb();
+    // Watch delays 10ms when adding, so delay double just in case
+    setTimeout(cb, 20);
   }
 }
 
