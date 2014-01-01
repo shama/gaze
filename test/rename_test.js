@@ -5,7 +5,7 @@ var path = require('path');
 var fs = require('fs');
 
 // Clean up helper to call in setUp and tearDown
-function cleanUp(done) {
+function cleanUp() {
   [
     'sub/rename.js',
     'sub/renamed.js'
@@ -13,15 +13,18 @@ function cleanUp(done) {
     var p = path.resolve(__dirname, 'fixtures', d);
     if (fs.existsSync(p)) { fs.unlinkSync(p); }
   });
-  done();
 }
 
 exports.watch = {
   setUp: function(done) {
     process.chdir(path.resolve(__dirname, 'fixtures'));
-    cleanUp(done);
+    cleanUp();
+    done();
   },
-  tearDown: cleanUp,
+  tearDown: function(done) {
+    cleanUp();
+    done();
+  },
   rename: function(test) {
     test.expect(2);
     var oldPath = path.join(__dirname, 'fixtures', 'sub', 'rename.js');
