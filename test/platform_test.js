@@ -9,9 +9,6 @@ var globule = require('globule');
 
 var fixturesbase = path.resolve(__dirname, 'fixtures');
 
-// Start the poller
-var interval = setInterval(platform.tick.bind(platform), 200);
-
 // helpers
 function cleanUp() {
   ['add.js'].forEach(function(file) {
@@ -30,10 +27,13 @@ function runWithPoll(mode, cb) {
 
 exports.platform = {
   setUp: function(done) {
+    platform.mode = 'auto';
+    this.interval = setInterval(platform.tick.bind(platform), 200);
     cleanUp();
     done();
   },
   tearDown: function(done) {
+    clearInterval(this.interval);
     platform.closeAll();
     cleanUp();
     done();
