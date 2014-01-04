@@ -2,6 +2,9 @@
 
 var helper = module.exports = {};
 
+// Access to the lib helper to prevent confusion with having both in the tests
+helper.lib = require('../lib/helper.js');
+
 helper.sortobj = function sortobj(obj) {
   if (Array.isArray(obj)) {
     obj.sort();

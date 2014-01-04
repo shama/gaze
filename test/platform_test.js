@@ -1,7 +1,7 @@
 'use strict';
 
 var platform = require('../lib/platform.js');
-var helper = require('../lib/helper.js');
+var helper = require('./helper.js');
 var path = require('path');
 var grunt = require('grunt');
 var async = require('async');
@@ -105,9 +105,9 @@ exports.platform = {
       var parent = path.dirname(expected[i]);
       expected.push(parent + '/');
     }
-    expected = helper.unique(expected);
+    expected = helper.unixifyobj(helper.lib.unique(expected));
 
-    var actual = platform.getWatchedPaths();
+    var actual = helper.unixifyobj(platform.getWatchedPaths());
     test.deepEqual(actual.sort(), expected.sort());
     test.done();
   },
