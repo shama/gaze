@@ -4,6 +4,7 @@ var gaze = require('../lib/gaze.js');
 var grunt = require('grunt');
 var path = require('path');
 var fs = require('fs');
+var helper = require('./helper.js');
 
 // Clean up helper to call in setUp and tearDown
 function cleanUp(done) {
@@ -246,7 +247,8 @@ exports.watch = {
       watcher.on('all', function(status, filepath) {
 
         var expect = expected.shift();
-        test.equal(path.relative(process.cwd(), filepath), expect);
+        var actual = helper.unixifyobj(path.relative(process.cwd(), filepath));
+        test.equal(actual, expect);
 
         if (expected.length === 1) {
           // Ensure the new folder is being watched correctly after initial add
@@ -279,7 +281,8 @@ exports.watch = {
       watcher.on('all', function(status, filepath) {
 
         var expect = expected.shift();
-        test.equal(path.relative(process.cwd(), filepath), expect);
+        var actual = helper.unixifyobj(path.relative(process.cwd(), filepath));
+        test.equal(actual, expect);
 
         if (expected.length === 1) {
           // Ensure the new folder is being watched correctly after initial add
