@@ -27,7 +27,7 @@ exports.helper = {
       '/Users/dude/www/sub/': ['/Users/dude/www/sub/one.js', '/Users/dude/www/sub/nested/'],
       '/Users/dude/www/sub/nested/': ['/Users/dude/www/sub/nested/one.js'],
     };
-    var actual = helper.flatToTree(files, cwd);
+    var actual = helper.flatToTree(files, cwd, false, true);
     test.deepEqual(actual, expected);
     test.done();
   },
@@ -48,7 +48,7 @@ exports.helper = {
       'sub/': ['one.js', 'nested/'],
       'sub/nested/': ['one.js'],
     };
-    var actual = helper.flatToTree(files, cwd, true);
+    var actual = helper.flatToTree(files, cwd, true, true);
     test.deepEqual(actual, expected);
     test.done();
   },
