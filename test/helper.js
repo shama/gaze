@@ -19,3 +19,20 @@ helper.sortobj = function sortobj(obj) {
   });
   return out;
 };
+
+helper.unixifyobj = function unixifyobj(obj) {
+  function unixify(filepath) {
+    return (process.platform === 'win32') ? String(filepath).replace(/\\/g, '/') : filepath;
+  }
+  if (typeof obj === 'string') {
+    return unixify(obj);
+  }
+  if (Array.isArray(obj)) {
+    return obj.map(unixify);
+  }
+  var res = Object.create(null);
+  Object.keys(obj).forEach(function(key) {
+    res[unixify(key)] = unixifyobj(obj[key]);
+  });
+  return res;
+};
