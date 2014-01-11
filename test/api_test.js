@@ -1,6 +1,6 @@
 'use strict';
 
-var gaze = require('../lib/gaze.js');
+var gaze = require('../index.js');
 var path = require('path');
 
 exports.api = {
