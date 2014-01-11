@@ -1,6 +1,6 @@
 'use strict';
 
-var Gaze = require('../lib/gaze.js').Gaze;
+var Gaze = require('../index.js').Gaze;
 var path = require('path');
 var fs = require('fs');
 var helper = require('./helper');
