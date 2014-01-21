@@ -22,7 +22,7 @@ exports.safewrite = {
   },
   tearDown: cleanUp,
   safewrite: function(test) {
-    test.expect(4);
+    test.expect(2);
 
     var times = 0;
     var file = path.resolve(__dirname, 'fixtures', 'safewrite.js');
@@ -33,26 +33,16 @@ exports.safewrite = {
       fs.writeFileSync(backup, fs.readFileSync(file));
       fs.unlinkSync(file);
       fs.renameSync(backup, file);
-      times++;
     }
 
-    gaze('**/*', function() {
+    gaze('**/*', function(err, watcher) {
       this.on('all', function(action, filepath) {
         test.equal(action, 'changed');
         test.equal(path.basename(filepath), 'safewrite.js');
-
-        if (times < 2) {
-          setTimeout(simSafewrite, 1000);
-        } else {
-          this.on('end', test.done);
-          this.close();
-        }
+        watcher.close();
+        test.done();
       });
-
-      setTimeout(function() {
-        simSafewrite();
-      }, 1000);
-
+      simSafewrite();
     });
   }
 };
