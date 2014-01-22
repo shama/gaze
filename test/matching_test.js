@@ -83,7 +83,7 @@ exports.matching = {
       watcher.on('all', function(status, filepath) {
         var expect = expected.shift();
         var result = watcher.relative(expect[0], true);
-        test.deepEqual(result, expect.slice(1));
+        test.deepEqual(sortobj(result), sortobj(expect.slice(1)));
         if (expected.length < 1) {
           watcher.close();
         }
@@ -96,3 +96,11 @@ exports.matching = {
     });
   },
 };
+
+// Ignore these tests if node v0.8
+var version = process.versions.node.split('.');
+if (version[0] === '0' && version[1] === '8') {
+  // gaze v0.4 returns watched but unmatched folders
+  // where gaze v0.5 does not
+  delete exports.matching.globArray;
+}
