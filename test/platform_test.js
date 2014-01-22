@@ -112,3 +112,9 @@ exports.platform = {
     test.done();
   },
 };
+
+// Ignore this test if node v0.8 as platform will never be used there
+var version = process.versions.node.split('.');
+if (version[0] === '0' && version[1] === '8') {
+  exports.platform = {};
+}
