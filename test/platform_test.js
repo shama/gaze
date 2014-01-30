@@ -72,6 +72,7 @@ exports.platform = {
       platform.mode = mode;
 
       platform(filename, function(error, event, filepath) {
+        console.log(event, filepath, mode);
         // Ignore change events on folders here as they're expected but should be ignored
         if (event === 'change' && grunt.file.isDir(filepath)) return;
         test.equal(event, 'delete', 'should have been a delete event in ' + mode + ' mode.');
@@ -81,6 +82,7 @@ exports.platform = {
 
       runWithPoll(mode, function() {
         expectfilepath = filename;
+        console.log('Deleting' + filename);
         grunt.file.delete(filename);
       });
     }
