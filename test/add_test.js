@@ -35,7 +35,8 @@ exports.add = {
     gaze._addToWatched(files);
     var result = gaze.relative(null, true);
     test.deepEqual(sortobj(result), sortobj(expected));
-    test.done();
+    gaze.on('end', test.done);
+    gaze.close();
   },
   addLater: function(test) {
     test.expect(3);
