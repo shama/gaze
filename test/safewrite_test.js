@@ -44,8 +44,8 @@ exports.safewrite = {
         if (times < 2) {
           setTimeout(simSafewrite, 1000);
         } else {
+          this.on('end', test.done);
           this.close();
-          test.done();
         }
       });
 
