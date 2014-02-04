@@ -34,8 +34,8 @@ exports.watch = {
       watcher.on('renamed', function(newFile, oldFile) {
         test.equal(newFile, newPath);
         test.equal(oldFile, oldPath);
+        watcher.on('end', test.done);
         watcher.close();
-        test.done();
       });
       fs.renameSync(oldPath, newPath);
     });

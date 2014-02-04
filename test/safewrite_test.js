@@ -36,6 +36,7 @@ exports.safewrite = {
     }
 
     gaze('**/*', function(err, watcher) {
+      this.on('end', test.done);
       this.on('all', function(action, filepath) {
         test.equal(action, 'changed');
         test.equal(path.basename(filepath), 'safewrite.js');

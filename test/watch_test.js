@@ -39,8 +39,8 @@ exports.watch = {
       var result = this.relative(null, true);
       test.deepEqual(result['sub/'], ['one.js']);
       test.notDeepEqual(result['.'], ['one.js']);
+      this.on('end', test.done);
       this.close();
-      test.done();
     });
   },
   changed: function(test) {
@@ -164,7 +164,8 @@ exports.watch = {
     test.expect(1);
     gaze('non/existent/**/*', function(err, watcher) {
       test.ok(true);
-      test.done();
+      watcher.on('end', test.done);
+      watcher.close();
     });
   },
   differentCWD: function(test) {
