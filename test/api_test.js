@@ -14,16 +14,16 @@ exports.api = {
       var result = this.relative(null, true);
       test.deepEqual(result['.'], ['Project (LO)/', 'nested/', 'one.js', 'sub/']);
       test.deepEqual(result['sub/'], ['one.js', 'two.js']);
+      this.on('end', test.done);
       this.close();
-      test.done();
     });
   },
   func: function(test) {
     test.expect(1);
     var g = gaze('**/*', function(err, watcher) {
       test.deepEqual(watcher.relative('sub', true), ['one.js', 'two.js']);
+      g.on('end', test.done);
       g.close();
-      test.done();
     });
   },
   ready: function(test) {
@@ -31,8 +31,8 @@ exports.api = {
     var g = new gaze.Gaze('**/*');
     g.on('ready', function(watcher) {
       test.deepEqual(watcher.relative('sub', true), ['one.js', 'two.js']);
+      this.on('end', test.done);
       this.close();
-      test.done();
     });
   },
   nomatch: function(test) {

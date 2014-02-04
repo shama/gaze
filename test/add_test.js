@@ -35,7 +35,8 @@ exports.add = {
     gaze._addToWatched(files);
     var result = gaze.relative(null, true);
     test.deepEqual(sortobj(result), sortobj(expected));
-    test.done();
+    gaze.on('end', test.done);
+    gaze.close();
   },
   addLater: function(test) {
     test.expect(3);
@@ -45,8 +46,8 @@ exports.add = {
         test.deepEqual(watcher.relative('sub'), ['one.js', 'two.js']);
         watcher.on('changed', function(filepath) {
           test.equal('two.js', path.basename(filepath));
+          watcher.on('end', test.done);
           watcher.close();
-          test.done();
         });
         fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'two.js'), 'var two = true;');
       });
@@ -58,8 +59,8 @@ exports.add = {
       this.add('sub/two.js');
       this.on('changed', function(filepath) {
         test.equal('two.js', path.basename(filepath));
+        watcher.on('end', test.done);
         watcher.close();
-        test.done();
       });
       setTimeout(function() {
         fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'two.js'), 'var two = true;');
