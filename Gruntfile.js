@@ -8,7 +8,7 @@ module.exports = function(grunt) {
       }
     },
     nodeunit: {
-      files: ['test/platform_test.js'],
+      files: ['test/*_test.js'],
     },
     jshint: {
       options: {

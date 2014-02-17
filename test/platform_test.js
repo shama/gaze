@@ -49,7 +49,8 @@ exports.platform = {
       platform(filename, function(error, event, filepath) {
         test.equal(event, 'change', 'should have been a change event in ' + mode + ' mode.');
         test.equal(filepath, expectfilepath, 'should have triggered on the correct file in ' + mode + ' mode.');
-        platform.close(filepath, done);
+        platform.closeAll();
+        done();
       });
 
       runWithPoll(mode, function() {
@@ -60,7 +61,12 @@ exports.platform = {
 
     async.series([
       function(next) { runtest('one.js', 'auto', next); },
-      function(next) { runtest('one.js', 'poll', next); },
+      function(next) {
+        // Polling needs a minimum of 500ms to pick up changes.
+        setTimeout(function() {
+          runtest('one.js', 'poll', next);
+        }, 500);
+      },
     ], test.done);
   },
   delete: function(test) {
@@ -72,17 +78,16 @@ exports.platform = {
       platform.mode = mode;
 
       platform(filename, function(error, event, filepath) {
-        console.log(event, filepath, mode);
-        // Ignore change events on folders here as they're expected but should be ignored
+        // Ignore change events from dirs. This is handled outside of the platform and are safe to ignore here.
         if (event === 'change' && grunt.file.isDir(filepath)) return;
         test.equal(event, 'delete', 'should have been a delete event in ' + mode + ' mode.');
         test.equal(filepath, expectfilepath, 'should have triggered on the correct file in ' + mode + ' mode.');
-        platform.close(filepath, done);
+        platform.closeAll();
+        done();
       });
 
       runWithPoll(mode, function() {
         expectfilepath = filename;
-        console.log('Deleting' + filename);
         grunt.file.delete(filename);
       });
     }
@@ -94,7 +99,10 @@ exports.platform = {
       },
       function(next) {
         grunt.file.write(path.join(fixturesbase, 'add.js'), 'var test = true;');
-        runtest('add.js', 'poll', next);
+        // Polling needs a minimum of 500ms to pick up changes.
+        setTimeout(function() {
+          runtest('add.js', 'poll', next);
+        }, 500);
       },
     ], test.done);
   },
