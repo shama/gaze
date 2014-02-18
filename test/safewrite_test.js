@@ -41,7 +41,6 @@ exports.safewrite = {
         test.equal(action, 'changed');
         test.equal(path.basename(filepath), 'safewrite.js');
         watcher.close();
-        test.done();
       });
       simSafewrite();
     });
