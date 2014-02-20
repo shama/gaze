@@ -65,6 +65,7 @@ function bench(num, cb) {
 
 console.log('numFiles startTime');
 async.eachSeries(numFiles, bench, function(){
-  cleanup();
+  teardown();
   console.log('done!');
+  process.exit();
 });
