@@ -35,7 +35,9 @@
     "grunt-contrib-nodeunit": "~0.2.0",
     "grunt-contrib-jshint": "~0.6.0",
     "grunt-benchmark": "~0.2.0",
-    "grunt-cli": "~0.1.13"
+    "grunt-cli": "~0.1.13",
+    "async": "~0.2.10",
+    "rimraf": "~2.2.6"
   },
   "keywords": [
     "watch",
