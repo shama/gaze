@@ -24,7 +24,6 @@ exports.safewrite = {
   safewrite: function(test) {
     test.expect(2);
 
-    var times = 0;
     var file = path.resolve(__dirname, 'fixtures', 'safewrite.js');
     var backup = path.resolve(__dirname, 'fixtures', 'safewrite.ext~');
     fs.writeFileSync(file, 'var safe = true;');
