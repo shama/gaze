@@ -120,7 +120,7 @@ exports.watch = {
         console.log('DELETE', tmpfile)
         setTimeout(function() {
           fs.unlinkSync(tmpfile);
-        }, 1000):
+        }, 1000);
         watcher.on('end', test.done);
       });
     }, 1000);
