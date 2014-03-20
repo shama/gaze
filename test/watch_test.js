@@ -110,12 +110,13 @@ exports.watch = {
     fs.writeFileSync(tmpfile, 'var tmp = true;');
     gaze('**/*', function(err, watcher) {
       watcher.on('deleted', function(filepath) {
+        console.log('DELETED', filepath);
         test.equal(path.join('sub', 'deleted.js'), path.relative(process.cwd(), filepath));
         watcher.close();
       });
-      this.on('changed', function() { test.ok(false, 'changed event should not have emitted.'); });
-      this.on('added', function() { test.ok(false, 'added event should not have emitted.'); });
-      fs.unlinkSync(tmpfile);
+      this.on('changed', function() { console.log('CHANGED', filepath); test.ok(false, 'changed event should not have emitted.'); });
+      this.on('added', function() { console.log('ADDED', filepath); test.ok(false, 'added event should not have emitted.'); });
+      fs.unlink(tmpfile);
       watcher.on('end', test.done);
     });
   },
