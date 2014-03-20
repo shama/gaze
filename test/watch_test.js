@@ -108,7 +108,10 @@ exports.watch = {
     test.expect(1);
     var tmpfile = path.resolve(__dirname, 'fixtures', 'sub', 'deleted.js');
     fs.writeFileSync(tmpfile, 'var tmp = true;');
-    gaze('**/*', function(err, watcher) {
+    // TODO: This test fails on travis (but not on my local ubuntu) so use polling here
+    // as a way to ignore until this can be fixed
+    var mode = (process.platform === 'linux') ? 'poll' : 'auto';
+    gaze('**/*', { mode: mode }, function(err, watcher) {
       watcher.on('deleted', function(filepath) {
         test.equal(path.join('sub', 'deleted.js'), path.relative(process.cwd(), filepath));
         watcher.close();
@@ -303,9 +306,3 @@ exports.watch = {
     });
   },
 };
-
-// ignore this test on linux until you can figure out why it fails on travis
-// I swear it totally works on my local ubuntu box
-if (process.platform === 'linux') {
-  exports.watch.deleted = {};
-}
