@@ -5,6 +5,18 @@ Compatible with Node.js 0.10/0.8, Windows, OSX and Linux.
 
 ![gaze](http://dontkry.com/images/repos/gaze.png)
 
+## Features
+
+[![NPM](https://nodei.co/npm/gaze.png?downloads=true)](https://nodei.co/npm/gaze/)
+
+* Consistent events on OSX, Linux and Windows
+* Very fast start up and response time
+* High test coverage
+* Uses native OS events but falls back to stat polling
+* Option to force stat polling with special file systems such as networked
+* Downloaded over 250K times a month
+* Used by [Grunt](http://gruntjs.com), [gulp](http://gulpjs.com), [Tower](http://tower.github.io/) and many others
+
 ## Usage
 Install the module with: `npm install gaze` or place into your `package.json`
 and run `npm install`.
