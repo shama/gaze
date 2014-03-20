@@ -2,6 +2,7 @@
 
 var gaze = require('../index.js');
 var path = require('path');
+var helper = require('./helper.js');
 
 exports.api = {
   setUp: function(done) {
@@ -11,7 +12,7 @@ exports.api = {
   newGaze: function(test) {
     test.expect(2);
     new gaze.Gaze('**/*', {}, function() {
-      var result = this.relative(null, true);
+      var result = helper.sortobj(this.relative(null, true));
       test.deepEqual(result['.'], ['Project (LO)/', 'nested/', 'one.js', 'sub/']);
       test.deepEqual(result['sub/'], ['one.js', 'two.js']);
       this.on('end', test.done);
