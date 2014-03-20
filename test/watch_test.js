@@ -116,7 +116,10 @@ exports.watch = {
       });
       this.on('changed', function() { console.log('CHANGED', filepath); test.ok(false, 'changed event should not have emitted.'); });
       this.on('added', function() { console.log('ADDED', filepath); test.ok(false, 'added event should not have emitted.'); });
-      fs.unlink(tmpfile);
+      console.log('DELETE', tmpfile)
+      setTimeout(function() {
+        fs.unlinkSync(tmpfile);
+      }, 500);
       watcher.on('end', test.done);
     });
   },
