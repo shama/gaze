@@ -107,7 +107,8 @@ exports.watch = {
   deleted: function(test) {
     test.expect(1);
     var tmpfile = path.resolve(__dirname, 'fixtures', 'sub', 'deleted.js');
-    fs.writeFile(tmpfile, 'var tmp = true;', function() {
+    fs.writeFileSync(tmpfile, 'var tmp = true;');
+    setTimeout(function() {
       gaze('**/*', function(err, watcher) {
         watcher.on('deleted', function(filepath) {
           console.log('DELETED', filepath);
@@ -117,10 +118,12 @@ exports.watch = {
         this.on('changed', function() { console.log('CHANGED', filepath); test.ok(false, 'changed event should not have emitted.'); });
         this.on('added', function() { console.log('ADDED', filepath); test.ok(false, 'added event should not have emitted.'); });
         console.log('DELETE', tmpfile)
-        fs.unlink(tmpfile);
+        setTimeout(function() {
+          fs.unlinkSync(tmpfile);
+        }, 1000):
         watcher.on('end', test.done);
       });
-    });
+    }, 1000);
   },
   dontEmitTwice: function(test) {
     test.expect(2);
