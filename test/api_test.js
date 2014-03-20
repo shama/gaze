@@ -36,15 +36,6 @@ exports.api = {
       this.close();
     });
   },
-  newGazeNomatch: function(test) {
-    test.expect(1);
-    var g = new gaze.Gaze('nomatch.js');
-    g.on('nomatch', function(watcher) {
-      test.ok(true, 'nomatch was emitted.');
-      this.on('end', test.done);
-      this.close();
-    });
-  },
   nomatch: function(test) {
     test.expect(1);
     gaze('nomatch.js', function(err, watcher) {
