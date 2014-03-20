@@ -47,6 +47,6 @@ exports.safewrite = {
 };
 
 // :'| Ignoring these tests on linux for now
-if (process.safewrite === 'linux') {
-  exports.platform = {};
+if (process.platform === 'linux') {
+  exports.safewrite = {};
 }
