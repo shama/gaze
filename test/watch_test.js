@@ -107,20 +107,19 @@ exports.watch = {
   deleted: function(test) {
     test.expect(1);
     var tmpfile = path.resolve(__dirname, 'fixtures', 'sub', 'deleted.js');
-    fs.writeFileSync(tmpfile, 'var tmp = true;');
-    gaze('**/*', function(err, watcher) {
-      watcher.on('deleted', function(filepath) {
-        console.log('DELETED', filepath);
-        test.equal(path.join('sub', 'deleted.js'), path.relative(process.cwd(), filepath));
-        watcher.close();
+    fs.writeFile(tmpfile, 'var tmp = true;', function() {
+      gaze('**/*', function(err, watcher) {
+        watcher.on('deleted', function(filepath) {
+          console.log('DELETED', filepath);
+          test.equal(path.join('sub', 'deleted.js'), path.relative(process.cwd(), filepath));
+          watcher.close();
+        });
+        this.on('changed', function() { console.log('CHANGED', filepath); test.ok(false, 'changed event should not have emitted.'); });
+        this.on('added', function() { console.log('ADDED', filepath); test.ok(false, 'added event should not have emitted.'); });
+        console.log('DELETE', tmpfile)
+        fs.unlink(tmpfile);
+        watcher.on('end', test.done);
       });
-      this.on('changed', function() { console.log('CHANGED', filepath); test.ok(false, 'changed event should not have emitted.'); });
-      this.on('added', function() { console.log('ADDED', filepath); test.ok(false, 'added event should not have emitted.'); });
-      console.log('DELETE', tmpfile)
-      setTimeout(function() {
-        fs.unlinkSync(tmpfile);
-      }, 500);
-      watcher.on('end', test.done);
     });
   },
   dontEmitTwice: function(test) {
