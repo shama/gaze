@@ -155,11 +155,6 @@ from [mikeal's watch](https://github.com/mikeal/watch) and file globbing using
 [isaacs's glob](https://github.com/isaacs/node-glob) which is also used by
 [cowboy's Grunt](https://github.com/gruntjs/grunt).
 
-### How do I fix the error `EMFILE: Too many opened files.`?
-This is because of your system's max opened file limit. For OSX the default is
-very low (256). Increase your limit temporarily with `ulimit -n 10480`, the
-number being the new max limit.
-
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style.
 Add unit tests for any new or changed functionality. Lint and test your code
