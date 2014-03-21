@@ -148,12 +148,15 @@ var gaze = new Gaze(pattern, options, callback);
 
 ### Why Another `fs.watch` Wrapper?
 I liked parts of other `fs.watch` wrappers but none had all the features I
-needed. This lib combines the features I needed from other fine watch libs:
-Speedy data behavior from
-[paulmillr's chokidar](https://github.com/paulmillr/chokidar), API interface
-from [mikeal's watch](https://github.com/mikeal/watch) and file globbing using
-[isaacs's glob](https://github.com/isaacs/node-glob) which is also used by
-[cowboy's Grunt](https://github.com/gruntjs/grunt).
+needed. This lib once combined the features I needed from other fine watch libs
+but now has taken on a life of it's own (it doesn't even wrap `fs.watch` anymore).
+
+Other great watch libraries to try are:
+
+* [paulmillr's chokidar](https://github.com/paulmillr/chokidar)
+* [mikeal's watch](https://github.com/mikeal/watch)
+* [github's pathwatcher](https://github.com/atom/node-pathwatcher)
+* [bevry's watchr](https://github.com/bevry/watchr)
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style.
