@@ -5,6 +5,9 @@ var async = require('async');
 var fs = require('fs');
 var rimraf = require('rimraf');
 var path = require('path');
+var AsciiTable = require('ascii-table');
+var readline = require('readline');
+var table = new AsciiTable(path.basename(__filename));
 
 // Folder to watch
 var watchDir = path.resolve(__dirname, 'watch');
@@ -16,6 +19,13 @@ for (var i = 0; i <= max / multiplesOf; i++) {
 }
 
 var modFile = path.join(watchDir, 'test-' + numFiles + '.txt');
+
+function logRow() {
+  readline.cursorTo(process.stdout, 0, 0);
+  readline.clearScreenDown(process.stdout);
+  table.addRow.apply(table, arguments);
+  console.log(table.toString());
+}
 
 // Helper for creating mock files
 function createFiles(num, dir) {
@@ -42,16 +52,17 @@ function bench(num, done) {
     var start = process.hrtime();
     var files = this.relative('.');
     var diff = process.hrtime(start);
-    var time = ((diff[0] * 1e9 + diff[1]) * 0.000001).toString().slice(0, 5);
-    console.log(num + '\t\t' + time + 'ms');
+    var time = ((diff[0] * 1e9 + diff[1]) * 0.000001).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+    logRow(num, time + 'ms');
     watcher.on('end', done);
     watcher.close();
   });
 }
 
-console.log('numFiles\ttime');
+table.setHeading('files', 'ms')
+  .setAlign(0, AsciiTable.RIGHT)
+  .setAlign(1, AsciiTable.RIGHT);
 async.eachSeries(numFiles, bench, function() {
   teardown();
-  console.log('done!');
   process.exit();
 });
