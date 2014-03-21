@@ -5,18 +5,8 @@ module.exports = function(grunt) {
       files: ['test/*_test.js'],
     },
     jshint: {
-      options: {
-        jshintrc: '.jshintrc'
-      },
-      gruntfile: {
-        src: 'Gruntfile.js'
-      },
-      lib: {
-        src: ['lib/**/*.js']
-      },
-      test: {
-        src: ['test/**/*_test.js']
-      },
+      options: { jshintrc: true },
+      all: ['Gruntfile.js', 'lib/**/*.js', 'test/*.js', 'benchmarks/*.js'],
     },
   });
 
