@@ -104,7 +104,7 @@ information on glob patterns.
 
 ### Class: gaze.Gaze
 
-Create a Gaze object by instanting the `gaze.Gaze` class.
+Create a Gaze object by instancing the `gaze.Gaze` class.
 
 ```javascript
 var Gaze = require('gaze').Gaze;
