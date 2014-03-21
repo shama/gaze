@@ -11,11 +11,11 @@ var watchDir = path.resolve(__dirname, 'watch');
 var multiplesOf = 100;
 var max = 2000;
 var numFiles = [];
-for (var i = 0; i <= max/multiplesOf; i++) {
-  numFiles.push(i*multiplesOf);
+for (var i = 0; i <= max / multiplesOf; i++) {
+  numFiles.push(i * multiplesOf);
 }
 
-var modFile = path.join(watchDir, 'test-'+numFiles+'.txt');
+var modFile = path.join(watchDir, 'test-' + numFiles + '.txt');
 
 // Helper for creating mock files
 function createFiles(num, dir) {
@@ -36,34 +36,19 @@ function setup(num){
   createFiles(num, watchDir);
 }
 
-function measureStart(cb) {
-  var start = Date.now();
-  var blocked, ready, watcher;
-  // workaround #77
-  var check = function(){
-    if (ready && blocked) {
-      cb(ready, blocked, watcher);
-    }
-  };
-  gaze(watchDir+'/**/*', {maxListeners:0}, function(err) {
-    ready = Date.now()-start;
-    watcher = this;
-    check();
-  });
-  blocked = Date.now()-start;
-  check();
-}
-
-function bench(num, cb) {
+function bench(num, done) {
   setup(num);
-  measureStart(function(time, blocked, watcher){
-    console.log(num, time);
+  var start = process.hrtime();
+  gaze('**/*', {cwd: watchDir, maxListeners:0}, function(err, watcher) {
+    var diff = process.hrtime(start);
+    var time = ((diff[0] * 1e9 + diff[1]) * 0.000001).toString().slice(0, 5);
+    console.log(num + '\t\t' + time + 'ms');
+    watcher.on('end', done);
     watcher.close();
-    cb();
   });
 }
 
-console.log('numFiles startTime');
+console.log('numFiles\tstartTime');
 async.eachSeries(numFiles, bench, function(){
   teardown();
   console.log('done!');
