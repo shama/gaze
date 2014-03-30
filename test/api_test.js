@@ -2,6 +2,7 @@
 
 var gaze = require('../index.js');
 var path = require('path');
+var fs = require('fs');
 var helper = require('./helper.js');
 
 exports.api = {
@@ -43,6 +44,19 @@ exports.api = {
         test.ok(true, 'nomatch was emitted.');
         watcher.close();
       });
+      watcher.on('end', test.done);
+    });
+  },
+  cwd: function(test) {
+    test.expect(2);
+    var cwd = path.resolve(__dirname, 'fixtures', 'sub');
+    gaze('two.js', { cwd: cwd }, function(err, watcher) {
+      watcher.on('all', function(event, filepath) {
+        test.equal(path.relative(cwd, filepath), 'two.js');
+        test.equal(event, 'changed');
+        watcher.close();
+      });
+      fs.writeFile(path.join(cwd, 'two.js'), 'var two = true;');
       watcher.on('end', test.done);
     });
   },
