@@ -118,6 +118,7 @@ var gaze = new Gaze(pattern, options, callback);
   * `debounceDelay` {integer} Delay for events called in succession for the same
     file/event
   * `mode` {string} Force the watch mode. Either `'auto'` (default), `'watch'` (force native events), or `'poll'` (force stat polling).
+  * `cwd` {string} The current working directory to base file patterns from. Default is `process.cwd()`.
 
 #### Events
 
