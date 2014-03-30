@@ -14,7 +14,7 @@ Compatible with Node.js 0.10/0.8, Windows, OSX and Linux.
 * High test coverage
 * Uses native OS events but falls back to stat polling
 * Option to force stat polling with special file systems such as networked
-* Downloaded over 250K times a month
+* Downloaded over 400K times a month
 * Used by [Grunt](http://gruntjs.com), [gulp](http://gulpjs.com), [Tower](http://tower.github.io/) and many others
 
 ## Usage
