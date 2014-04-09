@@ -31,15 +31,6 @@ exports.watch = {
     cleanUp(done);
   },
   tearDown: cleanUp,
-  testnotexists: function(test) {
-    test.expect(0);
-    fs.mkdirSync(path.resolve(__dirname, 'fixtures', 'new_dir'));
-    fs.symlinkSync(path.resolve(__dirname, 'fixtures', 'not-exists.js'), path.resolve(__dirname, 'fixtures', 'new_dir', 'not-exists-symlink.js'));
-    gaze('**/*', function() {
-      this.close();
-      test.done();
-    });
-  },
   remove: function(test) {
     test.expect(2);
     gaze('**/*', function() {
@@ -315,6 +306,16 @@ exports.watch = {
       grunt.file.write('new_dir/tmp.js', '');
 
       watcher.on('end', test.done);
+    });
+  },
+  enoentSymlink: function(test) {
+    test.expect(1);
+    fs.mkdirSync(path.resolve(__dirname, 'fixtures', 'new_dir'));
+    fs.symlinkSync(path.resolve(__dirname, 'fixtures', 'not-exists.js'), path.resolve(__dirname, 'fixtures', 'new_dir', 'not-exists-symlink.js'));
+    gaze('**/*', function() {
+      test.ok(true);
+      this.on('end', test.done);
+      this.close();
     });
   },
 };
