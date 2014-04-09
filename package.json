@@ -41,7 +41,8 @@
     "grunt-cli": "~0.1.13",
     "async": "~0.2.10",
     "rimraf": "~2.2.6",
-    "ascii-table": "0.0.4"
+    "ascii-table": "0.0.4",
+    "hooker": "^0.2"
   },
   "keywords": [
     "watch",
