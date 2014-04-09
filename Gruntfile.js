@@ -1,5 +1,8 @@
 module.exports = function(grunt) {
   'use strict';
+
+  grunt.option('stack', true);
+
   grunt.initConfig({
     nodeunit: {
       files: ['test/*_test.js'],
