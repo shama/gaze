@@ -89,13 +89,13 @@ exports.watch = {
     });
   },
   dontAddCwd: function(test) {
-    test.expect(1);
+    test.expect(2);
     gaze('nested/**', function(err, watcher) {
       setTimeout(function() {
         test.ok(true, 'Ended without adding a file.');
         watcher.close();
       }, 1000);
-      this.on('any', function(filepath) {
+      this.on('all', function(ev, filepath) {
         test.equal(path.relative(process.cwd(), filepath), path.join('nested', 'sub', 'added.js'));
       });
       fs.mkdirSync(path.resolve(__dirname, 'fixtures', 'new_dir'));
