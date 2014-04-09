@@ -14,11 +14,12 @@ function Benchmarker(opts) {
   this.tmpDir = opts.tmpDir || path.resolve(__dirname, 'tmp');
   var max = opts.max || 2000;
   var multiplesOf = opts.multiplesOf || 100;
-  this.files = [];
+  this.fileNums = [];
   for (var i = 0; i <= max / multiplesOf; i++) {
-    this.files.push(i * multiplesOf);
+    this.fileNums.push(i * multiplesOf);
   }
   this.startTime = 0;
+  this.files = [];
 }
 module.exports = Benchmarker;
 
@@ -32,8 +33,11 @@ Benchmarker.prototype.log = function() {
 Benchmarker.prototype.setup = function(num) {
   this.teardown();
   fs.mkdirSync(this.tmpDir);
+  this.files = [];
   for (var i = 0; i <= num; i++) {
-    fs.writeFileSync(path.join(this.tmpDir, 'test-' + i + '.txt'), String(i));
+    var file = path.join(this.tmpDir, 'test-' + i + '.txt');
+    fs.writeFileSync(file, String(i));
+    this.files.push(file);
   }
 };
 
@@ -45,7 +49,7 @@ Benchmarker.prototype.teardown = function() {
 
 Benchmarker.prototype.run = function(fn, done) {
   var self = this;
-  async.eachSeries(this.files, function(num, next) {
+  async.eachSeries(this.fileNums, function(num, next) {
     self.setup(num);
     fn(num, next);
   }, function() {
