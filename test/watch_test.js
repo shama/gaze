@@ -335,3 +335,10 @@ exports.watch = {
     });
   },
 };
+
+// Ignore these tests if node v0.8
+var version = process.versions.node.split('.');
+if (version[0] === '0' && version[1] === '8') {
+  // gaze v0.4 needs to watch the cwd to function
+  delete exports.watch.dontAddCwd;
+}
