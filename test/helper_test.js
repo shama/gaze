@@ -27,9 +27,10 @@ exports.helper = {
       '/Users/dude/www/sub/': ['/Users/dude/www/sub/one.js', '/Users/dude/www/sub/nested/'],
       '/Users/dude/www/sub/nested/': ['/Users/dude/www/sub/nested/one.js'],
     };
-    var actual = helper.flatToTree(files, cwd, false, true);
-    test.deepEqual(actual, expected);
-    test.done();
+    helper.flatToTree(files, cwd, false, true, function(err, actual) {
+      test.deepEqual(actual, expected);
+      test.done();
+    });
   },
   flatToTreeRelative: function(test) {
     test.expect(1);
@@ -48,8 +49,9 @@ exports.helper = {
       'sub/': ['one.js', 'nested/'],
       'sub/nested/': ['one.js'],
     };
-    var actual = helper.flatToTree(files, cwd, true, true);
-    test.deepEqual(actual, expected);
-    test.done();
+    helper.flatToTree(files, cwd, true, true, function(err, actual) {
+      test.deepEqual(actual, expected);
+      test.done();
+    });
   },
 };

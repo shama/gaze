@@ -16,15 +16,24 @@ exports.add = {
   addLater: function(test) {
     test.expect(3);
     new Gaze('sub/one.js', function(err, watcher) {
-      test.deepEqual(watcher.relative('sub'), ['one.js']);
-      watcher.add('sub/*.js', function() {
-        test.deepEqual(watcher.relative('sub'), ['one.js', 'two.js']);
-        watcher.on('changed', function(filepath) {
-          test.equal('two.js', path.basename(filepath));
-          watcher.on('end', test.done);
-          watcher.close();
+      watcher.on('changed', function(filepath) {
+        test.equal('two.js', path.basename(filepath));
+        watcher.on('end', test.done);
+        watcher.close();
+      });
+
+      function addLater() {
+        watcher.add('sub/*.js', function() {
+          watcher.relative('sub', function(err, result) {
+            test.deepEqual(result, ['one.js', 'two.js']);
+            fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'two.js'), 'var two = true;');
+          });
         });
-        fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'two.js'), 'var two = true;');
+      }
+
+      watcher.relative('sub', function(err, result) {
+        test.deepEqual(result, ['one.js']);
+        addLater();
       });
     });
   },

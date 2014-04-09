@@ -53,7 +53,9 @@ gaze('**/*.js', function(err, watcher) {
   });
 
   // Get watched files with relative paths
-  console.log(this.relative());
+  this.relative(function(err, files) {
+    console.log(files);
+  });
 });
 
 // Also accepts an array of patterns
@@ -140,10 +142,12 @@ var gaze = new Gaze(pattern, options, callback);
 * `add(patterns, callback)` Adds file(s) patterns to be watched.
 * `remove(filepath)` removes a file or directory from being watched. Does not
   recurse directories.
-* `watched()` Returns the currently watched files.
-* `relative([dir, unixify])` Returns the currently watched files with relative paths.
+* `watched([callback])` Returns the currently watched files.
+  * `callback` {function} Calls with `function(err, files)`.
+* `relative([dir, unixify, callback])` Returns the currently watched files with relative paths.
   * `dir` {string} Only return relative files for this directory.
   * `unixify` {boolean} Return paths with `/` instead of `\\` if on Windows.
+  * `callback` {function} Calls with `function(err, files)`.
 
 ## FAQs
 

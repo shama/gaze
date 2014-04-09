@@ -36,11 +36,12 @@ exports.watch = {
     gaze('**/*', function() {
       this.remove(path.resolve(__dirname, 'fixtures', 'sub', 'two.js'));
       this.remove(path.resolve(__dirname, 'fixtures'));
-      var result = this.relative(null, true);
-      test.deepEqual(result['sub/'], ['one.js']);
-      test.notDeepEqual(result['.'], ['one.js']);
-      this.on('end', test.done);
-      this.close();
+      this.relative(null, true, function(err, result) {
+        test.deepEqual(result['sub/'], ['one.js']);
+        test.notDeepEqual(result['.'], ['one.js']);
+        this.on('end', test.done);
+        this.close();
+      }.bind(this));
     });
   },
   changed: function(test) {
@@ -178,8 +179,10 @@ exports.watch = {
       cwd: cwd
     }, function(err, watcher) {
       watcher.on('changed', function(filepath) {
-        test.deepEqual(this.relative(), {'.':['two.js']});
-        watcher.close();
+        this.relative(function(err, result) {
+          test.deepEqual(result, {'.':['two.js']});
+          watcher.close();
+        });
       });
       fs.writeFileSync(path.resolve(cwd, 'two.js'), 'var two = true;');
       watcher.on('end', test.done);

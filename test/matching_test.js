@@ -29,47 +29,53 @@ exports.matching = {
   globAll: function(test) {
     test.expect(2);
     gaze('**/*', function() {
-      var result = this.relative(null, true);
-      test.deepEqual(result['.'], ['Project (LO)/', 'nested/', 'one.js', 'sub/']);
-      test.deepEqual(result['sub/'], ['one.js', 'two.js']);
-      this.on('end', test.done);
-      this.close();
+      this.relative(null, true, function(err, result) {
+        test.deepEqual(result['.'], ['Project (LO)/', 'nested/', 'one.js', 'sub/']);
+        test.deepEqual(result['sub/'], ['one.js', 'two.js']);
+        this.on('end', test.done);
+        this.close();
+      }.bind(this));
     });
   },
   relativeDir: function(test) {
     test.expect(1);
     gaze('**/*', function() {
-      test.deepEqual(this.relative('sub', true), ['one.js', 'two.js']);
-      this.on('end', test.done);
-      this.close();
+      this.relative('sub', true, function(err, result) {
+        test.deepEqual(result, ['one.js', 'two.js']);
+        this.on('end', test.done);
+        this.close();
+      }.bind(this));
     });
   },
   globArray: function(test) {
     test.expect(2);
     gaze(['*.js', 'sub/*.js'], function() {
-      var result = this.relative(null, true);
-      test.deepEqual(sortobj(result['.']), sortobj(['one.js', 'sub/']));
-      test.deepEqual(sortobj(result['sub/']), sortobj(['one.js', 'two.js']));
-      this.on('end', test.done);
-      this.close();
+      this.relative(null, true, function(err, result) {
+        test.deepEqual(sortobj(result['.']), sortobj(['one.js', 'sub/']));
+        test.deepEqual(sortobj(result['sub/']), sortobj(['one.js', 'two.js']));
+        this.on('end', test.done);
+        this.close();
+      }.bind(this));
     });
   },
   globArrayDot: function(test) {
     test.expect(1);
     gaze(['./sub/*.js'], function() {
-      var result = this.relative(null, true);
-      test.deepEqual(result['sub/'], ['one.js', 'two.js']);
-      this.on('end', test.done);
-      this.close();
+      this.relative(null, true, function(err, result) {
+        test.deepEqual(result['sub/'], ['one.js', 'two.js']);
+        this.on('end', test.done);
+        this.close();
+      }.bind(this));
     });
   },
   oddName: function(test) {
     test.expect(1);
     gaze(['Project (LO)/*.js'], function() {
-      var result = this.relative(null, true);
-      test.deepEqual(result['Project (LO)/'], ['one.js']);
-      this.on('end', test.done);
-      this.close();
+      this.relative(null, true, function(err, result) {
+        test.deepEqual(result['Project (LO)/'], ['one.js']);
+        this.on('end', test.done);
+        this.close();
+      }.bind(this));
     });
   },
   addedLater: function(test) {
@@ -82,11 +88,10 @@ exports.matching = {
     gaze('**/*.js', function(err, watcher) {
       watcher.on('all', function(status, filepath) {
         var expect = expected.shift();
-        var result = watcher.relative(expect[0], true);
-        test.deepEqual(sortobj(result), sortobj(expect.slice(1)));
-        if (expected.length < 1) {
-          watcher.close();
-        }
+        watcher.relative(expect[0], true, function(err, result) {
+          test.deepEqual(sortobj(result), sortobj(expect.slice(1)));
+          if (expected.length < 1) { watcher.close(); }
+        }.bind(this));
       });
       grunt.file.write(path.join(fixtures, 'newfolder', 'added.js'), 'var added = true;');
       setTimeout(function() {

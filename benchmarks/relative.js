@@ -9,10 +9,11 @@ b.table.setHeading('files', 'ms').setAlign(0, 2).setAlign(1, 2);
 b.run(function(num, done) {
   gaze('**/*', {cwd: b.tmpDir, maxListeners:0}, function(err, watcher) {
     b.start();
-    var files = this.relative('.');
-    b.log(num, b.end());
-    watcher.on('end', done);
-    watcher.close();
+    this.relative('.', function(err, files) {
+      b.log(num, b.end());
+      watcher.on('end', done);
+      watcher.close();
+    });
   });
 }, function() {
   process.exit();

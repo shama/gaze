@@ -13,28 +13,34 @@ exports.api = {
   newGaze: function(test) {
     test.expect(2);
     new gaze.Gaze('**/*', {}, function() {
-      var result = helper.sortobj(this.relative(null, true));
-      test.deepEqual(result['.'], ['Project (LO)/', 'nested/', 'one.js', 'sub/']);
-      test.deepEqual(result['sub/'], ['one.js', 'two.js']);
-      this.on('end', test.done);
-      this.close();
+      this.relative(null, true, function(err, result) {
+        var result = helper.sortobj(result);
+        test.deepEqual(result['.'], ['Project (LO)/', 'nested/', 'one.js', 'sub/']);
+        test.deepEqual(result['sub/'], ['one.js', 'two.js']);
+        this.on('end', test.done);
+        this.close();
+      }.bind(this));
     });
   },
   func: function(test) {
     test.expect(1);
     var g = gaze('**/*', function(err, watcher) {
-      test.deepEqual(watcher.relative('sub', true), ['one.js', 'two.js']);
-      g.on('end', test.done);
-      g.close();
+      watcher.relative('sub', true, function(err, result) {
+        test.deepEqual(result, ['one.js', 'two.js']);
+        g.on('end', test.done);
+        g.close();
+      }.bind(this));
     });
   },
   ready: function(test) {
     test.expect(1);
     var g = new gaze.Gaze('**/*');
     g.on('ready', function(watcher) {
-      test.deepEqual(watcher.relative('sub', true), ['one.js', 'two.js']);
-      this.on('end', test.done);
-      this.close();
+      watcher.relative('sub', true, function(err, result) {
+        test.deepEqual(result, ['one.js', 'two.js']);
+        this.on('end', test.done);
+        this.close();
+      }.bind(this));
     });
   },
   nomatch: function(test) {
