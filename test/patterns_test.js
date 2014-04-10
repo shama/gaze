@@ -3,6 +3,9 @@
 var gaze = require('../index.js');
 var path = require('path');
 var fs = require('fs');
+var helper = require('./helper');
+
+var fixtures = path.resolve(__dirname, 'fixtures');
 
 // Clean up helper to call in setUp and tearDown
 function cleanUp(done) {
@@ -38,5 +41,17 @@ exports.patterns = {
       }, 1000);
       watcher.on('end', test.done);
     });
-  }
+  },
+  dotSlash: function(test) {
+    test.expect(2);
+    gaze('./nested/**/*', function(err, watcher) {
+      watcher.on('end', test.done);
+      watcher.on('all', function(status, filepath) {
+        test.equal(status, 'changed');
+        test.equal(path.relative(fixtures, filepath), path.join('nested', 'one.js'));
+        watcher.close();
+      });
+      fs.writeFile(path.join(fixtures, 'nested', 'one.js'), 'var one = true;');
+    });
+  },
 };
