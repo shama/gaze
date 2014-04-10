@@ -45,7 +45,7 @@ exports.helper = {
       '/Users/dude/www/sub/nested/one.js',
     ];
     var expected = {
-      '.': ['one.js', 'two.js', 'sub/'],
+      './': ['one.js', 'two.js', 'sub/'],
       'sub/': ['one.js', 'nested/'],
       'sub/nested/': ['one.js'],
     };

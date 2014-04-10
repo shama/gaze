@@ -38,7 +38,7 @@ exports.watch = {
       this.remove(path.resolve(__dirname, 'fixtures'));
       this.relative(null, true, function(err, result) {
         test.deepEqual(result['sub/'], ['one.js']);
-        test.notDeepEqual(result['.'], ['one.js']);
+        test.notDeepEqual(result['./'], ['one.js']);
         this.on('end', test.done);
         this.close();
       }.bind(this));
@@ -196,7 +196,7 @@ exports.watch = {
     }, function(err, watcher) {
       watcher.on('changed', function(filepath) {
         this.relative(function(err, result) {
-          test.deepEqual(result, {'.':['two.js']});
+          test.deepEqual(result, {'./':['two.js']});
           watcher.close();
         });
       });
