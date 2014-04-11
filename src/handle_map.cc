@@ -38,14 +38,14 @@ bool HandleMap::Erase(WatcherHandle key) {
   if (iter == map_.end())
     return false;
 
-  NanDispose(iter->second);
+  NanDisposePersistent(iter->second);
   map_.erase(iter);
   return true;
 }
 
 void HandleMap::Clear() {
   for (Map::iterator iter = map_.begin(); iter != map_.end(); ++iter)
-    NanDispose(iter->second);
+    NanDisposePersistent(iter->second);
   map_.clear();
 }
 
