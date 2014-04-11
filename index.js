@@ -8,7 +8,7 @@
 
 try {
   // Attempt to resolve optional pathwatcher
-  require.resolve('pathwatcher')
+  require.resolve('./lib/pathwatcher')
   var version = process.versions.node.split('.');
   module.exports = (version[0] === '0' && version[1] === '8')
     ? require('./lib/gaze04.js')
