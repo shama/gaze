@@ -323,3 +323,7 @@ void PlatformUnwatch(WatcherHandle key) {
 bool PlatformIsHandleValid(WatcherHandle handle) {
   return handle != INVALID_HANDLE_VALUE;
 }
+
+bool PlatformIsEMFILE(WatcherHandle handle) {
+  return false;
+}

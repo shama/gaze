@@ -99,3 +99,7 @@ void PlatformUnwatch(WatcherHandle fd) {
 bool PlatformIsHandleValid(WatcherHandle handle) {
   return handle >= 0;
 }
+
+bool PlatformIsEMFILE(WatcherHandle handle) {
+  return handle == -24;
+}

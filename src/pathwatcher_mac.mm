@@ -74,9 +74,8 @@ void PlatformThread() {
 WatcherHandle PlatformWatch(const char* path) {
   int fd = open(path, O_EVTONLY, 0);
   if (fd < 0) {
-    fprintf(stderr, "Cannot create kevent for %s with errno %d\n", path, errno);
-    perror("open");
-    return fd;
+    // TODO: Maybe this could be handled better?
+    return -(errno);
   }
 
   struct timespec timeout = { 0, 0 };
@@ -96,4 +95,8 @@ void PlatformUnwatch(WatcherHandle fd) {
 
 bool PlatformIsHandleValid(WatcherHandle handle) {
   return handle >= 0;
+}
+
+bool PlatformIsEMFILE(WatcherHandle handle) {
+  return handle == -24;
 }

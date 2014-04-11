@@ -127,6 +127,8 @@ NAN_METHOD(Watch) {
 
   Handle<String> path = args[0]->ToString();
   WatcherHandle handle = PlatformWatch(*String::Utf8Value(path));
+  if (PlatformIsEMFILE(handle))
+    return NanThrowTypeError("EMFILE: Unable to watch path");
   if (!PlatformIsHandleValid(handle))
     return NanThrowTypeError("Unable to watch path");
 

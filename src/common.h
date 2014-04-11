@@ -47,6 +47,7 @@ void PlatformThread();
 WatcherHandle PlatformWatch(const char* path);
 void PlatformUnwatch(WatcherHandle handle);
 bool PlatformIsHandleValid(WatcherHandle handle);
+bool PlatformIsEMFILE(WatcherHandle handle);
 
 enum EVENT_TYPE {
   EVENT_NONE,
