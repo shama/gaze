@@ -98,6 +98,14 @@ gaze.on('error', function(err) {
 gaze.add('**/*');
 ```
 
+#### `EMFILE` errors
+
+By default, gaze will use native OS events and then fallback to slower stat polling when an `EMFILE` error is reached. Gaze will still emit or return the error as the first argument of the ready callback for you to handle.
+
+It is recommended to advise your users to increase their file descriptor limits to utilize the faster native OS watching. Especially on OSX where the default descriptor limit is 256.
+
+In some cases, native OS events will not work. Such as with networked file systems or vagrant. It is recommended to set the option `mode: 'stat'` to always stat poll for those situations.
+
 ### Minimatch / Glob
 
 See [isaacs's minimatch](https://github.com/isaacs/minimatch) for more
