@@ -105,7 +105,7 @@ information on glob patterns.
 
 ## Documentation
 
-### gaze(patterns, [options], callback)
+### gaze([patterns, options, callback])
 
 * `patterns` {String|Array} File patterns to be matched
 * `options` {Object}
