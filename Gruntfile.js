@@ -9,7 +9,7 @@ module.exports = function(grunt) {
     },
     jshint: {
       options: { jshintrc: true },
-      all: ['Gruntfile.js', 'lib/**/*.js', 'test/*.js', 'benchmarks/*.js'],
+      all: ['Gruntfile.js', 'lib/**/*.js', 'test/*.js', 'benchmarks/*.js', '!lib/pathwatcher.js'],
     },
   });
 
