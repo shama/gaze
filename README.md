@@ -84,11 +84,18 @@ gaze.on('all', function(event, filepath) { });
 ### Errors
 
 ```javascript
-gaze('**/*', function() {
-  this.on('error', function(err) {
-    // Handle error here
-  });
+gaze('**/*', function(error, watcher) {
+  if (error) {
+    // Handle error if it occured while starting up
+  }
 });
+
+// Or with the alternative interface
+var gaze = new Gaze();
+gaze.on('error', function(err) {
+  // Handle error here
+});
+gaze.add('**/*');
 ```
 
 ### Minimatch / Glob
