@@ -92,7 +92,7 @@ gaze('**/*', function(error, watcher) {
 
 // Or with the alternative interface
 var gaze = new Gaze();
-gaze.on('error', function(err) {
+gaze.on('error', function(error) {
   // Handle error here
 });
 gaze.add('**/*');
@@ -104,7 +104,7 @@ By default, gaze will use native OS events and then fallback to slower stat poll
 
 It is recommended to advise your users to increase their file descriptor limits to utilize the faster native OS watching. Especially on OSX where the default descriptor limit is 256.
 
-In some cases, native OS events will not work. Such as with networked file systems or vagrant. It is recommended to set the option `mode: 'stat'` to always stat poll for those situations.
+In some cases, native OS events will not work. Such as with networked file systems or vagrant. It is recommended to set the option `mode: 'poll'` to always stat poll for those situations.
 
 ### Minimatch / Glob
 
