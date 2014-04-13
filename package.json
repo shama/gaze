@@ -20,7 +20,7 @@
       "url": "https://github.com/shama/gaze/blob/master/LICENSE-MIT"
     }
   ],
-  "main": "lib/gaze",
+  "main": "index.js",
   "engines": {
     "node": ">= 0.8.0"
   },
@@ -45,11 +45,20 @@
   },
   "keywords": [
     "watch",
-    "glob"
+    "watcher",
+    "watching",
+    "fs.watch",
+    "fswatcher",
+    "fs",
+    "glob",
+    "utility"
   ],
   "files": [
+    "index.js",
     "lib",
     "src",
+    "binding.gyp",
+    "AUTHORS",
     "LICENSE-MIT"
   ]
 }
