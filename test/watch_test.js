@@ -258,16 +258,14 @@ exports.watch = {
     }
   },
   mkdirThenAddFile: function(test) {
-    test.expect(2);
-
     var expected = [
-      'new_dir',
+      'new_dir/first.js',
       'new_dir/other.js',
     ];
+    test.expect(expected.length);
 
     gaze('**/*.js', function(err, watcher) {
       watcher.on('all', function(status, filepath) {
-
         var expect = expected.shift();
         var actual = helper.unixifyobj(path.relative(process.cwd(), filepath));
         test.equal(actual, expect);
@@ -286,22 +284,20 @@ exports.watch = {
       });
 
       fs.mkdirSync('new_dir'); //fs.mkdirSync([folder]) seems to behave differently than grunt.file.write('[folder]/[file]')
+      fs.writeFileSync(path.join('new_dir', 'first.js'), '');
 
       watcher.on('end', test.done);
     });
   },
   mkdirThenAddFileWithGruntFileWrite: function(test) {
-    test.expect(3);
-
     var expected = [
-      'new_dir',
       'new_dir/tmp.js',
       'new_dir/other.js',
     ];
+    test.expect(expected.length);
 
     gaze('**/*.js', function(err, watcher) {
       watcher.on('all', function(status, filepath) {
-
         var expect = expected.shift();
         var actual = helper.unixifyobj(path.relative(process.cwd(), filepath));
         test.equal(actual, expect);

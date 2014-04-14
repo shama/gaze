@@ -80,9 +80,9 @@ exports.matching = {
   },
   addedLater: function(test) {
     var expected = [
-      ['.', 'Project (LO)/', 'nested/', 'one.js', 'sub/', 'newfolder/'],
       ['newfolder/', 'added.js'],
       ['newfolder/', 'added.js', 'addedAnother.js'],
+      ['newfolder/', 'added.js', 'addedAnother.js', 'sub/'],
     ];
     test.expect(expected.length);
     gaze('**/*.js', function(err, watcher) {
@@ -97,6 +97,9 @@ exports.matching = {
       setTimeout(function() {
         grunt.file.write(path.join(fixtures, 'newfolder', 'addedAnother.js'), 'var added = true;');
       }, 1000);
+      setTimeout(function() {
+        grunt.file.write(path.join(fixtures, 'newfolder', 'sub', 'lastone.js'), 'var added = true;');
+      }, 2000);
       watcher.on('end', test.done);
     });
   },
