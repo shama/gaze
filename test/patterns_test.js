@@ -68,3 +68,10 @@ exports.patterns = {
     });
   },
 };
+
+// Ignore these tests if node v0.8
+var version = process.versions.node.split('.');
+if (version[0] === '0' && version[1] === '8') {
+  // gaze v0.4 is buggy with absolute paths sometimes, wontfix
+  delete exports.patterns.absolute;
+}

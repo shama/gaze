@@ -337,4 +337,7 @@ var version = process.versions.node.split('.');
 if (version[0] === '0' && version[1] === '8') {
   // gaze v0.4 needs to watch the cwd to function
   delete exports.watch.dontAddCwd;
+  // gaze 0.4 incorrecly matches folders, wontfix
+  delete exports.watch.mkdirThenAddFileWithGruntFileWrite;
+  delete exports.watch.mkdirThenAddFile;
 }

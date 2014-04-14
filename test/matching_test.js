@@ -111,4 +111,5 @@ if (version[0] === '0' && version[1] === '8') {
   // gaze v0.4 returns watched but unmatched folders
   // where gaze v0.5 does not
   delete exports.matching.globArray;
+  delete exports.matching.addedLater;
 }
