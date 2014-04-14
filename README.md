@@ -186,6 +186,7 @@ Add unit tests for any new or changed functionality. Lint and test your code
 using [grunt](http://gruntjs.com/).
 
 ## Release History
+* 0.6.1 - Fix for absolute paths.
 * 0.6.0 - Uses native OS events (fork of pathwatcher) but can fall back to stat polling. Everything is async to avoid blocking, including `relative()` and `watched()`. Better error handling. Update to globule@0.2.0. No longer watches `cwd` by default. Added `mode` option. Better `EMFILE` message. Avoids `ENOENT` errors with symlinks. All constructor arguments are optional.
 * 0.5.1 - Use setImmediate (process.nextTick for node v0.8) to defer ready/nomatch events (@amasad).
 * 0.5.0 - Process is now kept alive while watching files. Emits a nomatch event when no files are matching.
