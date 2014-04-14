@@ -66,4 +66,18 @@ exports.api = {
       watcher.on('end', test.done);
     });
   },
+  watched: function(test) {
+    test.expect(1);
+    var expected = ['Project (LO)', 'nested', 'one.js', 'sub'];
+    gaze('**/*', function(err, watcher) {
+      this.watched(function(err, result) {
+        result = helper.sortobj(helper.unixifyobj(result[process.cwd() + '/'].map(function(file) {
+          return path.relative(process.cwd(), file);
+        })));
+        test.deepEqual(result, expected);
+        watcher.close();
+      });
+      watcher.on('end', test.done);
+    });
+  },
 };
