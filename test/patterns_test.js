@@ -64,7 +64,7 @@ exports.patterns = {
         test.equal(path.relative(fixtures, filepath), path.join('nested', 'one.js'));
         watcher.close();
       });
-      fs.writeFile(path.join(fixtures, 'nested', 'one.js'), 'var one = true;');
+      fs.writeFile(filepath, 'var one = true;');
     });
   },
 };
