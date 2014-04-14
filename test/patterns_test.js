@@ -54,4 +54,17 @@ exports.patterns = {
       fs.writeFile(path.join(fixtures, 'nested', 'one.js'), 'var one = true;');
     });
   },
+  absolute: function(test) {
+    test.expect(2);
+    var filepath = path.resolve(__dirname, 'fixtures', 'nested', 'one.js');
+    gaze(filepath, function(err, watcher) {
+      watcher.on('end', test.done);
+      watcher.on('all', function(status, filepath) {
+        test.equal(status, 'changed');
+        test.equal(path.relative(fixtures, filepath), path.join('nested', 'one.js'));
+        watcher.close();
+      });
+      fs.writeFile(path.join(fixtures, 'nested', 'one.js'), 'var one = true;');
+    });
+  },
 };
