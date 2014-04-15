@@ -86,7 +86,7 @@ gaze.on('all', function(event, filepath) { });
 ```javascript
 gaze('**/*', function(error, watcher) {
   if (error) {
-    // Handle error if it occured while starting up
+    // Handle error if it occurred while starting up
   }
 });
 
