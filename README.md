@@ -186,6 +186,7 @@ Add unit tests for any new or changed functionality. Lint and test your code
 using [grunt](http://gruntjs.com/).
 
 ## Release History
+* 0.6.3 - Add support for node v0.11
 * 0.6.2 - Fix argument error with watched(). Fix for erroneous added events on folders. Ignore msvs build error 4244.
 * 0.6.1 - Fix for absolute paths.
 * 0.6.0 - Uses native OS events (fork of pathwatcher) but can fall back to stat polling. Everything is async to avoid blocking, including `relative()` and `watched()`. Better error handling. Update to globule@0.2.0. No longer watches `cwd` by default. Added `mode` option. Better `EMFILE` message. Avoids `ENOENT` errors with symlinks. All constructor arguments are optional.
