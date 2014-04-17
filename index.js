@@ -6,14 +6,18 @@
  * Licensed under the MIT license.
  */
 
-try {
-  // Attempt to resolve optional pathwatcher
-  require('bindings')('pathwatcher.node');
-  var version = process.versions.node.split('.');
-  module.exports = (version[0] === '0' && version[1] === '8')
-    ? require('./lib/gaze04.js')
-    : require('./lib/gaze.js');
-} catch (err)  {
-  // Otherwise serve gaze04
+// If on node v0.8, serve gaze04
+var version = process.versions.node.split('.');
+if (version[0] === '0' && version[1] === '8') {
   module.exports = require('./lib/gaze04.js');
+} else {
+  try {
+    // Check whether pathwatcher successfully built without running it
+    require('bindings')({ bindings: 'pathwatcher.node', path: true });
+    // If successfully built, give the better version
+    module.exports = require('./lib/gaze.js');
+  } catch (err) {
+    // Otherwise serve gaze04
+    module.exports = require('./lib/gaze04.js');
+  }
 }
