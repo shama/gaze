@@ -51,7 +51,9 @@ Benchmarker.prototype.run = function(fn, done) {
   var self = this;
   async.eachSeries(this.fileNums, function(num, next) {
     self.setup(num);
-    fn(num, next);
+    fn(num, function() {
+      process.nextTick(next);
+    });
   }, function() {
     self.teardown();
     done();
