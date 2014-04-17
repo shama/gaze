@@ -33,7 +33,8 @@
     "nextback": "~0.1.0",
     "bindings": "~1.2.0",
     "nan": "~0.8.0",
-    "absolute-path": "0.0.0"
+    "absolute-path": "0.0.0",
+    "graceful-fs": "~2.0.3"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
