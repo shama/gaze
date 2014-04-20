@@ -16,7 +16,9 @@ function cleanUp(done) {
     'nested/added.js',
     'nested/.tmp',
     'nested/sub/added.js',
-    'new_dir',
+    'folder',
+    'folder/subfolder',
+    'new_dir'
   ].forEach(function(d) {
     grunt.file.delete(path.resolve(__dirname, 'fixtures', d));
   });
@@ -256,6 +258,27 @@ exports.watch = {
       watchers[i].on('changed', changed);
       watchers[i].on('ready', isReady);
     }
+  },
+  mksubdirThenAddFile: function(test) {
+    var expected = [
+      'folder/subfolder/added.js',
+    ];
+    test.expect(expected.length);
+    fs.mkdirSync('folder');
+    fs.mkdirSync('folder/subfolder');
+
+    gaze('**/*.js', function(err, watcher) {
+      watcher.on('all', function(status, filepath) {
+        var expect = expected.shift();
+        var actual = helper.unixifyobj(path.relative(process.cwd(), filepath));
+        test.equal(actual, expect);
+        if (expected.length < 1) { watcher.close(); }
+      });
+
+      fs.writeFileSync(path.join('folder', 'subfolder', 'added.js'), 'var added = true;');
+
+      watcher.on('end', test.done);
+    });
   },
   mkdirThenAddFile: function(test) {
     var expected = [
