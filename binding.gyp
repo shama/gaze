@@ -32,6 +32,9 @@
             4506,  # no definition for inline function
             4996,  # function was declared deprecated
           ],
+          'defines': [
+            '_WIN32_WINNT=0x0600',
+          ],
         }],  # OS=="win"
         ['OS=="mac"', {
           "sources": [
