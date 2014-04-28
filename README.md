@@ -30,7 +30,7 @@ gaze('**/*.js', function(err, watcher) {
   // watcher === this
 
   // Get all watched files
-  this.watched(function(watched) {
+  this.watched(function(err, watched) {
     console.log(watched);
   });
 
