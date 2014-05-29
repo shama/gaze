@@ -1,3 +1,4 @@
 node_modules
 experiments
 build
+bin/*-v8-*
