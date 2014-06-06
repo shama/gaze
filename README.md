@@ -1,4 +1,4 @@
-# gaze [![Build Status](http://img.shields.io/travis/shama/gaze.svg)](https://travis-ci.org/shama/gaze) [![gittip.com/shama](http://img.shields.io/gittip/shama.svg)](https://www.gittip.com/shama)
+# gaze [![Build Status](http://img.shields.io/travis/shama/gaze.svg)](https://travis-ci.org/shama/gaze) [![Build status](https://ci.appveyor.com/api/projects/status/vtx65w9eg511tgo4)](https://ci.appveyor.com/project/shama/gaze) [![gittip.com/shama](http://img.shields.io/gittip/shama.svg)](https://www.gittip.com/shama)
 
 A globbing fs.watch wrapper built from the best parts of other fine watch libs.  
 Compatible with Node.js 0.10/0.8, Windows, OSX and Linux.
@@ -11,10 +11,10 @@ Compatible with Node.js 0.10/0.8, Windows, OSX and Linux.
 
 * Consistent events on OSX, Linux and Windows
 * Very fast start up and response time
-* High test coverage
+* High test coverage and well vetted
 * Uses native OS events but falls back to stat polling
 * Option to force stat polling with special file systems such as networked
-* Downloaded over 400K times a month
+* Downloaded over 600K times a month
 * Used by [Grunt](http://gruntjs.com), [gulp](http://gulpjs.com), [Tower](http://tower.github.io/) and many others
 
 ## Usage
