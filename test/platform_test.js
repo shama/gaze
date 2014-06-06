@@ -38,6 +38,25 @@ exports.platform = {
     cleanUp();
     done();
   },
+  watchSameFile: function(test) {
+    test.expect(2);
+    var count = 0;
+    function done() {
+      if (count > 0) test.done(); else count++;
+    }
+    var filename = path.join(fixturesbase, 'one.js');
+    platform(filename, function(err, event, filepath) {
+      test.equal(filepath, filename);
+      done();
+    });
+    platform(filename, function(err, event, filepath) {
+      test.equal(filepath, filename);
+      done();
+    });
+    setTimeout(function() {
+      grunt.file.write(filename, grunt.file.read(filename));
+    }, 200);
+  },
   change: function(test) {
     test.expect(4);
     var expectfilepath = null;
