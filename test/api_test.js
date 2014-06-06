@@ -71,7 +71,7 @@ exports.api = {
     var expected = ['Project (LO)', 'nested', 'one.js', 'sub'];
     gaze('**/*', function(err, watcher) {
       this.watched(function(err, result) {
-        result = helper.sortobj(helper.unixifyobj(result[process.cwd() + '/'].map(function(file) {
+        result = helper.sortobj(helper.unixifyobj(result[process.cwd() + path.sep].map(function(file) {
           return path.relative(process.cwd(), file);
         })));
         test.deepEqual(result, expected);
