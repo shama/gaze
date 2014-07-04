@@ -41,10 +41,11 @@ helper.unixifyobj = function unixifyobj(obj) {
 };
 
 helper.onlyTest = function(name, tests) {
+  if (!Array.isArray(name)) name = [name];
   var keys = Object.keys(tests);
   for (var i = 0; i < keys.length; i++) {
     var n = keys[i];
-    if (n === 'setUp' || n === 'tearDown' || n === name) continue;
+    if (n === 'setUp' || n === 'tearDown' || name.indexOf(n) !== -1) continue;
     delete tests[n];
   }
 };
