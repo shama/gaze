@@ -39,3 +39,12 @@ helper.unixifyobj = function unixifyobj(obj) {
   });
   return res;
 };
+
+helper.onlyTest = function(name, tests) {
+  var keys = Object.keys(tests);
+  for (var i = 0; i < keys.length; i++) {
+    var n = keys[i];
+    if (n === 'setUp' || n === 'tearDown' || n === name) continue;
+    delete tests[n];
+  }
+};
