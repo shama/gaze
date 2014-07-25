@@ -1,9 +1,13 @@
 'use strict';
 
+var path = require('path');
+var rimraf = require('rimraf');
 var helper = module.exports = {};
 
 // Access to the lib helper to prevent confusion with having both in the tests
 helper.lib = require('../lib/helper.js');
+
+helper.fixtures = path.resolve(__dirname, 'fixtures');
 
 helper.sortobj = function sortobj(obj) {
   if (Array.isArray(obj)) {
@@ -48,4 +52,21 @@ helper.onlyTest = function(name, tests) {
     if (n === 'setUp' || n === 'tearDown' || name.indexOf(n) !== -1) continue;
     delete tests[n];
   }
+};
+
+// Clean up helper to call in setUp and tearDown
+helper.cleanUp = function(done) {
+  helper.lib.forEachSeries([
+    'sub/tmp.js',
+    'sub/tmp',
+    'sub/renamed.js',
+    'added.js',
+    'nested/added.js',
+    'nested/.tmp',
+    'nested/sub/added.js',
+    'new_dir',
+    'newfolder',
+  ], function(d, next) {
+    rimraf(path.resolve(helper.fixtures, d), next);
+  }, done);
 };
