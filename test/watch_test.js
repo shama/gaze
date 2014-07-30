@@ -17,6 +17,7 @@ function cleanUp(done) {
     'nested/.tmp',
     'nested/sub/added.js',
     'new_dir',
+    'edited.js',
   ].forEach(function(d) {
     grunt.file.delete(path.resolve(__dirname, 'fixtures', d));
   });
@@ -334,6 +335,29 @@ exports.watch = {
       test.ok(true);
       this.on('end', test.done);
       this.close();
+    });
+  },
+  debounceTiming: function(test) {
+    test.expect(1);
+    gaze('**/*', function(err, watcher) {
+      var lastContent = '';
+      watcher.on('all', function(filepath) {
+        lastContent = fs.readFileSync(path.resolve(__dirname, 'fixtures', 'edited.js')).toString();
+      });
+      watcher.on('end', function() {
+        test.equal(lastContent, '4', 'should catch the last changed event.');
+        test.done();
+      });
+
+      var count = 0;
+      var timer = setInterval(function() {
+        fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'edited.js'), count);
+        count++;
+        if (count > 4) {
+          clearTimeout(timer);
+          setTimeout(function () { watcher.close(); }, 1000);
+        }
+      }, 100);
     });
   },
 };
