@@ -75,7 +75,7 @@ exports.watch = {
   },
   dontAddUnmatchedFiles: function(test) {
     // TODO: Code smell
-    test.expect(2);
+    test.expect(3);
     gaze('**/*.js', function(err, watcher) {
       setTimeout(function() {
         test.ok(true, 'Ended without adding a file.');
