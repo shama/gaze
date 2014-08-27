@@ -4,15 +4,24 @@ var gaze = require('../index.js');
 var path = require('path');
 var fs = require('fs');
 
+// Intentional globals
+var orgFilename = 'safewrite.js';
+var backupFilename = 'safewrite.ext~';
+
 // Clean up helper to call in setUp and tearDown
 function cleanUp(done) {
   [
-    'safewrite.js'
+    orgFilename,
+    backupFilename
   ].forEach(function(d) {
     var p = path.resolve(__dirname, 'fixtures', d);
     if (fs.existsSync(p)) { fs.unlinkSync(p); }
   });
-  done();
+
+  // Prevent bleeding
+  if(done) {
+    setTimeout(done, 500);
+  }
 }
 
 exports.safewrite = {
@@ -24,13 +33,14 @@ exports.safewrite = {
   safewrite: function(test) {
     test.expect(2);
 
-    var file = path.resolve(__dirname, 'fixtures', 'safewrite.js');
-    var backup = path.resolve(__dirname, 'fixtures', 'safewrite.ext~');
+    var file = path.resolve(__dirname, 'fixtures', orgFilename);
+    var backup = path.resolve(__dirname, 'fixtures', backupFilename);
     fs.writeFileSync(file, 'var safe = true;');
 
     function simSafewrite() {
-      fs.writeFileSync(backup, fs.readFileSync(file));
+      var content = fs.readFileSync(file);
       fs.unlinkSync(file);
+      fs.writeFileSync(backup, content);
       fs.renameSync(backup, file);
     }
 
@@ -38,7 +48,7 @@ exports.safewrite = {
       this.on('end', test.done);
       this.on('all', function(action, filepath) {
         test.equal(action, 'changed');
-        test.equal(path.basename(filepath), 'safewrite.js');
+        test.equal(path.basename(filepath), orgFilename);
         watcher.close();
       });
       simSafewrite();

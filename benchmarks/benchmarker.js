@@ -8,7 +8,9 @@ var AsciiTable = require('ascii-table');
 var readline = require('readline');
 
 function Benchmarker(opts) {
-  if (!(this instanceof Benchmarker)) return new Benchmarker(opts);
+  if (!(this instanceof Benchmarker)) {
+    return new Benchmarker(opts);
+  }
   opts = opts || {};
   this.table = new AsciiTable(opts.name || 'benchmark');
   this.tmpDir = opts.tmpDir || path.resolve(__dirname, 'tmp');
