@@ -42,7 +42,11 @@ exports.platform = {
     test.expect(2);
     var count = 0;
     function done() {
-      if (count > 0) test.done(); else count++;
+      if (count > 0) {
+        test.done();
+      } else {
+        count++;
+      }
     }
     var filename = path.join(fixturesbase, 'one.js');
     platform(filename, function(err, event, filepath) {
@@ -98,7 +102,9 @@ exports.platform = {
 
       platform(filename, function(error, event, filepath) {
         // Ignore change events from dirs. This is handled outside of the platform and are safe to ignore here.
-        if (event === 'change' && grunt.file.isDir(filepath)) return;
+        if (event === 'change' && grunt.file.isDir(filepath)) {
+          return;
+        }
         test.equal(event, 'delete', 'should have been a delete event in ' + mode + ' mode.');
         test.equal(filepath, expectfilepath, 'should have triggered on the correct file in ' + mode + ' mode.');
         platform.closeAll();
@@ -129,8 +135,10 @@ exports.platform = {
     test.expect(1);
     var expected = globule.find(['**/*.js'], { cwd: fixturesbase, prefixBase: fixturesbase });
     var len = expected.length;
+    var emptyFunc = function() {};
+
     for (var i = 0; i < len; i++) {
-      platform(expected[i], function() {});
+      platform(expected[i], emptyFunc);
       var parent = path.dirname(expected[i]);
       expected.push(parent + '/');
     }
