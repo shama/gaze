@@ -39,7 +39,9 @@ exports.api = {
     function hasTriggered(actual) {
       var expect = expected.shift();
       test.deepEqual(actual, expect);
-      if (expected.length < 1) nested.close();
+      if (expected.length < 1) {
+        nested.close();
+      }
     }
 
     nested.on('all', function(status, filepath) {
