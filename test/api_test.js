@@ -4,14 +4,14 @@ var gaze = require('../index.js');
 var path = require('path');
 var fs = require('fs');
 var helper = require('./helper.js');
-
-var fixtures = path.resolve(__dirname, 'fixtures');
+var fixtures = helper.fixtures;
 
 exports.api = {
   setUp: function(done) {
     process.chdir(fixtures);
-    done();
+    helper.cleanUp(done);
   },
+  tearDown: helper.cleanUp,
   newGaze: function(test) {
     test.expect(2);
     new gaze.Gaze('**/*', {}, function() {

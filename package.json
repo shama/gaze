@@ -26,7 +26,8 @@
   },
   "scripts": {
     "test": "grunt nodeunit -v",
-    "install": "node build.js"
+    "install": "node build.js",
+    "debug": "node-debug ./node_modules/.bin/grunt nodeunit -v"
   },
   "dependencies": {
     "globule": "~0.2.0",

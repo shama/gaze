@@ -3,34 +3,15 @@
 var gaze = require('../index.js');
 var grunt = require('grunt');
 var path = require('path');
-var fs = require('fs');
+var fs = require('graceful-fs');
 var helper = require('./helper.js');
-
-// Clean up helper to call in setUp and tearDown
-function cleanUp(done) {
-  [
-    'sub/tmp.js',
-    'sub/tmp',
-    'sub/renamed.js',
-    'added.js',
-    'nested/added.js',
-    'nested/.tmp',
-    'nested/sub/added.js',
-    'new_dir',
-  ].forEach(function(d) {
-    grunt.file.delete(path.resolve(__dirname, 'fixtures', d));
-  });
-
-  // Delay between tests to prevent bleed
-  setTimeout(done, 500);
-}
 
 exports.watch = {
   setUp: function(done) {
     process.chdir(path.resolve(__dirname, 'fixtures'));
-    cleanUp(done);
+    helper.cleanUp(done);
   },
-  tearDown: cleanUp,
+  tearDown: helper.cleanUp,
   remove: function(test) {
     test.expect(2);
     gaze('**/*', function() {
@@ -63,19 +44,25 @@ exports.watch = {
     gaze('**/*', function(err, watcher) {
       this.on('added', function(filepath) {
         var expected = path.relative(process.cwd(), filepath);
+        console.log('ADDED!', filepath)
         test.equal(path.join('sub', 'tmp.js'), expected);
         watcher.close();
       });
       this.on('changed', function() { test.ok(false, 'changed event should not have emitted.'); });
       this.on('deleted', function() { test.ok(false, 'deleted event should not have emitted.'); });
       fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'tmp.js'), 'var tmp = true;');
-      watcher.on('end', test.done);
+      watcher.on('end', function() {
+        setTimeout(function() {
+          test.done();
+        }, 500);
+      });
     });
   },
   dontAddUnmatchedFiles: function(test) {
     // TODO: Code smell
     test.expect(2);
     gaze('**/*.js', function(err, watcher) {
+      console.log(this._patterns)
       setTimeout(function() {
         test.ok(true, 'Ended without adding a file.');
         watcher.close();
@@ -216,9 +203,11 @@ exports.watch = {
       new gaze.Gaze(add.pattern, function(err, watcher) {
         watcher.on('added', function(filepath) {
           test.equal('added.js', path.basename(filepath));
-          fs.unlinkSync(filepath);
           watcher.close();
-          next();
+        });
+        watcher.on('end', function() {
+          fs.unlinkSync(add.file);
+          setTimeout(next, 500);
         });
         watcher.on('changed', function() { test.ok(false, 'changed event should not have emitted.'); });
         watcher.on('deleted', function() { test.ok(false, 'deleted event should not have emitted.'); });
@@ -337,6 +326,9 @@ exports.watch = {
     });
   },
 };
+
+//helper.onlyTest(['remove', 'changed', 'added', 'dontAddUnmatchedFiles'], exports.watch)
+helper.onlyTest(['added', 'dontAddUnmatchedFiles'], exports.watch)
 
 // Ignore these tests if node v0.8
 var version = process.versions.node.split('.');

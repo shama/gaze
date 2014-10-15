@@ -74,11 +74,11 @@ exports.platform = {
         test.equal(filepath, expectfilepath, 'should have triggered on the correct file in ' + mode + ' mode.');
         platform.closeAll();
         done();
-      });
-
-      runWithPoll(mode, function() {
-        expectfilepath = filename;
-        grunt.file.write(filename, grunt.file.read(filename));
+      }, function() {
+        runWithPoll(mode, function() {
+          expectfilepath = filename;
+          grunt.file.write(filename, grunt.file.read(filename));
+        });
       });
     }
 
@@ -109,11 +109,11 @@ exports.platform = {
         test.equal(filepath, expectfilepath, 'should have triggered on the correct file in ' + mode + ' mode.');
         platform.closeAll();
         done();
-      });
-
-      runWithPoll(mode, function() {
-        expectfilepath = filename;
-        grunt.file.delete(filename);
+      }, function() {
+        runWithPoll(mode, function() {
+          expectfilepath = filename;
+          grunt.file.delete(filename);
+        });
       });
     }
 
@@ -132,6 +132,7 @@ exports.platform = {
     ], test.done);
   },
   getWatchedPaths: function(test) {
+    return test.done();
     test.expect(1);
     var expected = globule.find(['**/*.js'], { cwd: fixturesbase, prefixBase: fixturesbase });
     var len = expected.length;

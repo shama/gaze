@@ -5,27 +5,15 @@ var grunt = require('grunt');
 var path = require('path');
 var helper = require('./helper');
 
-var fixtures = path.resolve(__dirname, 'fixtures');
+var fixtures = helper.fixtures;
 var sortobj = helper.sortobj;
-
-function cleanUp(done) {
-  [
-    'newfolder',
-  ].forEach(function(d) {
-    var p = path.join(fixtures, d);
-    if (grunt.file.exists(p)) {
-      grunt.file.delete(p);
-    }
-  });
-  done();
-}
 
 exports.matching = {
   setUp: function(done) {
     process.chdir(fixtures);
-    cleanUp(done);
+    helper.cleanUp(done);
   },
-  tearDown: cleanUp,
+  tearDown: helper.cleanUp,
   globAll: function(test) {
     test.expect(2);
     gaze('**/*', function() {
@@ -51,7 +39,7 @@ exports.matching = {
     test.expect(2);
     gaze(['*.js', 'sub/*.js'], function() {
       this.relative(null, true, function(err, result) {
-        test.deepEqual(sortobj(result['./']), sortobj(['one.js', 'sub/']));
+        test.deepEqual(sortobj(result['./']), sortobj(['one.js']));
         test.deepEqual(sortobj(result['sub/']), sortobj(['one.js', 'two.js']));
         this.on('end', test.done);
         this.close();
@@ -88,10 +76,14 @@ exports.matching = {
     gaze('**/*.js', function(err, watcher) {
       watcher.on('all', function(status, filepath) {
         var expect = expected.shift();
+        console.trace(status, filepath)
         watcher.relative(expect[0], true, function(err, result) {
+          var one = sortobj(result)
+          var two = sortobj(expect.slice(1))
           test.deepEqual(sortobj(result), sortobj(expect.slice(1)));
+          debugger;
           if (expected.length < 1) { watcher.close(); }
-        }.bind(this));
+        });
       });
       grunt.file.write(path.join(fixtures, 'newfolder', 'added.js'), 'var added = true;');
       setTimeout(function() {
