@@ -3,5 +3,5 @@ node_js:
   - '0.8'
   - '0.10'
 install:
-  - npm update npm -g
+  - npm install npm -g
   - npm install
