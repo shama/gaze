@@ -38,7 +38,7 @@ exports.api = {
 
     function hasTriggered(actual) {
       var expect = expected.shift();
-      test.deepEqual(actual, expect);
+      test.deepEqual(helper.unixifyobj(actual), expect);
       if (expected.length < 1) {
         nested.close();
       }
