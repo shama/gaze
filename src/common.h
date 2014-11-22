@@ -37,7 +37,7 @@ bool IsV8ValueWatcherHandle(Handle<Value> value);
 #else
 // Correspoding definetions on OS X and Linux.
 typedef int32_t WatcherHandle;
-#define WatcherHandleToV8Value(h) Integer::New(h)
+#define WatcherHandleToV8Value(h) NanNew<Integer>(h)
 #define V8ValueToWatcherHandle(v) v->Int32Value()
 #define IsV8ValueWatcherHandle(v) v->IsInt32()
 #endif
