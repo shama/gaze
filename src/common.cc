@@ -35,39 +35,35 @@ static void CommonThread(void* handle) {
   PlatformThread();
 }
 
-#if NODE_VERSION_AT_LEAST(0, 11, 13)
-static void MakeCallbackInMainThread(uv_async_t* handle) {
-#else
 static void MakeCallbackInMainThread(uv_async_t* handle, int status) {
-#endif
   NanScope();
 
   if (!g_callback.IsEmpty()) {
     Handle<String> type;
     switch (g_type) {
       case EVENT_CHANGE:
-        type = NanNew("change");
+        type = String::New("change");
         break;
       case EVENT_DELETE:
-        type = NanNew("delete");
+        type = String::New("delete");
         break;
       case EVENT_RENAME:
-        type = NanNew("rename");
+        type = String::New("rename");
         break;
       case EVENT_CHILD_CREATE:
-        type = NanNew("child-create");
+        type = String::New("child-create");
         break;
       case EVENT_CHILD_CHANGE:
-        type = NanNew("child-change");
+        type = String::New("child-change");
         break;
       case EVENT_CHILD_DELETE:
-        type = NanNew("child-delete");
+        type = String::New("child-delete");
         break;
       case EVENT_CHILD_RENAME:
-        type = NanNew("child-rename");
+        type = String::New("child-rename");
         break;
       default:
-        type = NanNew("unknown");
+        type = String::New("unknown");
         fprintf(stderr, "Got unknown event: %d\n", g_type);
         return;
     }
@@ -75,10 +71,11 @@ static void MakeCallbackInMainThread(uv_async_t* handle, int status) {
     Handle<Value> argv[] = {
         type,
         WatcherHandleToV8Value(g_handle),
-        NanNew(g_new_path.data(), g_new_path.size()),
-        NanNew(g_old_path.data(), g_old_path.size()),
+        String::New(g_new_path.data(), g_new_path.size()),
+        String::New(g_old_path.data(), g_old_path.size()),
     };
-    NanNew(g_callback)->Call(NanGetCurrentContext()->Global(), 4, argv);
+    NanPersistentToLocal(g_callback)->Call(
+        Context::GetCurrent()->Global(), 4, argv);
   }
 
   WakeupNewThread();
@@ -118,7 +115,7 @@ NAN_METHOD(SetCallback) {
   if (!args[0]->IsFunction())
     return NanThrowTypeError("Function required");
 
-  NanAssignPersistent(g_callback, Local<Function>::Cast(args[0]));
+  NanAssignPersistent(Function, g_callback, Handle<Function>::Cast(args[0]));
   NanReturnUndefined();
 }
 
