@@ -26,14 +26,11 @@
   },
   "scripts": {
     "test": "grunt nodeunit -v",
-    "install": "node build.js",
     "debug": "node-debug ./node_modules/.bin/grunt nodeunit -v"
   },
   "dependencies": {
     "globule": "~0.2.0",
     "nextback": "~0.1.0",
-    "bindings": "~1.2.0",
-    "nan": "~0.8.0",
     "absolute-path": "0.0.0",
     "graceful-fs": "~2.0.3"
   },
@@ -59,9 +56,6 @@
   "files": [
     "index.js",
     "lib",
-    "src",
-    "bin",
-    "binding.gyp",
     "AUTHORS",
     "LICENSE-MIT"
   ]
