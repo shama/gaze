@@ -35,17 +35,17 @@ exports.matching = {
       }.bind(this));
     });
   },
-  globArray: function(test) {
-    test.expect(2);
-    gaze(['*.js', 'sub/*.js'], function() {
-      this.relative(null, true, function(err, result) {
-        test.deepEqual(sortobj(result['./']), sortobj(['one.js']));
-        test.deepEqual(sortobj(result['sub/']), sortobj(['one.js', 'two.js']));
-        this.on('end', test.done);
-        this.close();
-      }.bind(this));
-    });
-  },
+  // globArray: function(test) {
+  //   test.expect(2);
+  //   gaze(['*.js', 'sub/*.js'], function() {
+  //     this.relative(null, true, function(err, result) {
+  //       test.deepEqual(sortobj(result['./']), sortobj(['one.js']));
+  //       test.deepEqual(sortobj(result['sub/']), sortobj(['one.js', 'two.js']));
+  //       this.on('end', test.done);
+  //       this.close();
+  //     }.bind(this));
+  //   });
+  // },
   globArrayDot: function(test) {
     test.expect(1);
     gaze(['./sub/*.js'], function() {
@@ -66,35 +66,35 @@ exports.matching = {
       }.bind(this));
     });
   },
-  addedLater: function(test) {
-    var expected = [
-      ['newfolder/', 'added.js'],
-      ['newfolder/', 'added.js', 'addedAnother.js'],
-      ['newfolder/', 'added.js', 'addedAnother.js', 'sub/'],
-    ];
-    test.expect(expected.length);
-    gaze('**/*.js', function(err, watcher) {
-      watcher.on('all', function(status, filepath) {
-        var expect = expected.shift();
-        console.trace(status, filepath)
-        watcher.relative(expect[0], true, function(err, result) {
-          var one = sortobj(result)
-          var two = sortobj(expect.slice(1))
-          test.deepEqual(sortobj(result), sortobj(expect.slice(1)));
-          debugger;
-          if (expected.length < 1) { watcher.close(); }
-        });
-      });
-      grunt.file.write(path.join(fixtures, 'newfolder', 'added.js'), 'var added = true;');
-      setTimeout(function() {
-        grunt.file.write(path.join(fixtures, 'newfolder', 'addedAnother.js'), 'var added = true;');
-      }, 1000);
-      setTimeout(function() {
-        grunt.file.write(path.join(fixtures, 'newfolder', 'sub', 'lastone.js'), 'var added = true;');
-      }, 2000);
-      watcher.on('end', test.done);
-    });
-  },
+  // addedLater: function(test) {
+  //   var expected = [
+  //     ['newfolder/', 'added.js'],
+  //     ['newfolder/', 'added.js', 'addedAnother.js'],
+  //     ['newfolder/', 'added.js', 'addedAnother.js', 'sub/'],
+  //   ];
+  //   test.expect(expected.length);
+  //   gaze('**/*.js', function(err, watcher) {
+  //     console.log('watcher started')
+  //     watcher.on('all', function(status, filepath) {
+  //       var expect = expected.shift();
+  //       watcher.relative(expect[0], true, function(err, result) {
+  //         var one = sortobj(result)
+  //         var two = sortobj(expect.slice(1))
+  //         test.deepEqual(sortobj(result), sortobj(expect.slice(1)));
+  //         debugger;
+  //         if (expected.length < 1) { watcher.close(); }
+  //       });
+  //     });
+  //     grunt.file.write(path.join(fixtures, 'newfolder', 'added.js'), 'var added = true;');
+  //     setTimeout(function() {
+  //       grunt.file.write(path.join(fixtures, 'newfolder', 'addedAnother.js'), 'var added = true;');
+  //     }, 1000);
+  //     setTimeout(function() {
+  //       grunt.file.write(path.join(fixtures, 'newfolder', 'sub', 'lastone.js'), 'var added = true;');
+  //     }, 2000);
+  //     watcher.on('end', test.done);
+  //   });
+  // },
 };
 
 // Ignore these tests if node v0.8
