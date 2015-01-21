@@ -58,37 +58,39 @@ exports.watch = {
     });
   },
   dontAddUnmatchedFiles: function(test) {
-    // TODO: Code smell
     test.expect(2);
     gaze('**/*.js', function(err, watcher) {
+      this.on('added', function(filepath) {
+        test.equal(path.relative(process.cwd(), filepath), path.join('sub', 'tmp.js'));
+      });
+      // TODO: Code smell, works but shouldn't be that finicky
+      setTimeout(function() {
+        fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'tmp'), 'Dont add me!');
+        fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'tmp.js'), 'add me!');
+      }, 100);
+      watcher.on('end', test.done);
       setTimeout(function() {
         test.ok(true, 'Ended without adding a file.');
         watcher.close();
       }, 1000);
-      this.on('added', function(filepath) {
-        test.equal(path.relative(process.cwd(), filepath), path.join('sub', 'tmp.js'));
+    });
+  },
+  dontAddCwd: function(test) {
+    test.expect(2);
+    gaze('nested/**', function(err, watcher) {
+      setTimeout(function() {
+        test.ok(true, 'Ended without adding a file.');
+        watcher.close();
+      }, 1000);
+      this.on('all', function(ev, filepath) {
+        test.equal(path.relative(process.cwd(), filepath), path.join('nested', 'sub', 'added.js'));
       });
-      fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'tmp'), 'Dont add me!');
-      fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'tmp.js'), 'add me!');
+      fs.mkdirSync(path.resolve(__dirname, 'fixtures', 'new_dir'));
+      fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'added.js'), 'Dont add me!');
+      fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'nested', 'sub', 'added.js'), 'add me!');
       watcher.on('end', test.done);
     });
   },
-  // dontAddCwd: function(test) {
-  //   test.expect(2);
-  //   gaze('nested/**', function(err, watcher) {
-  //     setTimeout(function() {
-  //       test.ok(true, 'Ended without adding a file.');
-  //       watcher.close();
-  //     }, 1000);
-  //     this.on('all', function(ev, filepath) {
-  //       test.equal(path.relative(process.cwd(), filepath), path.join('nested', 'sub', 'added.js'));
-  //     });
-  //     fs.mkdirSync(path.resolve(__dirname, 'fixtures', 'new_dir'));
-  //     fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'added.js'), 'Dont add me!');
-  //     fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'nested', 'sub', 'added.js'), 'add me!');
-  //     watcher.on('end', test.done);
-  //   });
-  // },
   dontAddMatchedDirectoriesThatArentReallyAdded: function(test) {
     // This is a regression test for a bug I ran into where a matching directory would be reported
     // added when a non-matching file was created along side it.  This only happens if the
