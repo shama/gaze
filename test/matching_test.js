@@ -35,17 +35,17 @@ exports.matching = {
       }.bind(this));
     });
   },
-  // globArray: function(test) {
-  //   test.expect(2);
-  //   gaze(['*.js', 'sub/*.js'], function() {
-  //     this.relative(null, true, function(err, result) {
-  //       test.deepEqual(sortobj(result['./']), sortobj(['one.js']));
-  //       test.deepEqual(sortobj(result['sub/']), sortobj(['one.js', 'two.js']));
-  //       this.on('end', test.done);
-  //       this.close();
-  //     }.bind(this));
-  //   });
-  // },
+  globArray: function(test) {
+    test.expect(2);
+    gaze(['*.js', 'sub/*.js'], function() {
+      this.relative(null, true, function(err, result) {
+        test.deepEqual(sortobj(result['./']), sortobj(['one.js']));
+        test.deepEqual(sortobj(result['sub/']), sortobj(['one.js', 'two.js']));
+        this.on('end', test.done);
+        this.close();
+      }.bind(this));
+    });
+  },
   globArrayDot: function(test) {
     test.expect(1);
     gaze(['./sub/*.js'], function() {
