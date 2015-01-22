@@ -157,17 +157,13 @@ exports.watch = {
       watcher.on('all', function(status, filepath) {
         test.equal(status, 'changed');
         times++;
-        setTimeout(function() {
-          if (times < 2) {
-            fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'one.js'), 'var one = true;');
-          } else {
-            watcher.close();
-          }
-        }, 1000);
+        if (times < 2) {
+          fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'one.js'), 'var one = true;');
+        } else {
+          watcher.close();
+        }
       });
-      setTimeout(function() {
-        fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'one.js'), 'var one = true;');
-      }, 1000);
+      fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'one.js'), 'var one = true;');
       watcher.on('end', test.done);
     });
   },
@@ -211,7 +207,7 @@ exports.watch = {
         });
         watcher.on('end', function() {
           fs.unlinkSync(add.file);
-          setTimeout(next, 500);
+          process.nextTick(next);
         });
         watcher.on('changed', function() { test.ok(false, 'changed event should not have emitted.'); });
         watcher.on('deleted', function() { test.ok(false, 'deleted event should not have emitted.'); });
