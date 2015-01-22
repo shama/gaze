@@ -246,6 +246,8 @@ exports.watch = {
       watchers[i].on('ready', isReady);
     }
   },
+  // TODO: Tests are failing because the pattern **/*.js doesnt match fixtures/new_dir/
+  // when adding sub files. It should likely silently watch the folder for added files
   // mkdirThenAddFile: function(test) {
   //   var expected = [
   //     'new_dir/first.js',
@@ -262,9 +264,9 @@ exports.watch = {
   //       if (expected.length === 1) {
   //         // Ensure the new folder is being watched correctly after initial add
   //         setTimeout(function() {
-  //           fs.writeFileSync('new_dir/dontmatch.txt', '');
+  //           fs.writeFileSync(path.join('new_dir', 'dontmatch.txt'), '');
   //           setTimeout(function() {
-  //             fs.writeFileSync('new_dir/other.js', '');
+  //             fs.writeFileSync(path.join('new_dir', 'other.js'), '');
   //           }, 1000);
   //         }, 1000);
   //       }
@@ -327,5 +329,3 @@ exports.watch = {
   },
 };
 
-//helper.onlyTest(['remove', 'changed', 'added', 'dontAddUnmatchedFiles'], exports.watch)
-//helper.onlyTest(['added', 'dontAddUnmatchedFiles'], exports.watch)
