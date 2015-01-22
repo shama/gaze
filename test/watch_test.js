@@ -97,14 +97,16 @@ exports.watch = {
     // directory name doesn't occur in $PWD.
     test.expect(1);
     gaze('**/*', function(err, watcher) {
-      setTimeout(function() {
-        test.ok(true, 'Ended without adding a file.');
-        watcher.close();
-      }, 1000);
-      this.on('added', function(filepath) {
-        test.notEqual(path.relative(process.cwd(), filepath), path.join('nested', 'sub2'));
+      this.on('all', function() {
+        setTimeout(function() {
+          test.ok(true, 'Ended without adding a file.');
+          watcher.close();
+        }, 200);
       });
-      fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'nested', '.tmp'), 'Wake up!');
+      this.on('added', function(filepath) {
+        test.ok(false, 'should not have fired an added event');
+      });
+      fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'nested', 'tmp'), 'Wake up!');
       watcher.on('end', test.done);
     });
   },

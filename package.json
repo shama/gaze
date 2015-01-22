@@ -27,7 +27,7 @@
   },
   "scripts": {
     "test": "grunt nodeunit -v",
-    "debug": "node-debug ./node_modules/.bin/grunt nodeunit -v"
+    "debug": "node-debug ./node_modules/.bin/grunt test:watch -v"
   },
   "dependencies": {
     "globule": "~0.2.0",
