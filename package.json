@@ -30,10 +30,11 @@
     "debug": "node-debug ./node_modules/.bin/grunt test:watch -v"
   },
   "dependencies": {
-    "globule": "~0.2.0",
-    "nextback": "~0.1.0",
     "absolute-path": "0.0.0",
-    "graceful-fs": "~2.0.3"
+    "globule": ">=0.2.0 <0.3.0-0",
+    "graceful-fs": ">=2.0.3 <2.1.0-0",
+    "navelgazer": ">=1.1.1 <1.2.0-0",
+    "nextback": ">=0.1.0 <0.2.0-0"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
