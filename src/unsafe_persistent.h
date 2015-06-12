@@ -24,59 +24,43 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "nan.h"
 
 #if NODE_VERSION_AT_LEAST(0, 11, 0)
-template<typename TypeName> class NanUnsafePersistent {
- public:
-  NanUnsafePersistent() : value(0) { }
-  explicit NanUnsafePersistent(v8::Persistent<TypeName>* handle) {
-    value = handle->ClearAndLeak();
+template<class T>
+struct NanUnsafePersistentTraits {
+  typedef v8::Persistent<T, NanUnsafePersistentTraits<T> > HandleType;
+  static const bool kResetInDestructor = false;
+  template<class S, class M>
+  static V8_INLINE void Copy(const Persistent<S, M>& source,
+                             HandleType* dest) {
+    // do nothing, just allow copy
   }
-  explicit NanUnsafePersistent(const v8::Local<TypeName>& handle) {
-    v8::Persistent<TypeName> persistent(nan_isolate, handle);
-    value = persistent.ClearAndLeak();
-  }
-
-  NAN_INLINE(v8::Persistent<TypeName>* persistent()) {
-    v8::Persistent<TypeName>* handle = reinterpret_cast<v8::Persistent<TypeName>*>(&value);
-    return handle;
-  }
-
-  NAN_INLINE(void Dispose()) {
-    NanDispose(*persistent());
-    value = 0;
-  }
-
-  NAN_INLINE(void Clear()) {
-    value = 0;
-  }
-
-  NAN_INLINE(v8::Local<TypeName> NewLocal()) {
-    return v8::Local<TypeName>::New(nan_isolate, *persistent());
-  }
-
-  NAN_INLINE(bool IsEmpty() const) {
-    return value;
-  }
-
- private:
-  TypeName* value;
 };
-#define NanAssignUnsafePersistent(type, handle, obj)                          \
-  handle = NanUnsafePersistent<type>(obj)
-template<class T> static NAN_INLINE(void NanDispose(
-    NanUnsafePersistent<T> &handle
-)) {
-  handle.Dispose();
-  handle.Clear();
+template<class T>
+class NanUnsafePersistent : public NanUnsafePersistentTraits<T>::HandleType {
+ public:
+  V8_INLINE NanUnsafePersistent() {}
+
+  template <class S>
+  V8_INLINE NanUnsafePersistent(v8::Isolate* isolate, S that)
+      : NanUnsafePersistentTraits<T>::HandleType(isolate, that) {
+  }
+};
+template<typename T>
+NAN_INLINE void NanAssignUnsafePersistent(
+    NanUnsafePersistent<T>& handle
+  , v8::Handle<T> obj) {
+    handle.Reset();
+    handle = NanUnsafePersistent<T>(v8::Isolate::GetCurrent(), obj);
 }
-template <class TypeName>
-static NAN_INLINE(v8::Local<TypeName> NanPersistentToLocal(
-   const NanUnsafePersistent<TypeName>& persistent
-)) {
-  return const_cast<NanUnsafePersistent<TypeName>&>(persistent).NewLocal();
+template<typename T>
+NAN_INLINE v8::Local<T> NanUnsafePersistentToLocal(const NanUnsafePersistent<T> &arg1) {
+  return v8::Local<T>::New(v8::Isolate::GetCurrent(), arg1);
 }
+#define NanDisposeUnsafePersistent(handle) handle.Reset()
 #else
 #define NanUnsafePersistent v8::Persistent
 #define NanAssignUnsafePersistent NanAssignPersistent
+#define NanUnsafePersistentToLocal NanNew
+#define NanDisposeUnsafePersistent NanDisposePersistent
 #endif
 
 #endif  // UNSAFE_PERSISTENT_H_

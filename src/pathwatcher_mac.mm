@@ -50,7 +50,7 @@ void PlatformThread() {
     int fd = static_cast<int>(event.ident);
     std::vector<char> path;
 
-    if (event.fflags & NOTE_WRITE) {
+    if (event.fflags & (NOTE_WRITE | NOTE_ATTRIB)) {
       type = EVENT_CHANGE;
     } else if (event.fflags & NOTE_DELETE) {
       type = EVENT_DELETE;
@@ -74,15 +74,14 @@ void PlatformThread() {
 WatcherHandle PlatformWatch(const char* path) {
   int fd = open(path, O_EVTONLY, 0);
   if (fd < 0) {
-    // TODO: Maybe this could be handled better?
-    return -(errno);
+    return fd;
   }
 
   struct timespec timeout = { 0, 0 };
   struct kevent event;
   int filter = EVFILT_VNODE;
   int flags = EV_ADD | EV_ENABLE | EV_CLEAR;
-  int fflags = NOTE_WRITE | NOTE_DELETE | NOTE_RENAME;
+  int fflags = NOTE_WRITE | NOTE_DELETE | NOTE_RENAME | NOTE_ATTRIB;
   EV_SET(&event, fd, filter, flags, fflags, 0, (void*)path);
   kevent(g_kqueue, &event, 1, NULL, 0, &timeout);
 
