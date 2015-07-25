@@ -166,16 +166,12 @@ var gaze = new Gaze(pattern, options, callback);
   * `unixify` {boolean} Return paths with `/` instead of `\\` if on Windows.
   * `callback` {function} Calls with `function(err, files)`.
 
-## FAQs
-
-### Why Another `fs.watch` Wrapper?
-I liked parts of other `fs.watch` wrappers but none had all the features I
-needed when this library was originally written. This lib once combined the features I needed from other fine watch libs
-but now has taken on a life of it's own (**gaze doesn't wrap `fs.watch` or `fs.watchFile` anymore**).
+## Similar Projects
 
 Other great watch libraries to try are:
 
 * [paulmillr's chokidar](https://github.com/paulmillr/chokidar)
+* [amasad's sane](https://github.com/amasad/sane)
 * [mikeal's watch](https://github.com/mikeal/watch)
 * [github's pathwatcher](https://github.com/atom/node-pathwatcher)
 * [bevry's watchr](https://github.com/bevry/watchr)
