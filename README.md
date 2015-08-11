@@ -135,7 +135,7 @@ var gaze = new Gaze(pattern, options, callback);
 * `options` The options object passed in.
   * `interval` {integer} Interval to pass to fs.watchFile
   * `debounceDelay` {integer} Delay for events called in succession for the same
-    file/event
+    file/event in milliseconds
   * `mode` {string} Force the watch mode. Either `'auto'` (default), `'watch'` (force native events), or `'poll'` (force stat polling).
   * `cwd` {string} The current working directory to base file patterns from. Default is `process.cwd()`.
 
