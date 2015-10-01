@@ -1,10 +1,19 @@
 language: node_js
 sudo: false
+env:
+  - CXX=g++-4.8
 node_js:
   - '0.10'
   - '0.12'
   - iojs
   - '4.0'
+addons:
+ apt:
+   sources:
+     - ubuntu-toolchain-r-test
+   packages:
+     - gcc-4.8
+     - g++-4.8
 before_install: npm install -g grunt-cli
 install:
   - npm install npm@1.4 -g
