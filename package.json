@@ -31,6 +31,7 @@
   },
   "dependencies": {
     "absolute-path": "0.0.0",
+    "debug": "^2.2.0",
     "globule": ">=0.2.0 <0.3.0-0",
     "graceful-fs": ">=2.0.3 <2.1.0-0",
     "navelgazer": ">=1.1.1 <1.2.0-0",
