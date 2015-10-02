@@ -25,36 +25,34 @@ exports.api = {
     });
   },
   multipleInstances: function(test) {
-    test.expect(2);
-    var nested = new gaze.Gaze('nested/**/*');
-    var sub = new gaze.Gaze('sub/**/*');
+    test.expect(4);
+    var otherReady = false;
+    function ready() {
+      if(otherReady) {
+        fs.writeFile(path.join(fixtures, 'nested', 'sub', 'two.js'), 'var two = true;');
+      }
+      otherReady = true;
+    }
+
+    var nested = new gaze.Gaze('nested/**/*', ready);
+    var sub = new gaze.Gaze('sub/**/*', ready);
     nested.on('end', sub.close.bind(sub));
     sub.on('end', test.done);
 
-    var expected = [
-      ['changed', 'nested/sub/two.js'],
-      ['changed', 'sub/one.js']
-    ];
-
-    function hasTriggered(actual) {
-      var expect = expected.shift();
-      test.deepEqual(helper.unixifyobj(actual), expect);
-      if (expected.length < 1) {
-        nested.close();
-      }
-    }
-
     nested.on('all', function(status, filepath) {
-      hasTriggered([status, path.relative(fixtures, filepath)]);
+      filepath = path.relative(fixtures, filepath);
+      test.equal(status, 'changed');
+      test.equal(helper.unixifyobj(filepath), 'nested/sub/two.js');
+
       fs.writeFile(path.join(fixtures, 'sub', 'one.js'), 'var one = true;');
     });
     sub.on('all', function(status, filepath) {
-      hasTriggered([status, path.relative(fixtures, filepath)]);
-    });
+      filepath = path.relative(fixtures, filepath);
+      test.equal(status, 'changed');
+      test.equal(helper.unixifyobj(filepath), 'sub/one.js');
 
-    setTimeout(function() {
-      fs.writeFile(path.join(fixtures, 'nested', 'sub', 'two.js'), 'var two = true;');
-    }, 10);
+      nested.close();
+    });
   },
   func: function(test) {
     test.expect(1);
