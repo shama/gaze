@@ -153,6 +153,7 @@ Add unit tests for any new or changed functionality. Lint and test your code
 using [grunt](http://gruntjs.com/).
 
 ## Release History
+* 0.5.2 - Fix for ENOENT error with non-existent symlinks.
 * 0.5.1 - Use setImmediate (process.nextTick for node v0.8) to defer ready/nomatch events (@amasad).
 * 0.5.0 - Process is now kept alive while watching files. Emits a nomatch event when no files are matching.
 * 0.4.3 - Track file additions in newly created folders (@brett-shwom).
