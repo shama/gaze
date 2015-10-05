@@ -312,4 +312,14 @@ exports.watch = {
       watcher.on('end', test.done);
     });
   },
+  enoentSymlink: function(test) {
+    test.expect(1);
+    fs.mkdirSync(path.resolve(__dirname, 'fixtures', 'new_dir'));
+    fs.symlinkSync(path.resolve(__dirname, 'fixtures', 'not-exists.js'), path.resolve(__dirname, 'fixtures', 'new_dir', 'not-exists-symlink.js'));
+    gaze('**/*', function() {
+      test.ok(true);
+      this.on('end', test.done);
+      this.close();
+    });
+  },
 };
