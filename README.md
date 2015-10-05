@@ -187,6 +187,7 @@ using [grunt](http://gruntjs.com/).
 * 0.6.2 - Fix argument error with watched(). Fix for erroneous added events on folders. Ignore msvs build error 4244.
 * 0.6.1 - Fix for absolute paths.
 * 0.6.0 - Uses native OS events (fork of pathwatcher) but can fall back to stat polling. Everything is async to avoid blocking, including `relative()` and `watched()`. Better error handling. Update to globule@0.2.0. No longer watches `cwd` by default. Added `mode` option. Better `EMFILE` message. Avoids `ENOENT` errors with symlinks. All constructor arguments are optional.
+* 0.5.2 - Fix for ENOENT error with non-existent symlinks [BACKPORTED].
 * 0.5.1 - Use setImmediate (process.nextTick for node v0.8) to defer ready/nomatch events (@amasad).
 * 0.5.0 - Process is now kept alive while watching files. Emits a nomatch event when no files are matching.
 * 0.4.3 - Track file additions in newly created folders (@brett-shwom).
