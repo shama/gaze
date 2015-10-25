@@ -34,6 +34,9 @@ gaze('**/*.js', function(err, watcher) {
     console.log(watched);
   });
 
+  // Or if using <= v0.5.2
+  var watched = this.watched();
+
   // On file changed
   this.on('changed', function(filepath) {
     console.log(filepath + ' was changed');
@@ -58,6 +61,9 @@ gaze('**/*.js', function(err, watcher) {
   this.relative(function(err, files) {
     console.log(files);
   });
+
+  // Or if using <= v0.5.2
+  var files = this.relative();
 });
 
 // Also accepts an array of patterns
@@ -165,6 +171,8 @@ var gaze = new Gaze(pattern, options, callback);
   * `dir` {string} Only return relative files for this directory.
   * `unixify` {boolean} Return paths with `/` instead of `\\` if on Windows.
   * `callback` {function} Calls with `function(err, files)`.
+
+> Note: Gaze <= 0.5.2 both relative() and watched() are sync and don't use callbacks.
 
 ## Similar Projects
 
