@@ -1,7 +1,16 @@
 language: node_js
+sudo: false
+before_install:
+  # a hack lifted from https://github.com/redis/hiredis-node to fix iojs headers
+  - node --version | grep -q 'v0.8' && npm install -g npm@latest || true
 node_js:
   - '0.8'
   - '0.10'
+  - "0.12"
+  - "iojs"
 install:
-  - npm install npm@1.4 -g
   - npm install
+os:
+  - linux
+  - osx
+  - windows
