@@ -28,16 +28,16 @@
     "test": "grunt nodeunit -v"
   },
   "dependencies": {
-    "globule": "~0.1.0"
+    "globule": "^0.2.0"
   },
   "devDependencies": {
-    "grunt": "~0.4.1",
-    "grunt-contrib-nodeunit": "~0.2.0",
-    "grunt-contrib-jshint": "~0.6.0",
+    "async": "^1.5.2",
+    "grunt": "^0.4.5",
     "grunt-benchmark": "~0.2.0",
     "grunt-cli": "~0.1.13",
-    "async": "~0.2.10",
-    "rimraf": "~2.2.6"
+    "grunt-contrib-jshint": "^0.11.3",
+    "grunt-contrib-nodeunit": "^0.4.1",
+    "rimraf": "^2.5.0"
   },
   "keywords": [
     "watch",
