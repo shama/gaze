@@ -7,10 +7,10 @@ var fs = require('fs');
 var cp = require('child_process');
 
 // Clean up helper to call in setUp and tearDown
-function cleanUp(done) {
+function cleanUp (done) {
   [
     'nested/sub/poller.js'
-  ].forEach(function(d) {
+  ].forEach(function (d) {
     var p = path.resolve(__dirname, 'fixtures', d);
     if (fs.existsSync(p)) { fs.unlinkSync(p); }
   });
@@ -18,19 +18,19 @@ function cleanUp(done) {
 }
 
 exports.watch_race = {
-  setUp: function(done) {
+  setUp: function (done) {
     process.chdir(path.resolve(__dirname, 'fixtures'));
     cleanUp(done);
   },
   tearDown: cleanUp,
-  initWatchDirOnClose: function(test) {
+  initWatchDirOnClose: function (test) {
     var times = 5,
-        TIMEOUT = 5000,
-        firedWhenClosed = 0,
-        watchers = [],
-        watcherIdxes = [],
-        polled_file = ['fixtures', 'nested', 'sub', 'poller.js'],
-        expected_path = path.join.apply(path, polled_file.slice(1));
+      TIMEOUT = 5000,
+      firedWhenClosed = 0,
+      watchers = [],
+      watcherIdxes = [],
+      polled_file = ['fixtures', 'nested', 'sub', 'poller.js'],
+      expected_path = path.join.apply(path, polled_file.slice(1));
     test.expect(times);
     for (var i = times; i--;) {
       watcherIdxes.unshift(i);
@@ -42,8 +42,8 @@ exports.watch_race = {
       '../file_poller.js',
       [times * TIMEOUT].concat(polled_file)
     );
-    grunt.util.async.forEachSeries(watcherIdxes, function(idx, next) {
-      var watcher = new gaze.Gaze('**/poller.js', function(err, watcher) {
+    grunt.util.async.forEachSeries(watcherIdxes, function (idx, next) {
+      var watcher = new gaze.Gaze('**/poller.js', function (err, watcher) {
         var timeout = setTimeout(function () {
           test.ok(false, 'watcher ' + idx + ' did not fire event on polled file.');
           watcher.close();
@@ -62,7 +62,7 @@ exports.watch_race = {
           process.nextTick(function () {
             watcher.once('added', function () {
               test.ok(false, 'watcher ' + idx + ' should not fire added' +
-               ' event on polled file after being closed.');
+                ' event on polled file after being closed.');
             });
           });
           next();

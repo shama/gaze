@@ -8,17 +8,17 @@ var path = require('path');
 var watchDir = path.resolve(__dirname, 'watch');
 
 // Helper for creating mock files
-function createFiles(num, dir) {
+function createFiles (num, dir) {
   for (var i = 0; i < num; i++) {
     grunt.file.write(path.join(dir, 'test-' + i + '.js'), 'var test = ' + i + ';');
   }
 }
 
 module.exports = {
-  'setUp': function(done) {
+  'setUp': function (done) {
     // ensure that your `ulimit -n` is higher than amount of files
     if (grunt.file.exists(watchDir)) {
-      grunt.file.delete(watchDir, {force:true});
+      grunt.file.delete(watchDir, {force: true});
     }
     createFiles(100, path.join(watchDir, 'one'));
     createFiles(100, path.join(watchDir, 'two'));
@@ -28,16 +28,16 @@ module.exports = {
     process.chdir(watchDir);
     done();
   },
-  'tearDown': function(done) {
+  'tearDown': function (done) {
     if (grunt.file.exists(watchDir)) {
-      grunt.file.delete(watchDir, {force:true});
+      grunt.file.delete(watchDir, {force: true});
     }
     done();
   },
-  changed: function(done) {
-    gaze('**/*', {maxListeners:0}, function(err, watcher) {
+  changed: function (done) {
+    gaze('**/*', {maxListeners: 0}, function (err, watcher) {
       this.on('changed', done);
-      setTimeout(function() {
+      setTimeout(function () {
         var rand = String(new Date().getTime()).replace(/[^\w]+/g, '');
         grunt.file.write(path.join(watchDir, 'one', 'test-99.js'), 'var test = "' + rand + '"');
       }, 100);

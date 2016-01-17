@@ -5,10 +5,10 @@ var path = require('path');
 var fs = require('fs');
 
 // Clean up helper to call in setUp and tearDown
-function cleanUp(done) {
+function cleanUp (done) {
   [
     'safewrite.js'
-  ].forEach(function(d) {
+  ].forEach(function (d) {
     var p = path.resolve(__dirname, 'fixtures', d);
     if (fs.existsSync(p)) { fs.unlinkSync(p); }
   });
@@ -16,12 +16,12 @@ function cleanUp(done) {
 }
 
 exports.safewrite = {
-  setUp: function(done) {
+  setUp: function (done) {
     process.chdir(path.resolve(__dirname, 'fixtures'));
     cleanUp(done);
   },
   tearDown: cleanUp,
-  safewrite: function(test) {
+  safewrite: function (test) {
     test.expect(4);
 
     var times = 0;
@@ -29,15 +29,15 @@ exports.safewrite = {
     var backup = path.resolve(__dirname, 'fixtures', 'safewrite.ext~');
     fs.writeFileSync(file, 'var safe = true;');
 
-    function simSafewrite() {
+    function simSafewrite () {
       fs.writeFileSync(backup, fs.readFileSync(file));
       fs.unlinkSync(file);
       fs.renameSync(backup, file);
       times++;
     }
 
-    gaze('**/*', function() {
-      this.on('all', function(action, filepath) {
+    gaze('**/*', function () {
+      this.on('all', function (action, filepath) {
         test.equal(action, 'changed');
         test.equal(path.basename(filepath), 'safewrite.js');
 
@@ -49,7 +49,7 @@ exports.safewrite = {
         }
       });
 
-      setTimeout(function() {
+      setTimeout(function () {
         simSafewrite();
       }, 1000);
 

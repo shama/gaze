@@ -9,23 +9,18 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/shama/gaze.git"
+    "url": "https://github.com/shama/gaze.git"
   },
   "bugs": {
     "url": "https://github.com/shama/gaze/issues"
   },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://github.com/shama/gaze/blob/master/LICENSE-MIT"
-    }
-  ],
+  "license": "MIT",
   "main": "lib/gaze",
   "engines": {
-    "node": ">= 0.8.0"
+    "node": ">= 0.10.0"
   },
   "scripts": {
-    "test": "grunt nodeunit -v"
+    "test": "semistandard && grunt nodeunit -v"
   },
   "dependencies": {
     "globule": "^0.2.0"
@@ -37,7 +32,8 @@
     "grunt-cli": "~0.1.13",
     "grunt-contrib-jshint": "^0.11.3",
     "grunt-contrib-nodeunit": "^0.4.1",
-    "rimraf": "^2.5.0"
+    "rimraf": "^2.5.0",
+    "semistandard": "^7.0.5"
   },
   "keywords": [
     "watch",
@@ -46,5 +42,13 @@
   "files": [
     "lib",
     "LICENSE-MIT"
-  ]
+  ],
+  "semistandard": {
+    "ignore": [
+      "benchmarks",
+      "experiments",
+      "build",
+      "test"
+    ]
+  }
 }

@@ -1,5 +1,6 @@
-module.exports = function(grunt) {
+module.exports = function (grunt) {
   'use strict';
+  grunt.option('stack', true);
   grunt.initConfig({
     benchmark: {
       all: {
@@ -8,7 +9,7 @@ module.exports = function(grunt) {
       }
     },
     nodeunit: {
-      files: ['test/*_test.js'],
+      files: ['test/*_test.js']
     },
     jshint: {
       options: {
@@ -22,12 +23,12 @@ module.exports = function(grunt) {
       },
       test: {
         src: ['test/**/*_test.js']
-      },
-    },
+      }
+    }
   });
 
   // Dynamic alias task to nodeunit. Run individual tests with: grunt test:events
-  grunt.registerTask('test', function(file) {
+  grunt.registerTask('test', function (file) {
     grunt.config('nodeunit.files', String(grunt.config('nodeunit.files')).replace('*', file || '*'));
     grunt.task.run('nodeunit');
   });

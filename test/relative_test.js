@@ -4,11 +4,11 @@ var Gaze = require('../lib/gaze.js').Gaze;
 var path = require('path');
 
 exports.relative = {
-  setUp: function(done) {
+  setUp: function (done) {
     process.chdir(path.resolve(__dirname, 'fixtures'));
     done();
   },
-  relative: function(test) {
+  relative: function (test) {
     test.expect(1);
     var files = [
       'Project (LO)/',

@@ -17,7 +17,7 @@ if (!pathArg.length) {
 }
 var filepath = path.resolve.apply(path, [ __dirname ].concat(pathArg));
 
-function writeToFile() {
+function writeToFile () {
   setTimeout(function () {
     fs.writeFile(filepath, '');
     return writeToFile();

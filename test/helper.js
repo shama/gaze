@@ -2,7 +2,7 @@
 
 var helper = module.exports = {};
 
-helper.sortobj = function sortobj(obj) {
+helper.sortobj = function sortobj (obj) {
   if (Array.isArray(obj)) {
     obj.sort();
     return obj;
@@ -10,7 +10,7 @@ helper.sortobj = function sortobj(obj) {
   var out = Object.create(null);
   var keys = Object.keys(obj);
   keys.sort();
-  keys.forEach(function(key) {
+  keys.forEach(function (key) {
     var val = obj[key];
     if (Array.isArray(val)) {
       val.sort();

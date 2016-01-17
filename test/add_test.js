@@ -9,11 +9,11 @@ var fixtures = path.resolve(__dirname, 'fixtures');
 var sortobj = helper.sortobj;
 
 exports.add = {
-  setUp: function(done) {
+  setUp: function (done) {
     process.chdir(fixtures);
     done();
   },
-  addToWatched: function(test) {
+  addToWatched: function (test) {
     test.expect(1);
     var files = [
       'Project (LO)/',
@@ -38,13 +38,13 @@ exports.add = {
     gaze.on('end', test.done);
     gaze.close();
   },
-  addLater: function(test) {
+  addLater: function (test) {
     test.expect(3);
-    new Gaze('sub/one.js', function(err, watcher) {
+    new Gaze('sub/one.js', function (err, watcher) {
       test.deepEqual(watcher.relative('sub'), ['one.js']);
-      watcher.add('sub/*.js', function() {
+      watcher.add('sub/*.js', function () {
         test.deepEqual(watcher.relative('sub'), ['one.js', 'two.js']);
-        watcher.on('changed', function(filepath) {
+        watcher.on('changed', function (filepath) {
           test.equal('two.js', path.basename(filepath));
           watcher.on('end', test.done);
           watcher.close();
@@ -53,16 +53,16 @@ exports.add = {
       });
     });
   },
-  addNoCallback: function(test) {
+  addNoCallback: function (test) {
     test.expect(1);
-    new Gaze('sub/one.js', function(err, watcher) {
+    new Gaze('sub/one.js', function (err, watcher) {
       this.add('sub/two.js');
-      this.on('changed', function(filepath) {
+      this.on('changed', function (filepath) {
         test.equal('two.js', path.basename(filepath));
         watcher.on('end', test.done);
         watcher.close();
       });
-      setTimeout(function() {
+      setTimeout(function () {
         fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'sub', 'two.js'), 'var two = true;');
       }, 500);
     });
