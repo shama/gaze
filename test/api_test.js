@@ -1,6 +1,7 @@
 'use strict';
 
 var gaze = require('../lib/gaze.js');
+var helper = require('./helper.js');
 var path = require('path');
 
 exports.api = {
@@ -12,8 +13,8 @@ exports.api = {
     test.expect(2);
     new gaze.Gaze('**/*', {}, function () {
       var result = this.relative(null, true);
-      test.deepEqual(result['.'], ['Project (LO)/', 'nested/', 'one.js', 'sub/']);
-      test.deepEqual(result['sub/'], ['one.js', 'two.js']);
+      helper.deepEqual(test, result['.'], ['Project (LO)/', 'nested/', 'one.js', 'sub/']);
+      helper.deepEqual(test, result['sub/'], ['one.js', 'two.js']);
       this.on('end', test.done);
       this.close();
     });

@@ -19,3 +19,11 @@ helper.sortobj = function sortobj (obj) {
   });
   return out;
 };
+
+// The sorting is different on Windows, we are
+// ignoring the sort order for now
+helper.deepEqual = function deepEqual (test, a, b, message) {
+  a.sort();
+  b.sort();
+  test.deepEqual(a, b, message);
+};

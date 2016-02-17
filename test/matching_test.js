@@ -28,10 +28,10 @@ exports.matching = {
   tearDown: cleanUp,
   globAll: function (test) {
     test.expect(2);
-    gaze('**/*', function () {
+    gaze('**/*', {nosort:true}, function () {
       var result = this.relative(null, true);
-      test.deepEqual(result['.'], ['Project (LO)/', 'nested/', 'one.js', 'sub/']);
-      test.deepEqual(result['sub/'], ['one.js', 'two.js']);
+      helper.deepEqual(test, result['.'], ['Project (LO)/', 'nested/', 'one.js', 'sub/']);
+      helper.deepEqual(test, result['sub/'], ['one.js', 'two.js']);
       this.on('end', test.done);
       this.close();
     });

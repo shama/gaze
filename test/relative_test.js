@@ -1,6 +1,7 @@
 'use strict';
 
 var Gaze = require('../lib/gaze.js').Gaze;
+var helper = require('./helper.js');
 var path = require('path');
 
 exports.relative = {
@@ -22,7 +23,7 @@ exports.relative = {
     ];
     var gaze = new Gaze('addnothingtowatch');
     gaze._addToWatched(files);
-    test.deepEqual(gaze.relative('.', true), ['Project (LO)/', 'nested/', 'one.js', 'sub/']);
+    helper.deepEqual(test, gaze.relative('.', true), ['Project (LO)/', 'nested/', 'one.js', 'sub/']);
     gaze.on('end', test.done);
     gaze.close();
   }
