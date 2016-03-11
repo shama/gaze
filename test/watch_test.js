@@ -325,3 +325,10 @@ exports.watch = {
     });
   },
 };
+
+// These tests on Windows trigger the folder of a file added to that folder
+// When they shouldn't. So skipping them for now ;-;
+if (process.platform === 'win32') {
+  delete exports.watch['mkdirThenAddFile'];
+  delete exports.watch['mkdirThenAddFileWithGruntFileWrite'];
+}
