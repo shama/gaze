@@ -30,8 +30,8 @@
     "grunt": "^0.4.5",
     "grunt-benchmark": "~0.2.0",
     "grunt-cli": "~0.1.13",
-    "grunt-contrib-jshint": "^0.11.3",
-    "grunt-contrib-nodeunit": "^0.4.1",
+    "grunt-contrib-jshint": "^1.0.0",
+    "grunt-contrib-nodeunit": "^1.0.0",
     "rimraf": "^2.5.0",
     "semistandard": "^7.0.5"
   },
