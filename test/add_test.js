@@ -14,7 +14,13 @@ exports.add = {
     done();
   },
   addToWatched: function (test) {
-    test.expect(1);
+    test.expect(2);
+    var oldreaddirSync = fs.readdirSync;
+    var readdirCount = 0;
+    fs.readdirSync = function() {
+      readdirCount++;
+      return oldreaddirSync.apply(this, arguments);
+    };
     var files = [
       'Project (LO)/',
       'Project (LO)/one.js',
@@ -27,14 +33,18 @@ exports.add = {
     ];
     var expected = {
       'Project (LO)/': ['one.js'],
-      '.': ['Project (LO)/', 'nested/', 'one.js', 'sub/'],
+      '.': ['Project (LO)/', 'nested/', 'one.js'],
       'nested/': ['sub/', 'sub2/', 'one.js', 'three.js'],
       'nested/sub/': ['two.js'],
     };
+
     var gaze = new Gaze('addnothingtowatch');
     gaze._addToWatched(files);
     var result = gaze.relative(null, true);
     test.deepEqual(sortobj(result), sortobj(expected));
+    test.strictEqual(readdirCount, 3);
+
+    fs.readdirSync = oldreaddirSync;
     gaze.on('end', test.done);
     gaze.close();
   },
