@@ -16,11 +16,19 @@ function cleanUp (done) {
     'nested/.tmp',
     'nested/sub/added.js',
   ].forEach(function (d) {
-    var p = path.resolve(__dirname, 'fixtures', d);
-    if (fs.existsSync(p)) { fs.unlinkSync(p); }
+    try {
+      var p = path.resolve(__dirname, 'fixtures', d);
+      if (fs.existsSync(p)) { fs.unlinkSync(p); }
+    } catch (err) {
+      console.log('Caught an error at the end of tests we dont care about:', err.message);
+    }
   });
 
-  grunt.file.delete(path.resolve(__dirname, 'fixtures', 'new_dir'));
+  try {
+    grunt.file.delete(path.resolve(__dirname, 'fixtures', 'new_dir'));
+  } catch (err) {
+    console.log('Caught an error at the end of tests we dont care about:', err.message);
+  }
 
   done();
 }
