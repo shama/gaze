@@ -355,6 +355,29 @@ exports.watch = {
         }
       }, 100);
     });
+  },
+  debounceImmediate: function (test) {
+    test.expect(1);
+    gaze('**/*', { debounceImmediate: false }, function (err, watcher) {
+      var called = 0;
+      watcher.on('all', function (filepath) {
+        called += 1;
+      });
+      watcher.on('end', function () {
+        test.equal(called, 1, 'should only detect one change event.');
+        test.done();
+      });
+
+      var count = 0;
+      var timer = setInterval(function () {
+        fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'edited.js'), count);
+        count++;
+        if (count > 4) {
+          clearTimeout(timer);
+          setTimeout(function () { watcher.close(); }, 1000);
+        }
+      }, 100);
+    });
   }
 };
 
