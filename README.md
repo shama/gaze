@@ -158,6 +158,9 @@ Add unit tests for any new or changed functionality. Lint and test your code
 using [grunt](http://gruntjs.com/).
 
 ## Release History
+* 1.1.2 - Prevent more ENOENT errors from escaping (@alexgorbatchev).
+* 1.1.1 - Prevent fs.watch errors from escaping error handler (@rosen-vladimirov). Fix _addToWatched without path.sep (@wyicwx).
+* 1.1.0 - Update to `globule@1.0.0` with `minimatch >= 3.0.0`.
 * 1.0.0 - Revert back to 0.5.2. Drop support for Node.js v0.8. Fix for `maxListeners`. Update globule to `0.2.0`.
 * 0.6.4 - Catch and emit error from readdir (@oconnore). Fix for 0 maxListeners. Use graceful-fs to avoid EMFILE errors in other places fs is used. Better method to determine if pathwatcher was built. Fix keeping process alive too much, only init pathwatcher if a file is being watched. Set min required to Windows Vista when building on Windows (@pvolok).
 * 0.6.3 - Add support for node v0.11
