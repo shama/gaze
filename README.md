@@ -120,7 +120,7 @@ var gaze = new Gaze(pattern, options, callback);
 #### Events
 
 * `ready(watcher)` When files have been globbed and watching has begun.
-* `all(event, filepath)` When an `added`, `changed` or `deleted` event occurs.
+* `all(event, filepath)` When an `added`, `changed`, `renamed` or `deleted` event occurs.
 * `added(filepath)` When a file has been added to a watch directory.
 * `changed(filepath)` When a file has been changed.
 * `deleted(filepath)` When a file has been deleted.
@@ -132,7 +132,7 @@ var gaze = new Gaze(pattern, options, callback);
 #### Methods
 
 * `emit(event, [...])` Wrapper for the EventEmitter.emit.
-  `added`|`changed`|`deleted` events will also trigger the `all` event.
+  `added`|`changed`|`renamed`|`deleted` events will also trigger the `all` event.
 * `close()` Unwatch all files and reset the watch instance.
 * `add(patterns, callback)` Adds file(s) patterns to be watched.
 * `remove(filepath)` removes a file or directory from being watched. Does not
