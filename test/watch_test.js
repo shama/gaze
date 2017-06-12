@@ -15,6 +15,7 @@ function cleanUp (done) {
     'nested/added.js',
     'nested/.tmp',
     'nested/sub/added.js',
+    'edited.js'
   ].forEach(function (d) {
     try {
       var p = path.resolve(__dirname, 'fixtures', d);
@@ -332,6 +333,52 @@ exports.watch = {
       this.close();
     });
   },
+  debounceTiming: function (test) {
+    test.expect(1);
+    gaze('**/*', function (err, watcher) {
+      var lastContent = '';
+      watcher.on('all', function (filepath) {
+        lastContent = fs.readFileSync(path.resolve(__dirname, 'fixtures', 'edited.js')).toString();
+      });
+      watcher.on('end', function () {
+        test.equal(lastContent, '4', 'should catch the last changed event.');
+        test.done();
+      });
+
+      var count = 0;
+      var timer = setInterval(function () {
+        fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'edited.js'), count);
+        count++;
+        if (count > 4) {
+          clearTimeout(timer);
+          setTimeout(function () { watcher.close(); }, 1000);
+        }
+      }, 100);
+    });
+  },
+  debounceImmediate: function (test) {
+    test.expect(1);
+    gaze('**/*', { debounceImmediate: false }, function (err, watcher) {
+      var called = 0;
+      watcher.on('all', function (filepath) {
+        called += 1;
+      });
+      watcher.on('end', function () {
+        test.equal(called, 1, 'should only detect one change event.');
+        test.done();
+      });
+
+      var count = 0;
+      var timer = setInterval(function () {
+        fs.writeFileSync(path.resolve(__dirname, 'fixtures', 'edited.js'), count);
+        count++;
+        if (count > 4) {
+          clearTimeout(timer);
+          setTimeout(function () { watcher.close(); }, 1000);
+        }
+      }, 100);
+    });
+  }
 };
 
 // These tests on Windows trigger the folder of a file added to that folder
