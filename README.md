@@ -191,5 +191,5 @@ using [grunt](http://gruntjs.com/).
 * 0.1.0 - Initial release
 
 ## License
-Copyright (c) 2015 Kyle Robinson Young  
+Copyright (c) 2018 Kyle Robinson Young  
 Licensed under the MIT license.
