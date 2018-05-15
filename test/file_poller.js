@@ -19,7 +19,7 @@ var filepath = path.resolve.apply(path, [ __dirname ].concat(pathArg));
 
 function writeToFile () {
   setTimeout(function () {
-    fs.writeFile(filepath, '');
+    fs.writeFile(filepath, '', function () { });
     return writeToFile();
   }, 0);
 }
