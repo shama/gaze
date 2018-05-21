@@ -1,7 +1,7 @@
 # gaze [![Build Status](http://img.shields.io/travis/shama/gaze.svg)](https://travis-ci.org/shama/gaze) [![Build status](https://ci.appveyor.com/api/projects/status/vtx65w9eg511tgo4)](https://ci.appveyor.com/project/shama/gaze)
 
 A globbing `fs.watch` wrapper built from the best parts of other fine watch libs.  
-Compatible with Node.js 4.x/0.12/0.10, Windows, macOS, and Linux.
+Compatible with Node.js >= 4.x, Windows, macOS, and Linux.
 
 ![gaze](http://dontkry.com/images/repos/gaze.png)
 
