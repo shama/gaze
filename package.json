@@ -23,7 +23,7 @@
     "test": "semistandard && grunt nodeunit -v"
   },
   "dependencies": {
-    "globule": "^1.0.0"
+    "globule": "^1.1.0"
   },
   "devDependencies": {
     "async": "^2.6.0",
