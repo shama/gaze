@@ -15,41 +15,40 @@ and run `npm install`.
 var gaze = require('gaze');
 
 // Watch all .js files/dirs in process.cwd()
-gaze('**/*.js', function(err, watcher) {
+gaze('**/*.js', (err, watcher) => {
   // Files have all started watching
-  // watcher === this
 
   // Get all watched files
-  var watched = this.watched();
+  var watched = watcher.watched();
 
   // On file changed
-  this.on('changed', function(filepath) {
+  watcher.on('changed', filepath => {
     console.log(filepath + ' was changed');
   });
 
   // On file added
-  this.on('added', function(filepath) {
+  watcher.on('added', filepath => {
     console.log(filepath + ' was added');
   });
 
   // On file deleted
-  this.on('deleted', function(filepath) {
+  watcher.on('deleted', filepath => {
     console.log(filepath + ' was deleted');
   });
 
   // On changed/added/deleted
-  this.on('all', function(event, filepath) {
+  watcher.on('all', (event, filepath) => {
     console.log(filepath + ' was ' + event);
   });
 
   // Get watched files with relative paths
-  var files = this.relative();
+  var files = watcher.relative();
 });
 
 // Also accepts an array of patterns
-gaze(['stylesheets/*.css', 'images/**/*.png'], function() {
+gaze(['stylesheets/*.css', 'images/**/*.png'], () => {
   // Add more patterns later to be watched
-  this.add(['js/*.js']);
+  watcher.add(['js/*.js']);
 });
 ```
 
@@ -61,16 +60,16 @@ var Gaze = require('gaze').Gaze;
 var gaze = new Gaze('**/*');
 
 // Files have all started watching
-gaze.on('ready', function(watcher) { });
+gaze.on('ready', watcher => { });
 
 // A file has been added/changed/deleted has occurred
-gaze.on('all', function(event, filepath) { });
+gaze.on('all', (event, filepath) => { });
 ```
 
 ### Errors
 
 ```javascript
-gaze('**/*', function(error, watcher) {
+gaze('**/*', (error, watcher) => {
   if (error) {
     // Handle error if it occurred while starting up
   }
@@ -78,7 +77,7 @@ gaze('**/*', function(error, watcher) {
 
 // Or with the alternative interface
 var gaze = new Gaze();
-gaze.on('error', function(error) {
+gaze.on('error', error => {
   // Handle error here
 });
 gaze.add('**/*');
