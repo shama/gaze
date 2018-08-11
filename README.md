@@ -12,14 +12,14 @@ Install the module with: `npm install gaze` or place into your `package.json`
 and run `npm install`.
 
 ```javascript
-var gaze = require('gaze');
+const gaze = require('gaze');
 
 // Watch all .js files/dirs in process.cwd()
 gaze('**/*.js', (err, watcher) => {
   // Files have all started watching
 
   // Get all watched files
-  var watched = watcher.watched();
+  const watched = watcher.watched();
 
   // On file changed
   watcher.on('changed', filepath => {
@@ -42,7 +42,7 @@ gaze('**/*.js', (err, watcher) => {
   });
 
   // Get watched files with relative paths
-  var files = watcher.relative();
+  const files = watcher.relative();
 });
 
 // Also accepts an array of patterns
@@ -55,9 +55,9 @@ gaze(['stylesheets/*.css', 'images/**/*.png'], () => {
 ### Alternate Interface
 
 ```javascript
-var Gaze = require('gaze').Gaze;
+const {Gaze} = require('gaze');
 
-var gaze = new Gaze('**/*');
+const gaze = new Gaze('**/*');
 
 // Files have all started watching
 gaze.on('ready', watcher => { });
@@ -76,7 +76,7 @@ gaze('**/*', (error, watcher) => {
 });
 
 // Or with the alternative interface
-var gaze = new Gaze();
+const gaze = new Gaze();
 gaze.on('error', error => {
   // Handle error here
 });
@@ -103,8 +103,8 @@ information on glob patterns.
 Create a `Gaze` object by instancing the `gaze.Gaze` class.
 
 ```javascript
-var Gaze = require('gaze').Gaze;
-var gaze = new Gaze(pattern, options, callback);
+const Gaze = require('gaze').Gaze;
+const gaze = new Gaze(pattern, options, callback);
 ```
 
 #### Properties
